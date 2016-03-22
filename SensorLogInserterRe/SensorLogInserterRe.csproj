@@ -74,7 +74,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Daos\DatabaseAccesser.cs" />
+    <Compile Include="Daos\EcologDao.cs" />
+    <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Driver.cs" />
+    <Compile Include="Models\Ecolog.cs" />
     <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Sensor.cs" />
+    <Compile Include="Models\UserDatum.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -115,7 +122,6 @@
   <ItemGroup>
     <Folder Include="Calculators\" />
     <Folder Include="Cleansers\" />
-    <Folder Include="Daos\" />
     <Folder Include="Handlers\" />
     <Folder Include="Utils\" />
   </ItemGroup>
