@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Windows.Interactivity">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\System.Windows.Interactivity.dll</HintPath>
@@ -74,6 +75,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Calculators\DistanceCalculator.cs" />
+    <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Daos\DatabaseAccesser.cs" />
     <Compile Include="Daos\EcologDao.cs" />
     <Compile Include="Models\Car.cs" />
@@ -82,6 +85,10 @@
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\UserDatum.cs" />
+    <Compile Include="Utils\DataTableUtil.cs" />
+    <Compile Include="Utils\JobScheduler.cs" />
+    <Compile Include="Utils\LogWritter.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -120,10 +127,8 @@
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Calculators\" />
     <Folder Include="Cleansers\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
