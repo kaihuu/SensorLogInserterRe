@@ -14,6 +14,6 @@ namespace SensorLogInserterRe.Calculators
         {
             return new Tuple<GeoCoordinate, GeoCoordinate>(new GeoCoordinate(), new GeoCoordinate());
         }
-
+        //テスト
     }
 }
