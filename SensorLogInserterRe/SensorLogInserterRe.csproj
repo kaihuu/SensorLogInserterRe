@@ -93,6 +93,7 @@
     <Compile Include="Utils\DataTableUtil.cs" />
     <Compile Include="Utils\JobScheduler.cs" />
     <Compile Include="Utils\LogWritter.cs" />
+    <Compile Include="Utils\MathUtil.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
