@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="Calculators\AccResistanceCaluculator.cs" />
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
+    <Compile Include="Calculators\CalculatorComponents\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCaluculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
