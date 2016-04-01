@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Calculators
 {
-    class ClimbingResistanceCaluculator
+    static class ClimbingResistanceCaluculator
     {
-        public static double CalcClimbingResistance(double vehicleMass,double theta)
+        public static double CalcClimbingResistance(double vehicleMass, double theta)
         {
             return vehicleMass * Math.Sin(theta) * 9.80665;
         }
