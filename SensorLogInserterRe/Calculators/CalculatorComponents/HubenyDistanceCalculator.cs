@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
         private static double ShortRadius = 6356752.314245; // 短半径
 
         //ヒュベニの公式
-        private static double CalcHubenyFormula(GeoCoordinate geoFirst, GeoCoordinate geoSecond)
+        public static double CalcHubenyFormula(GeoCoordinate geoFirst, GeoCoordinate geoSecond)
         {
             double differenceLattitude = MathUtil.ConvertDegreeToRadian(geoFirst.Latitude - geoSecond.Latitude); // 緯度の差
             double differenceLongitude = MathUtil.ConvertDegreeToRadian(geoFirst.Longitude - geoSecond.Longitude); // 経度の差
