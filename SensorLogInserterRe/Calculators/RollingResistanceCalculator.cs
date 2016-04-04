@@ -8,7 +8,7 @@ namespace SensorLogInserterRe.Calculators
 {
     class RollingResistanceCalculator
     {
-        public static double CalcRollingResistance(double myu,double vehicleMass,double theta)
+        public static double CalcRollingResistance(double myu, double vehicleMass, double theta)
         {
             return myu * vehicleMass * Math.Cos(theta)* 9.80665;
         }
