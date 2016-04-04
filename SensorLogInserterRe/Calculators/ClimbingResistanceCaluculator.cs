@@ -8,9 +8,13 @@ namespace SensorLogInserterRe.Calculators
 {
     static class ClimbingResistanceCaluculator
     {
-        public static double CalcClimbingResistance(double vehicleMass, double theta)
+        public static double CalcClimbingResistanceForce(double vehicleMass, double theta)//登坂抵抗力
         {
             return vehicleMass * Math.Sin(theta) * 9.80665;
+        }
+        public static double CalcClimbingResistancePower(double vehicleMass, double theta)//登坂抵抗による損失エネルギー,kWh/s
+        {
+            return CalcClimbingResistanceForce(vehicleMass, theta) * vehicleMass / 3600 / 1000;
         }
     }
 }
