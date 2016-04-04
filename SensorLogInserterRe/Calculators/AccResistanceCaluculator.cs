@@ -9,9 +9,13 @@ namespace SensorLogInserterRe.Calculators
 {
     static class AccResistanceCaluculator
     {
-        public static double CalcAccRessistance(double acc, double vehicleMass, double vehicleRollingMass)
+        public static double CalcAccRessistanceForce(double acc, double vehicleMass, double vehicleRollingMass)//加速抵抗力
         {
             return (vehicleMass + vehicleRollingMass) * acc;
+        }
+        public static double CalcAccResistancePower(double vehicleSpeedBefore, double vehicleSpeedThis, double vehicleMass, double samplingTime)//加速抵抗による損失エネルギー，kWh/s
+        {
+            return vehicleMass * (Math.Pow(vehicleSpeedThis, 2) - Math.Pow(vehicleSpeedBefore, 2)) / 2 / samplingTime / 3600 / 1000;
         }
     }
 }
