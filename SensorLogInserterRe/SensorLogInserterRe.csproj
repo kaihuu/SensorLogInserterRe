@@ -75,11 +75,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Calculators\AccCaluculator.cs" />
     <Compile Include="Calculators\AccResistanceCaluculator.cs" />
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
     <Compile Include="Calculators\CalculatorComponents\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCaluculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
+    <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Daos\DatabaseAccesser.cs" />
