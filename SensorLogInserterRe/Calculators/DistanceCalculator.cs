@@ -13,7 +13,7 @@ namespace SensorLogInserterRe.Calculators
         public static float CalcDistance(GeoCoordinate geoFirst, GeoCoordinate geoSecond)
         {
             //ヒュベニの公式で距離を計算
-            double result = HubenyDistanceCalculator.CalcHubenyFormula(geoFirst,geoSecond);
+            double result = HubenyDistanceCalculator.CalcHubenyFormula(geoFirst, geoSecond);
 
             return (float)result;
         }
