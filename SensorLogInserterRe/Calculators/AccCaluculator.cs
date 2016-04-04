@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
+using SensorLogInserterRe.Calculators.CalculatorComponents;
 
 namespace SensorLogInserterRe.Calculators
 {
-    class AccCaluculator
+    static class AccCaluculator
     {
-        public static double CalcAcc(GeoCoordinate geoBefore, GeoCoordinate geoThis, GeoCoordinate geoAfter)
+        public static double CalcAcc(GeoCoordinate geoBefore, GeoCoordinate geoThis, GeoCoordinate geoAfter, double samplingTime)
         {
-            return 0;
+            return (HubenyDistanceCalculator.CalcHubenyFormula(geoThis, geoAfter) - HubenyDistanceCalculator.CalcHubenyFormula(geoBefore, geoThis)) / Math.Pow(samplingTime,2);
         }
     }
 }
