@@ -8,9 +8,9 @@ namespace SensorLogInserterRe.Calculators
 {
     class AirResistanceCalculator
     {
-        public static double CalcAirResistance(double rho,double Cd,double FrontProjectedArea, double windSpeed)
+        public static double CalcAirResistance(double rho, double Cd, double FrontProjectedArea, double windSpeed)
         {
-            return rho*Cd*FrontProjectedArea*Math.Pow(windSpeed,2)/2;
+            return rho * Cd* FrontProjectedArea * Math.Pow(windSpeed, 2) / 2;
         }
     }
 }
