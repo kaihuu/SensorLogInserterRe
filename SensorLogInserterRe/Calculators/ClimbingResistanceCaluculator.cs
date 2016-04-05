@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SensorLogInserterRe.Calculators.CalculatorComponents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace SensorLogInserterRe.Calculators
     {
         public static double CalcClimbingResistanceForce(double vehicleMass, double theta)//登坂抵抗力
         {
-            return vehicleMass * Math.Sin(theta) * 9.80665;
+            return vehicleMass * Math.Sin(theta) * Constants.GravityResistanceCoefficient;
         }
         public static double CalcClimbingResistancePower(double vehicleMass, double theta, double vehicleSpeed)//登坂抵抗による損失エネルギー,kWh/s
         {
