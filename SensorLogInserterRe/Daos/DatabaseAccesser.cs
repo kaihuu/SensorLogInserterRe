@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    protected class DatabaseAccesser
+    public class DatabaseAccesser
     {
         private static readonly string ConnectionString = "Data Source=" + "ECOLOGDB" + ";Initial Catalog=ECOLOGDBver2;Integrated Security=Yes;Connect Timeout=15;";
 

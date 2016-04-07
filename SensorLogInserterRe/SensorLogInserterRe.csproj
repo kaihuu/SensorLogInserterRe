@@ -87,6 +87,7 @@
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Daos\DatabaseAccesser.cs" />
     <Compile Include="Daos\EcologDao.cs" />
+    <Compile Include="Daos\EfficiencyDao.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />

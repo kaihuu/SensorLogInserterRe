@@ -12,32 +12,19 @@ namespace SensorLogInserterRe.Daos
     {
         private static readonly string TableName = "ecolog";
 
-        private static EcologDao Instance;
-
-        public static EcologDao GetInstance()
-        {
-            if(Instance == null) Instance = new EcologDao();
-
-            return Instance;
-        }
-
-        private EcologDao(){
-
-        }
-
-        public void Insert(DataTable dataTable)
+        public static void Insert(DataTable dataTable)
         {
             DatabaseAccesser.Insert(EcologDao.TableName, dataTable);
         }
 
-        public DataTable Get()
+        public static DataTable Get()
         {
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
         }
 
-        public DataTable Get(DateTime startPeriod, DateTime endPeriod)
+        public static DataTable Get(DateTime startPeriod, DateTime endPeriod)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT *");
