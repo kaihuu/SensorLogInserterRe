@@ -16,7 +16,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 
         private DataTable efficiencyTable;
         private DataTable efficiencyMaxTable;
-        private double maxRpm;
+        private double maxRev;
         private double maxTorque;
 
         private EfficiencyCalculator()
@@ -41,7 +41,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
             Instance.efficiencyTable = EfficiencyDao.Get();
             Instance.efficiencyMaxTable = EfficiencyDao.GetMax();
 
-            Instance.maxRpm = (double) Instance.efficiencyTable
+            Instance.maxRev = (double) Instance.efficiencyTable
                 .AsEnumerable()
                 .Max(v => v[EfficiencyDao.ColumnRev]);
 
@@ -56,7 +56,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 
             DataTable table;
 
-            if(rpm > maxRpm || torque > maxTorque)
+            if(rpm > maxRev || torque > maxTorque)
             {
                 table = this.efficiencyMaxTable;
             }
