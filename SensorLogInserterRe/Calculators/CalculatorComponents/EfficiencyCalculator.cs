@@ -1,6 +1,9 @@
 ﻿using SensorLogInserterRe.Daos;
+using SensorLogInserterRe.Models;
+using SensorLogInserterRe.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +14,14 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
     {
         private static EfficiencyCalculator Instance;
 
-        private int[][] efficiency;
+        private DataTable efficiencyTable;
+        private DataTable efficiencyMaxTable;
+        private double maxRpm;
+        private double maxTorque;
 
         private EfficiencyCalculator()
         {
-            // newできないように
+            // for Singleton pattern
         }
 
         public static EfficiencyCalculator GetInstance()
@@ -32,17 +38,39 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
         {
             Instance = new EfficiencyCalculator();
 
-            var efficiencyTable = EfficiencyDao.Get();
+            Instance.efficiencyTable = EfficiencyDao.Get();
+            Instance.efficiencyMaxTable = EfficiencyDao.GetMax();
 
-            // DataTableをint配列に変える操作
-            // 最後にefficiencyTable.Clear();を呼ぶこと
+            Instance.maxRpm = (double) Instance.efficiencyTable
+                .AsEnumerable()
+                .Max(v => v[EfficiencyDao.ColumnRev]);
 
+            Instance.maxTorque = (double)Instance.efficiencyTable
+                .AsEnumerable()
+                .Max(v => v[EfficiencyDao.ColumnTorque]);
         }
 
-        public int GetEfficiency(float speed, float torque)
+        public int GetEfficiency(Car car, float speed, float torque)
         {
-            // 配列番号用によしなにする
-            return 0;
+            double rpm = MathUtil.ConvertSpeedToRpm(car, speed);
+
+            DataTable table;
+
+            if(rpm > maxRpm || torque > maxTorque)
+            {
+                table = this.efficiencyMaxTable;
+            }
+            else
+            {
+                table = this.efficiencyTable;
+            }
+
+            return table.AsEnumerable()
+                   .Where(v => (int)v[EfficiencyDao.ColumnRev] == (int)Math.Round(rpm / 10) * 10)
+                   .Where(v => (int)v[EfficiencyDao.ColumnTorque] == (int)Math.Round(torque))
+                   .Select(v => v[EfficiencyDao.ColumnEfficiency])
+                   .Cast<int>()
+                   .ElementAt(0);
         } 
     }
 }
