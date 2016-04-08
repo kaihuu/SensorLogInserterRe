@@ -52,7 +52,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 
         public int GetEfficiency(Car car, float speed, float torque)
         {
-            double rpm = MathUtil.ConvertSpeedToRpm(car, speed);
+            double rpm = MathUtil.ConvertSpeedToRev(car, speed);
 
             DataTable table;
 
