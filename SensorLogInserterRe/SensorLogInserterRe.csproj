@@ -78,9 +78,9 @@
     <Compile Include="Calculators\AccCaluculator.cs" />
     <Compile Include="Calculators\AccResistanceCaluculator.cs" />
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
-    <Compile Include="Calculators\CalculatorComponents\Constants.cs" />
-    <Compile Include="Calculators\CalculatorComponents\EfficiencyCalculator.cs" />
-    <Compile Include="Calculators\CalculatorComponents\HubenyDistanceCalculator.cs" />
+    <Compile Include="Calculators\Components\Constants.cs" />
+    <Compile Include="Calculators\Components\EfficiencyCalculator.cs" />
+    <Compile Include="Calculators\Components\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCaluculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
@@ -138,7 +138,7 @@
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cleansers\" />
+    <Folder Include="Cleansers\Components\" />
     <Folder Include="Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
