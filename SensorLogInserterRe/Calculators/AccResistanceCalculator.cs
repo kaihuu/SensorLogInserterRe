@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Calculators
 {
-    static class AccResistanceCaluculator
+    static class AccResistanceCalculator
     {
         public static double CalcAccRessistanceForce(double acc, double vehicleMass, double vehicleRollingMass)//加速抵抗力
         {

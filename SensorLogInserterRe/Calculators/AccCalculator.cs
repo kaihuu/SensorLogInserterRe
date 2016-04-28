@@ -8,7 +8,7 @@ using SensorLogInserterRe.Calculators.CalculatorComponents;
 
 namespace SensorLogInserterRe.Calculators
 {
-    static class AccCaluculator
+    static class AccCalculator
     {
         public static double CalcAcc(GeoCoordinate geoBefore, GeoCoordinate geoThis, GeoCoordinate geoAfter, double samplingTime)
         {

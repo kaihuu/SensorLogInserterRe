@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Calculators
 {
-    static class ClimbingResistanceCaluculator
+    static class ClimbingResistanceCalculator
     {
         public static double CalcClimbingResistanceForce(double vehicleMass, double theta)//登坂抵抗力
         {
