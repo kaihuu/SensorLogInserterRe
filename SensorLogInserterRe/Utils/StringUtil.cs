@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace SensorLogInserterRe.Utils
 {
     class StringUtil
-    {
+    {//test
     }
 }
