@@ -39,7 +39,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
             Instance = new EfficiencyCalculator();
 
             Instance.efficiencyTable = EfficiencyDao.Get();
-            Instance.efficiencyMaxTable = EfficiencyDao.GetMax();
+            Instance.efficiencyMaxTable = EfficiencyMaxDao.Get();
 
             Instance.maxRev = (double) Instance.efficiencyTable
                 .AsEnumerable()

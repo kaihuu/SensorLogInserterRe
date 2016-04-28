@@ -15,7 +15,7 @@ namespace SensorLogInserterRe.Calculators
 
         public static double CalcPower(double rho, double Cd, double frontProjectedArea, double windSpeed, double vehicleSpeed)//空気抵抗による損失エネルギー，kWh/s
         {
-            return CalcAirResistanceForce(rho, Cd, frontProjectedArea, windSpeed) * vehicleSpeed / 3600 / 1000;
+            return CalcForce(rho, Cd, frontProjectedArea, windSpeed) * vehicleSpeed / 3600 / 1000;
         }
     }
 }

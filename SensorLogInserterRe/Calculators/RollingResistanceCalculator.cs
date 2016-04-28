@@ -15,7 +15,7 @@ namespace SensorLogInserterRe.Calculators
         }
         public static double CalcPower(double myu, double vehicleMass, double theta, double vehicleSpeed)//転がり抵抗による損失エネルギー,kWh/s
         {
-            return CalcRollingResistanceForce(myu, vehicleMass, theta) * vehicleSpeed / 1000 / 3600;
+            return CalcForce(myu, vehicleMass, theta) * vehicleSpeed / 1000 / 3600;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class EfficiencyMaxDao
+    class EfficiencyMaxDao : AbsDao
     {
         private static readonly string TableName = "efficiency_map_max";
     }

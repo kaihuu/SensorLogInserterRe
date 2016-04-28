@@ -15,7 +15,7 @@ namespace SensorLogInserterRe.Calculators
         }
         public static double CalcPower(double vehicleMass, double theta, double vehicleSpeed)//登坂抵抗による損失エネルギー,kWh/s
         {
-            return CalcClimbingResistanceForce(vehicleMass, theta) * vehicleSpeed / 3600 / 1000;
+            return CalcForce(vehicleMass, theta) * vehicleSpeed / 3600 / 1000;
         }
     }
 }
