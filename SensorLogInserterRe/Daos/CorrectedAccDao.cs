@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class EfficiencyDao
+    class CorrectedAccDao
     {
-        public static readonly string ColumnTorque = "torque";
-        public static readonly string ColumnRev = "rev";
-        public static readonly string ColumnEfficiency = "efficiency";
-
-        private static readonly string TableName = "efficiency_map";
+        private static readonly string TableName = "corrected_acc";
 
         public static void Insert(DataTable dataTable)
         {

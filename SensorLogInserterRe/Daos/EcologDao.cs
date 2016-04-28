@@ -8,9 +8,21 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class EcologDao : AbsDao
+    class EcologDao
     {
-        public static readonly string TableName = "ecolog";
+        private static readonly string TableName = "ecolog";
+
+        public static void Insert(DataTable dataTable)
+        {
+            DatabaseAccesser.Insert(EcologDao.TableName, dataTable);
+        }
+
+        public static DataTable Get()
+        {
+            string query = "SELECT * FROM " + TableName;
+
+            return DatabaseAccesser.GetResult(query);
+        }
 
         public static DataTable Get(DateTime startPeriod, DateTime endPeriod)
         {

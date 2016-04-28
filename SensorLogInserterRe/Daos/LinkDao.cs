@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    abstract class AbsDao
+    class LinkDao
     {
-        public static readonly string TableName;
+        private static readonly string TableName = "links";
 
         public static void Insert(DataTable dataTable)
         {
