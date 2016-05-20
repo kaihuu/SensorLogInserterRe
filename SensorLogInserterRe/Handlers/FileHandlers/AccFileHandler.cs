@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SensorLogInserterRe.Handlers
+namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class AccFileHandler : IFileHandler
     {
