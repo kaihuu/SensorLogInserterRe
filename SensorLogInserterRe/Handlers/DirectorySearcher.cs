@@ -18,24 +18,22 @@ namespace SensorLogInserterRe.Handlers
             foreach (var driver in config.CheckeDrivers)
             {
                 if (driver.Name.Equals(DriverNames.Tommy))
-                    insertFileList.AddRange( CheckFiles(DirectoryNames.DirectoryTommy, config.StartDate, config.EndDate) );
+                    CheckFiles(DirectoryNames.DirectoryTommy, config.StartDate, config.EndDate, ref insertFileList);
                 if (driver.Name.Equals(DriverNames.Mori))
-                    insertFileList.AddRange( CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate) );
-                if(driver.Name.Equals(DriverNames.Tamura))
-                    insertFileList.AddRange( CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate) );
+                    CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate, ref insertFileList);
+                if (driver.Name.Equals(DriverNames.Tamura))
+                    CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate, ref insertFileList);
                 // TODO 研究室メンバー
             }
 
             return insertFileList;
         }
 
-        private static List<string> CheckFiles(string folderPass, DateTime startDate, DateTime endDate)
+        private static void CheckFiles(string folderPass, DateTime startDate, DateTime endDate, ref List<string> insertFileList)
         {
             long todayLong = DateTimeUtil.ConvertDateTimeToLongFormatted(DateTime.Now);
             long startLong = DateTimeUtil.ConvertDateTimeToLongFormatted(startDate);
             long endLong = DateTimeUtil.ConvertDateTimeToLongFormatted(endDate);
-
-            List<string> insertFileList = new List<string>();
 
             string[] files = System.IO.Directory.GetFiles(folderPass, "*");
 
@@ -57,16 +55,40 @@ namespace SensorLogInserterRe.Handlers
                 //隠しファイルなどのアクセス許可のないファイルをキャッチ(何もしない)
                 catch (System.UnauthorizedAccessException)
                 {
-                    // TODO WriteLog
+                    
                 }
                 //AutoControlGDLTimestamp等の時刻がファイル名に入っていないファイルのFormatExceptionをキャッチ
                 catch (System.FormatException)
                 {
-                    // TODO WriteLog
+                    
                 }
             }
 
-            return insertFileList;
+            //フォルダ直下のフォルダを検索
+            string[] directories = System.IO.Directory.GetDirectories(folderPass);
+
+            foreach (string directory in directories)
+            {
+                //ファイル名を区切る
+                string[] word = directory.Split('\\');
+
+                if (word[word.Length - 1] == "DrivingLoggerAppLog" || word[word.Length - 1] == "DrivingLoggerSentTempLogging"
+                    || word[word.Length - 1] == "DrivingLoggerSentAppLog" || word[word.Length - 1] == "DrivingLoggerSentLog"
+                    || word[word.Length - 1] == "ECOLOG_Config" || word[word.Length - 1] == "ErrorData" || word[word.Length - 2] == "DrivingLoggerCamera")
+                {
+                    continue;
+                }
+
+                try
+                {
+                    CheckFiles(directory, startDate, endDate, ref insertFileList);
+                }
+                //隠しファイルなどのアクセス許可のないファイルをキャッチ(何もしない)
+                catch (System.UnauthorizedAccessException)
+                {
+
+                }
+            }
         }
     }
 }

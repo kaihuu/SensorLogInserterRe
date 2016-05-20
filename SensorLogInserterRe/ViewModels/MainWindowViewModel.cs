@@ -266,13 +266,17 @@ namespace SensorLogInserterRe.ViewModels
 
         public void Insert()
         {
-            MessageBox.Show("Insert");
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
 
             var insertConfig = GenerateInsertConfig();
 
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
             var insertFileList = DirectorySearcher.DirectorySearch(config: insertConfig);
+
+            foreach (var fileName in insertFileList)
+            {
+                this.LogText += fileName;
+            }
         }
 
         private InsertConfig GenerateInsertConfig()

@@ -9,6 +9,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class GpsFileHandler : IFileHandler
     {
-        
+        public List<string> CheckFiles(string folderPass, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

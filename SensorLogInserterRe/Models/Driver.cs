@@ -52,24 +52,8 @@ namespace SensorLogInserterRe.Models
             return new Driver()
             {
                 DriverId = result.Rows[0].Field<int>(DriverDao.ColumnDriverId),
-                Name = result.Rows[0].Field<string>(DriverDao.TableName)
+                Name = result.Rows[0].Field<string>(DriverDao.ColumnName)
             };
-        }
-
-        public List<Driver> GetDriverList()
-        {
-            var ret = new List<Driver>();
-
-            var table = new DataTable();
-            string query = "SELECT * FROM drivers";
-            table = DatabaseAccesser.GetResult(query);
-
-            foreach(DataRow row in table.Rows)
-            {
-                ret.Add(new Driver() { DriverId = row.Field<int>("driver_id"), Name = row.Field<string>("name")} );
-            }
-
-            return ret;
         }
 
     }
