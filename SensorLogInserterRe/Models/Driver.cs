@@ -46,6 +46,16 @@ namespace SensorLogInserterRe.Models
         }
         #endregion
 
+        public static Driver GetDriver(string driverName)
+        {
+            var result = DriverDao.Get(driverName);
+            return new Driver()
+            {
+                DriverId = result.Rows[0].Field<int>(DriverDao.ColumnDriverId),
+                Name = result.Rows[0].Field<string>(DriverDao.TableName)
+            };
+        }
+
         public List<Driver> GetDriverList()
         {
             var ret = new List<Driver>();

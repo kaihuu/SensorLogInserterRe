@@ -268,8 +268,53 @@ namespace SensorLogInserterRe.ViewModels
             MessageBox.Show("Insert");
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
 
+            var insertConfig = GenerateInsertConfig();
+
+
             // TODO ディレクトリサーチ
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+        }
+
+        private InsertConfig GenerateInsertConfig()
+        {
+            var insertConfig = new InsertConfig();
+
+            #region ドライバーの設定
+            if(this.IsCheckedTommy)
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Tommy));
+            if(this.IsCheckedMori)
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Mori));
+            if(this.IsCheckedTamura)
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Tamura));
+            // TODO 研究室メンバー
+            #endregion
+
+            #region 期間の設定
+
+            insertConfig.StartDate = this.StartDate;
+            insertConfig.EndDate = this.EndDate;
+
+            #endregion
+
+            #region 推定モデルの設定
+
+            if (this.IsCheckedEvModel)
+                insertConfig.Model = InsertConfig.EstimationModel.EvEnergyConsumptionModel;
+            else if (this.IsCheckedMlModel)
+                insertConfig.Model = InsertConfig.EstimationModel.MachineLearningModel;
+
+            #endregion
+
+            #region GPS補正の設定
+
+            if (this.IsCheckedMapMatching)
+                insertConfig.Correction = InsertConfig.GpsCorrection.MapMatching;
+            else if (this.IsCheckedDeadReckoning)
+                insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
+
+            #endregion
+
+            return insertConfig;
         }
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Cleansers\AbsLogCleanser.cs" />
+    <Compile Include="Constant\DriversName.cs" />
     <Compile Include="Constant\LogTexts.cs" />
     <Compile Include="Daos\AccDao.cs" />
     <Compile Include="Daos\CarDao.cs" />
@@ -101,10 +102,12 @@
     <Compile Include="Daos\LinkDao.cs" />
     <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />
+    <Compile Include="Handlers\AbsFileHandler.cs" />
     <Compile Include="Handlers\ExceptionHandler.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />
+    <Compile Include="Models\InsertConfig.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\UserDatum.cs" />

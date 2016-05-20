@@ -4,12 +4,16 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
     class DriverDao
     {
-        private static readonly string TableName = "drivers";
+        public static readonly string TableName = "drivers";
+
+        public static readonly string ColumnDriverId = "driver_id";
+        public static readonly string ColumnName = "name";
 
         public static void Insert(DataTable dataTable)
         {
@@ -22,5 +26,12 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+
+        public static DataTable Get(string driverName)
+        {
+            string query = String.Format("SELECT * FROM {0} WHERE {1} = {2}", TableName, ColumnName, driverName);
+
+            return DatabaseAccesser.GetResult(query);
+        } 
     }
 }
