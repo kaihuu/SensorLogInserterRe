@@ -270,7 +270,6 @@ namespace SensorLogInserterRe.ViewModels
 
             var insertConfig = GenerateInsertConfig();
 
-
             // TODO ディレクトリサーチ
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
         }

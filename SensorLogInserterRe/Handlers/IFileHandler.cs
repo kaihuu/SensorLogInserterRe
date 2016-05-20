@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Handlers
 {
-    class AbsFileHandler
+    interface IFileHandler
     {
+        List<string> CheckFiles(string folderPass, DateTime startDate, DateTime endDate);
     }
 }
