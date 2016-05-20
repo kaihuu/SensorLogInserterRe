@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using Livet;
 using Livet.Commands;
@@ -224,6 +225,10 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        private InsertConfig insertConfig { get; set; }
+
+        private List<string> insertFileList { get; set; }
+
         public void Initialize()
         {
             InitDriversChecked();
@@ -268,15 +273,8 @@ namespace SensorLogInserterRe.ViewModels
         {
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
 
-            var insertConfig = GenerateInsertConfig();
-
-            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
-            var insertFileList = DirectorySearcher.DirectorySearch(config: insertConfig);
-
-            foreach (var fileName in insertFileList)
-            {
-                this.LogText += fileName;
-            }
+            insertConfig = GenerateInsertConfig();
+            SearchDirectory();
         }
 
         private InsertConfig GenerateInsertConfig()
@@ -319,6 +317,16 @@ namespace SensorLogInserterRe.ViewModels
             #endregion
 
             return insertConfig;
+        }
+
+        private async void SearchDirectory()
+        {
+            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+            await Task.Run(() =>
+            {
+                insertFileList = DirectorySearcher.DirectorySearch(insertConfig);
+            });
+            this.LogText += String.Format("{0}: {1}", LogTexts.NumberOfTheInsertedFile, insertFileList.Count);
         }
     }
 }

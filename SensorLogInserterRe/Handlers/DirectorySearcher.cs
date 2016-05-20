@@ -13,7 +13,7 @@ namespace SensorLogInserterRe.Handlers
     {
         public static List<string> DirectorySearch(InsertConfig config)
         {
-            List<string> insertFileList = new List<string>();
+            var insertFileList = new List<string>();
 
             foreach (var driver in config.CheckeDrivers)
             {

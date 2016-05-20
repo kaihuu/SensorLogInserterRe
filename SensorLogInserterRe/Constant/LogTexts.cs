@@ -10,5 +10,6 @@ namespace SensorLogInserterRe.Constant
     {
         public static string TheStartOfTheCheckUpdateFile = "更新ファイルのチェック開始";
         public static string DuringCheckOfTheUpdateFile = "更新ファイルのチェック中";
+        public static string NumberOfTheInsertedFile = "挿入対象のファイル数";
     }
 }
