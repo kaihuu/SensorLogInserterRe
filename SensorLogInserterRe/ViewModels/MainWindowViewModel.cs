@@ -11,6 +11,7 @@ using Livet.Messaging.IO;
 using Livet.EventListeners;
 using Livet.Messaging.Windows;
 using SensorLogInserterRe.Constant;
+using SensorLogInserterRe.Handlers;
 using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.ViewModels
@@ -270,8 +271,8 @@ namespace SensorLogInserterRe.ViewModels
 
             var insertConfig = GenerateInsertConfig();
 
-            // TODO ディレクトリサーチ
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+            var insertFileList = DirectorySearcher.DirectorySearch(config: insertConfig);
         }
 
         private InsertConfig GenerateInsertConfig()
@@ -280,11 +281,11 @@ namespace SensorLogInserterRe.ViewModels
 
             #region ドライバーの設定
             if(this.IsCheckedTommy)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Tommy));
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Tommy));
             if(this.IsCheckedMori)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Mori));
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Mori));
             if(this.IsCheckedTamura)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriversName.Tamura));
+                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Tamura));
             // TODO 研究室メンバー
             #endregion
 

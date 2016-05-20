@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Utils
 {
-    class MathUtil
+    static class MathUtil
     {
         public static double ConvertDegreeToRadian(double degree)
         {

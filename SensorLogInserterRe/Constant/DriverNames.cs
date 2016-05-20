@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Constant
 {
-    class DriversName
+    class DriverNames
     {
         public static readonly string Tommy = "富井尚志";
         public static readonly string Mori = "森辰則";

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Utils
 {
-    public static class DataTableUtil
+    static class DataTableUtil
     {
         public static DataTable GetTripsTable()
         {

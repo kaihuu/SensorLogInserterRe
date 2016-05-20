@@ -87,7 +87,8 @@
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Cleansers\AbsLogCleanser.cs" />
-    <Compile Include="Constant\DriversName.cs" />
+    <Compile Include="Constant\DirectoryNames.cs" />
+    <Compile Include="Constant\DriverNames.cs" />
     <Compile Include="Constant\LogTexts.cs" />
     <Compile Include="Daos\AccDao.cs" />
     <Compile Include="Daos\CarDao.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Daos\LinkDao.cs" />
     <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />
+    <Compile Include="Handlers\DirectorySearcher.cs" />
     <Compile Include="Handlers\FileHandlers\AccFileHandler.cs" />
     <Compile Include="Handlers\ExceptionHandler.cs" />
     <Compile Include="Handlers\FileHandlers\GpsFileHandler.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\UserDatum.cs" />
     <Compile Include="Utils\DataTableUtil.cs" />
+    <Compile Include="Utils\DateTimeUtil.cs" />
     <Compile Include="Utils\JobScheduler.cs" />
     <Compile Include="Utils\LogWritter.cs" />
     <Compile Include="Utils\MathUtil.cs" />
