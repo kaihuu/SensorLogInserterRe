@@ -10,7 +10,7 @@ using Livet.Messaging;
 using Livet.Messaging.IO;
 using Livet.EventListeners;
 using Livet.Messaging.Windows;
-
+using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.ViewModels
@@ -266,6 +266,10 @@ namespace SensorLogInserterRe.ViewModels
         public void Insert()
         {
             MessageBox.Show("Insert");
+            this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
+
+            // TODO ディレクトリサーチ
+            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
         }
     }
 }
