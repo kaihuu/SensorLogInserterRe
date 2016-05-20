@@ -141,7 +141,7 @@
 
         <ScrollViewer Grid.Row="5" Margin="5,0">
 
-            <TextBox Text=""
+            <TextBox Text="{Binding LogText}"
                      TextWrapping="Wrap"
                      VerticalScrollBarVisibility="Auto" />
 

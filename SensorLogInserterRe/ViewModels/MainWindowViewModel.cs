@@ -206,6 +206,23 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region LogText変更通知プロパティ
+        private string _LogText;
+
+        public string LogText
+        {
+            get
+            { return _LogText; }
+            set
+            { 
+                if (_LogText == value)
+                    return;
+                _LogText = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         public void Initialize()
         {
             InitDriversChecked();
