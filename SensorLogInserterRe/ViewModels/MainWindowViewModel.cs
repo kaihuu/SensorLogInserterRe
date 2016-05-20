@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
-
+using System.Windows;
 using Livet;
 using Livet.Commands;
 using Livet.Messaging;
@@ -256,6 +256,16 @@ namespace SensorLogInserterRe.ViewModels
         {
             this.IsCheckedMapMatching = false;
             this.IsCheckedDeadReckoning = false;
+        }
+
+        public void StartUpLoop()
+        {
+            MessageBox.Show("StartUpLoop");
+        }
+
+        public void Insert()
+        {
+            MessageBox.Show("Insert");
         }
     }
 }

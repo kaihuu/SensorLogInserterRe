@@ -131,11 +131,29 @@
 
             <Button Grid.Column="0"
                     Margin="10"
-                    Content="ループ起動" />
+                    Content="ループ起動"
+                    Command="{Binding StartUpLoopCommand}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="StartUpLoop"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Button>
 
             <Button Grid.Column="1"
                     Margin="10"
-                    Content="１ループのみ" />
+                    Content="データ挿入"
+                    Command="{Binding InsertCommand}" >
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Insert"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Button>
 
         </Grid>
 
