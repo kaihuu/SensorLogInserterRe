@@ -102,11 +102,11 @@
     <Compile Include="Daos\LinkDao.cs" />
     <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />
-    <Compile Include="Handlers\AccFileHandler.cs" />
+    <Compile Include="Handlers\FileHandlers\AccFileHandler.cs" />
     <Compile Include="Handlers\ExceptionHandler.cs" />
-    <Compile Include="Handlers\GpsFileHandler.cs" />
-    <Compile Include="Handlers\IFileHandler.cs" />
-    <Compile Include="Handlers\NmeaFileHandler.cs" />
+    <Compile Include="Handlers\FileHandlers\GpsFileHandler.cs" />
+    <Compile Include="Handlers\FileHandlers\IFileHandler.cs" />
+    <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />
