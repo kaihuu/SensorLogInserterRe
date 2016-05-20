@@ -17,50 +17,228 @@ namespace SensorLogInserterRe.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-        /* コマンド、プロパティの定義にはそれぞれ 
-         * 
-         *  lvcom   : ViewModelCommand
-         *  lvcomn  : ViewModelCommand(CanExecute無)
-         *  llcom   : ListenerCommand(パラメータ有のコマンド)
-         *  llcomn  : ListenerCommand(パラメータ有のコマンド・CanExecute無)
-         *  lprop   : 変更通知プロパティ(.NET4.5ではlpropn)
-         *  
-         * を使用してください。
-         * 
-         * Modelが十分にリッチであるならコマンドにこだわる必要はありません。
-         * View側のコードビハインドを使用しないMVVMパターンの実装を行う場合でも、ViewModelにメソッドを定義し、
-         * LivetCallMethodActionなどから直接メソッドを呼び出してください。
-         * 
-         * ViewModelのコマンドを呼び出せるLivetのすべてのビヘイビア・トリガー・アクションは
-         * 同様に直接ViewModelのメソッドを呼び出し可能です。
-         */
+        #region IsCheckedTommy変更通知プロパティ
+        private bool _IsCheckedTommy;
 
-        /* ViewModelからViewを操作したい場合は、View側のコードビハインド無で処理を行いたい場合は
-         * Messengerプロパティからメッセージ(各種InteractionMessage)を発信する事を検討してください。
-         */
+        public bool IsCheckedTommy
+        {
+            get
+            { return _IsCheckedTommy; }
+            set
+            { 
+                if (_IsCheckedTommy == value)
+                    return;
+                _IsCheckedTommy = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
 
-        /* Modelからの変更通知などの各種イベントを受け取る場合は、PropertyChangedEventListenerや
-         * CollectionChangedEventListenerを使うと便利です。各種ListenerはViewModelに定義されている
-         * CompositeDisposableプロパティ(LivetCompositeDisposable型)に格納しておく事でイベント解放を容易に行えます。
-         * 
-         * ReactiveExtensionsなどを併用する場合は、ReactiveExtensionsのCompositeDisposableを
-         * ViewModelのCompositeDisposableプロパティに格納しておくのを推奨します。
-         * 
-         * LivetのWindowテンプレートではViewのウィンドウが閉じる際にDataContextDisposeActionが動作するようになっており、
-         * ViewModelのDisposeが呼ばれCompositeDisposableプロパティに格納されたすべてのIDisposable型のインスタンスが解放されます。
-         * 
-         * ViewModelを使いまわしたい時などは、ViewからDataContextDisposeActionを取り除くか、発動のタイミングをずらす事で対応可能です。
-         */
+        #region IsCheckedMori変更通知プロパティ
+        private bool _IsCheckedMori;
 
-        /* UIDispatcherを操作する場合は、DispatcherHelperのメソッドを操作してください。
-         * UIDispatcher自体はApp.xaml.csでインスタンスを確保してあります。
-         * 
-         * LivetのViewModelではプロパティ変更通知(RaisePropertyChanged)やDispatcherCollectionを使ったコレクション変更通知は
-         * 自動的にUIDispatcher上での通知に変換されます。変更通知に際してUIDispatcherを操作する必要はありません。
-         */
+        public bool IsCheckedMori
+        {
+            get
+            { return _IsCheckedMori; }
+            set
+            { 
+                if (_IsCheckedMori == value)
+                    return;
+                _IsCheckedMori = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedTamura変更通知プロパティ
+        private bool _IsCheckedTamura;
+
+        public bool IsCheckedTamura
+        {
+            get
+            { return _IsCheckedTamura; }
+            set
+            { 
+                if (_IsCheckedTamura == value)
+                    return;
+                _IsCheckedTamura = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedLabMember変更通知プロパティ
+        private bool _IsCheckedLabMember;
+
+        public bool IsCheckedLabMember
+        {
+            get
+            { return _IsCheckedLabMember; }
+            set
+            { 
+                if (_IsCheckedLabMember == value)
+                    return;
+                _IsCheckedLabMember = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedPeriod変更通知プロパティ
+        private bool _IsCheckedPeriod;
+
+        public bool IsCheckedPeriod
+        {
+            get
+            { return _IsCheckedPeriod; }
+            set
+            { 
+                if (_IsCheckedPeriod == value)
+                    return;
+                _IsCheckedPeriod = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region StartDate変更通知プロパティ
+        private DateTime _StartDate;
+
+        public DateTime StartDate
+        {
+            get
+            { return _StartDate; }
+            set
+            { 
+                if (_StartDate == value)
+                    return;
+                _StartDate = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region EndDate変更通知プロパティ
+        private DateTime _EndDate;
+
+        public DateTime EndDate
+        {
+            get
+            { return _EndDate; }
+            set
+            { 
+                if (_EndDate == value)
+                    return;
+                _EndDate = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedEvModel変更通知プロパティ
+        private bool _IsCheckedEvModel;
+
+        public bool IsCheckedEvModel
+        {
+            get
+            { return _IsCheckedEvModel; }
+            set
+            { 
+                if (_IsCheckedEvModel == value)
+                    return;
+                _IsCheckedEvModel = value;
+                _IsCheckedMlModel = !value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedMlModel変更通知プロパティ
+        private bool _IsCheckedMlModel;
+
+        public bool IsCheckedMlModel
+        {
+            get
+            { return _IsCheckedMlModel; }
+            set
+            { 
+                if (_IsCheckedMlModel == value)
+                    return;
+                _IsCheckedMlModel = value;
+                _IsCheckedEvModel = !value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedMapMatching変更通知プロパティ
+        private bool _IsCheckedMapMatching;
+
+        public bool IsCheckedMapMatching
+        {
+            get
+            { return _IsCheckedMapMatching; }
+            set
+            { 
+                if (_IsCheckedMapMatching == value)
+                    return;
+                _IsCheckedMapMatching = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedDeadReckoning変更通知プロパティ
+        private bool _IsCheckedDeadReckoning;
+
+        public bool IsCheckedDeadReckoning
+        {
+            get
+            { return _IsCheckedDeadReckoning; }
+            set
+            { 
+                if (_IsCheckedDeadReckoning == value)
+                    return;
+                _IsCheckedDeadReckoning = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
 
         public void Initialize()
         {
+            InitDriversChecked();
+            InitPeriod();
+            InitModelChecked();
+            InitGpsCorrection();
+        }
+
+        private void InitDriversChecked()
+        {
+            this.IsCheckedTommy = true;
+            this.IsCheckedMori = true;
+            this.IsCheckedTamura = true;
+            this.IsCheckedLabMember = false;
+        }
+
+        private void InitPeriod()
+        {
+            this.IsCheckedPeriod = true;
+            this.StartDate = DateTime.Now.AddDays(-7);
+            this.EndDate = DateTime.Now;
+        }
+
+        private void InitModelChecked()
+        {
+            this.IsCheckedEvModel = true;
+            this.IsCheckedMlModel = false;
+        }
+
+        private void InitGpsCorrection()
+        {
+            this.IsCheckedMapMatching = false;
+            this.IsCheckedDeadReckoning = false;
         }
     }
 }

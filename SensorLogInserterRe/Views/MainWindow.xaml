@@ -55,10 +55,10 @@
 
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
 
-                <CheckBox Content="富井" />
-                <CheckBox Margin="10,0,0,0" Content="森" />
-                <CheckBox Margin="10,0,0,0" Content="田村" />
-                <CheckBox Margin="10,0,0,0" Content="研究室メンバー" />
+                <CheckBox Content="富井" IsChecked="{Binding IsCheckedTommy}"/>
+                <CheckBox Margin="10,0,0,0" Content="森" IsChecked="{Binding IsCheckedMori}" />
+                <CheckBox Margin="10,0,0,0" Content="田村" IsChecked="{Binding IsCheckedTamura}" />
+                <CheckBox Margin="10,0,0,0" Content="研究室メンバー" IsChecked="{Binding IsCheckedLabMember}" />
 
             </StackPanel>
 
@@ -74,13 +74,13 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox VerticalAlignment="Center" Content="期間指定あり" />
+                <CheckBox VerticalAlignment="Center" Content="期間指定あり" IsChecked="{Binding IsCheckedPeriod}" />
 
-                <DatePicker Margin="15,0,0,0" />
+                <DatePicker Margin="15,0,0,0" SelectedDate="{Binding StartDate}"/>
 
                 <Label Content="～" />
 
-                <DatePicker />
+                <DatePicker SelectedDate="{Binding EndDate}"/>
 
             </StackPanel>
 
@@ -96,9 +96,9 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox Content="EVエネルギー消費モデル" />
+                <CheckBox Content="EVエネルギー消費モデル" IsChecked="{Binding IsCheckedEvModel}" />
 
-                <CheckBox Margin="10,0,0,0" Content="機械学習モデル" />
+                <CheckBox Margin="10,0,0,0" Content="機械学習モデル" IsChecked="{Binding IsCheckedMlModel}" />
 
             </StackPanel>
 
@@ -114,9 +114,9 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox Content="マップマッチング" />
+                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" />
 
-                <CheckBox Margin="10,0,0,0" Content="デッドレコニング" />
+                <CheckBox Margin="10,0,0,0" Content="デッドレコニング" IsChecked="{Binding IsCheckedDeadReckoning}" />
 
             </StackPanel>
 
