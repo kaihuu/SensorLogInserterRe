@@ -72,8 +72,7 @@ namespace SensorLogInserterRe.Handlers
                 //ファイル名を区切る
                 string[] word = directory.Split('\\');
 
-                if (word[word.Length - 1] == "DrivingLoggerAppLog" || word[word.Length - 1] == "DrivingLoggerSentTempLogging"
-                    || word[word.Length - 1] == "DrivingLoggerSentAppLog" || word[word.Length - 1] == "DrivingLoggerSentLog"
+                if (word[word.Length - 1] == "DrivingLoggerAppLog" || word[word.Length - 1] == "DrivingLoggerTempLogging"
                     || word[word.Length - 1] == "ECOLOG_Config" || word[word.Length - 1] == "ErrorData" || word[word.Length - 2] == "DrivingLoggerCamera")
                 {
                     continue;
