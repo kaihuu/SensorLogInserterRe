@@ -8,10 +8,25 @@ namespace SensorLogInserterRe.Constant
 {
     class DriverNames
     {
-        public static readonly string Tommy = "tommy";
-        public static readonly string Mori = "mori";
-        public static readonly string Tamura = "tamura";
-
+        public const string Tommy = "tommy";
+        public const string Mori = "mori";
+        public const string Tamura = "tam";
         // TODO 研究室メンバーの追加
+
+        public static int GetDriverId(string driverName)
+        {
+            switch (driverName)
+            {
+                case DriverNames.Tommy:
+                    return 1;
+                case DriverNames.Mori:
+                    return 4;
+                case DriverNames.Tamura:
+                    return 9;
+                // TODO 研究室メンバーを追加
+                default:
+                    return -1;
+            }
+        }
     }
 }

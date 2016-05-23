@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Inserters
@@ -15,21 +16,21 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertGps(List<string> insertFileList)
         {
+            InsertGpsRaw(insertFileList);
+        }
+
+        private static void InsertGpsRaw(List<string> insertFileList)
+        {
             foreach (var fileName in insertFileList)
             {
                 string[] word = fileName.Split('\\');
 
                 var gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
 
-                string driverName = word[DriverIndex];
-                string carName = word[CarIndex];
-                string sensorName = word[SensorIndex];
+                int driverId = DriverNames.GetDriverId(word[DriverIndex]);
+                int carId = CarNames.GetCarId(word[CarIndex]);
+                int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
             }
-        }
-
-        private static void InsertGpsRaw()
-        {
-            
         }
 
         private static void InsertConrrectedGps()
