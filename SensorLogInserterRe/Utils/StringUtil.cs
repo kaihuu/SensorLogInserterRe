@@ -8,6 +8,7 @@ namespace SensorLogInserterRe.Utils
 {
     static class StringUtil
     {
+        public static readonly String JstFormat = "yyyy/MM/dd HH:mm:ss.fff";
         private static readonly String GpsFileNameSymbol = "UnsentGPS";
         private static readonly String AccFileNameSymbol = "Unsent16HzAccel";
 

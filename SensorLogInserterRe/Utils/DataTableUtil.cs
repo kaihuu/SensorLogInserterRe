@@ -32,6 +32,7 @@ namespace SensorLogInserterRe.Utils
         public static DataTable GetAndroidGpsRawTable()
         {
             // TODO 並び順をデータベース通りに
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
             DataTable gpsRawTable = new DataTable();
 
             gpsRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
