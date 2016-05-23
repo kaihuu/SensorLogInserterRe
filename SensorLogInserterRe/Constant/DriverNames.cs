@@ -8,8 +8,10 @@ namespace SensorLogInserterRe.Constant
 {
     class DriverNames
     {
-        public static readonly string Tommy = "富井尚志";
-        public static readonly string Mori = "森辰則";
-        public static readonly string Tamura = "田村直良";
+        public static readonly string Tommy = "tommy";
+        public static readonly string Mori = "mori";
+        public static readonly string Tamura = "tamura";
+
+        // TODO 研究室メンバーの追加
     }
 }
