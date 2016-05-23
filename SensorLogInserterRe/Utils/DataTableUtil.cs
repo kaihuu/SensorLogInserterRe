@@ -12,6 +12,7 @@ namespace SensorLogInserterRe.Utils
         public static DataTable GetTripsTable()
         {
             DataTable tripsTable = new DataTable();
+
             tripsTable.Columns.Add(new DataColumn("TRIP_ID"));
             tripsTable.Columns.Add(new DataColumn("DRIVER_ID"));
             tripsTable.Columns.Add(new DataColumn("CAR_ID"));
@@ -28,5 +29,21 @@ namespace SensorLogInserterRe.Utils
             return tripsTable;
         }
 
+        public static DataTable GetAndroidGpsRawTable()
+        {
+            // TODO 並び順をデータベース通りに
+            DataTable gpsRawTable = new DataTable();
+
+            gpsRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
+            gpsRawTable.Columns.Add(new DataColumn("CAR_ID"));
+            gpsRawTable.Columns.Add(new DataColumn("SENSOR_ID"));
+            gpsRawTable.Columns.Add(new DataColumn("JST"));
+            gpsRawTable.Columns.Add(new DataColumn("LATITUDE"));
+            gpsRawTable.Columns.Add(new DataColumn("LONGITUDE"));
+            gpsRawTable.Columns.Add(new DataColumn("ALTITUDE"));
+            gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME"));
+
+            return gpsRawTable;
+        }
     }
 }

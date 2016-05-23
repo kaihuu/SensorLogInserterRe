@@ -8,6 +8,9 @@ namespace SensorLogInserterRe.Utils
 {
     static class StringUtil
     {
+        private static readonly String GpsFileNameSymbol = "UnsentGPS";
+        private static readonly String AccFileNameSymbol = "Unsent16HzAccel";
+
         public static long ConvertFileNameToCreatedTime(string fileName)
         {
             //ファイル名を区切る
@@ -24,5 +27,14 @@ namespace SensorLogInserterRe.Utils
             return 0;
         }
 
+        public static List<string> SelectGpsFileList(List<string> insertFileList)
+        {
+            return insertFileList.Where(item => item.Contains(GpsFileNameSymbol)).ToList();
+        }
+
+        public static List<string> SelecteAccFileList(List<string> insertFileList)
+        {
+            return insertFileList.Where(item => item.Contains(AccFileNameSymbol)).ToList();
+        }
     }
 }

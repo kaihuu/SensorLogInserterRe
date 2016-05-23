@@ -363,10 +363,12 @@ namespace SensorLogInserterRe.ViewModels
         private async void SearchDirectory()
         {
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+
             await Task.Run(() =>
             {
                 InsertFileList = DirectorySearcher.DirectorySearch(InsertConfig);
             });
+
             this.LogText += String.Format("{0}: {1}", LogTexts.NumberOfTheInsertedFile, InsertFileList.Count);
         }
     }
