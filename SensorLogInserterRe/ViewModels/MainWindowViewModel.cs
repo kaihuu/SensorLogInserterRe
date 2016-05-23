@@ -324,11 +324,11 @@ namespace SensorLogInserterRe.ViewModels
 
             #region ドライバーの設定
             if(this.IsCheckedTommy)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Tommy));
+                insertConfig.CheckeDrivers.Add(DriverNames.Tommy);
             if(this.IsCheckedMori)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Mori));
+                insertConfig.CheckeDrivers.Add(DriverNames.Mori);
             if(this.IsCheckedTamura)
-                insertConfig.CheckeDrivers.Add(Driver.GetDriver(DriverNames.Tamura));
+                insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             // TODO 研究室メンバー
             #endregion
 

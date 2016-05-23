@@ -17,11 +17,11 @@ namespace SensorLogInserterRe.Handlers
 
             foreach (var driver in config.CheckeDrivers)
             {
-                if (driver.Name.Equals(DriverNames.Tommy))
+                if (driver.Equals(DriverNames.Tommy))
                     CheckFiles(DirectoryNames.DirectoryTommy, config.StartDate, config.EndDate, ref insertFileList);
-                if (driver.Name.Equals(DriverNames.Mori))
+                if (driver.Equals(DriverNames.Mori))
                     CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate, ref insertFileList);
-                if (driver.Name.Equals(DriverNames.Tamura))
+                if (driver.Equals(DriverNames.Tamura))
                     CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate, ref insertFileList);
                 // TODO 研究室メンバー
             }

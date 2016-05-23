@@ -20,7 +20,7 @@ namespace SensorLogInserterRe.Models
             DeadReckoning
         }
 
-        public List<Driver> CheckeDrivers { get; set; }
+        public List<string> CheckeDrivers { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -32,7 +32,7 @@ namespace SensorLogInserterRe.Models
 
         public InsertConfig()
         {
-            this.CheckeDrivers = new List<Driver>();
+            this.CheckeDrivers = new List<string>();
         }
     }
 }
