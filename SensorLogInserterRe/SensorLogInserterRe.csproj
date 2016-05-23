@@ -90,7 +90,8 @@
     <Compile Include="Constant\DirectoryNames.cs" />
     <Compile Include="Constant\DriverNames.cs" />
     <Compile Include="Constant\LogTexts.cs" />
-    <Compile Include="Daos\AccDao.cs" />
+    <Compile Include="Daos\AndroidAccRawDao.cs" />
+    <Compile Include="Daos\AndroidGpsRawDao.cs" />
     <Compile Include="Daos\CarDao.cs" />
     <Compile Include="Daos\CorrectedAccDao.cs" />
     <Compile Include="Daos\CorrectedGpsDao.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="Daos\EcologDao.cs" />
     <Compile Include="Daos\EfficiencyDao.cs" />
     <Compile Include="Daos\EfficiencyMaxDao.cs" />
-    <Compile Include="Daos\GpsDao.cs" />
     <Compile Include="Daos\LinkDao.cs" />
     <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />

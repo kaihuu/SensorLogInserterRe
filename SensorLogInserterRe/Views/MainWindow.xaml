@@ -45,8 +45,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-
-
         <GroupBox Grid.Row="0">
 
             <GroupBox.Header>
@@ -131,8 +129,7 @@
 
             <Button Grid.Column="0"
                     Margin="10"
-                    Content="ループ起動"
-                    Command="{Binding StartUpLoopCommand}">
+                    Content="{Binding LoopButtonText}" >
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -145,7 +142,7 @@
             <Button Grid.Column="1"
                     Margin="10"
                     Content="データ挿入"
-                    Command="{Binding InsertCommand}" >
+                    IsEnabled="{Binding IsEnabledInsertButton}">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class GpsDao
+    class AndroidGpsRawDao
     {
+
         private static readonly string TableName = "android_gps_raw";
 
         public static void Insert(DataTable dataTable)

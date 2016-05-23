@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class AccDao
+    class AndroidAccRawDao
     {
         private static readonly string TableName = "android_acc_raw";
 

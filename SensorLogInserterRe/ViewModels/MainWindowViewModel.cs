@@ -208,6 +208,40 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsEnabledInsertButton変更通知プロパティ
+        private bool _IsEnabledInsertButton;
+
+        public bool IsEnabledInsertButton
+        {
+            get
+            { return _IsEnabledInsertButton; }
+            set
+            { 
+                if (_IsEnabledInsertButton == value)
+                    return;
+                _IsEnabledInsertButton = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region LoopButtonText変更通知プロパティ
+        private string _LoopButtonText;
+
+        public string LoopButtonText
+        {
+            get
+            { return _LoopButtonText; }
+            set
+            { 
+                if (_LoopButtonText == value)
+                    return;
+                _LoopButtonText = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         #region LogText変更通知プロパティ
         private string _LogText;
 
@@ -225,9 +259,9 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
-        private InsertConfig insertConfig { get; set; }
+        private InsertConfig InsertConfig { get; set; }
 
-        private List<string> insertFileList { get; set; }
+        private List<string> InsertFileList { get; set; }
 
         public void Initialize()
         {
@@ -235,6 +269,7 @@ namespace SensorLogInserterRe.ViewModels
             InitPeriod();
             InitModelChecked();
             InitGpsCorrection();
+            InitButton();
         }
 
         private void InitDriversChecked()
@@ -264,6 +299,12 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedDeadReckoning = false;
         }
 
+        private void InitButton()
+        {
+            IsEnabledInsertButton = true;
+            LoopButtonText = "ループ起動";
+        }
+
         public void StartUpLoop()
         {
             MessageBox.Show("StartUpLoop");
@@ -273,7 +314,7 @@ namespace SensorLogInserterRe.ViewModels
         {
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
 
-            insertConfig = GenerateInsertConfig();
+            InsertConfig = GenerateInsertConfig();
             SearchDirectory();
         }
 
@@ -324,9 +365,9 @@ namespace SensorLogInserterRe.ViewModels
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
             await Task.Run(() =>
             {
-                insertFileList = DirectorySearcher.DirectorySearch(insertConfig);
+                InsertFileList = DirectorySearcher.DirectorySearch(InsertConfig);
             });
-            this.LogText += String.Format("{0}: {1}", LogTexts.NumberOfTheInsertedFile, insertFileList.Count);
+            this.LogText += String.Format("{0}: {1}", LogTexts.NumberOfTheInsertedFile, InsertFileList.Count);
         }
     }
 }
