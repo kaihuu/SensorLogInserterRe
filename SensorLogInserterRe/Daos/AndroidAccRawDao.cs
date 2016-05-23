@@ -10,6 +10,10 @@ namespace SensorLogInserterRe.Daos
     class AndroidAccRawDao
     {
         private static readonly string TableName = "android_acc_raw";
+        public static readonly string ColumnDateTime = "datetime";
+        public static readonly string ColumnAccX = "acc_x";
+        public static readonly string ColumnAccY = "acc_y";
+        public static readonly string ColumnAccZ = "acc_z";
 
         public static void Insert(DataTable dataTable)
         {

@@ -13,6 +13,7 @@ namespace SensorLogInserterRe.Utils
         {
             DataTable tripsTable = new DataTable();
 
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
             tripsTable.Columns.Add(new DataColumn("TRIP_ID"));
             tripsTable.Columns.Add(new DataColumn("DRIVER_ID"));
             tripsTable.Columns.Add(new DataColumn("CAR_ID"));
@@ -45,6 +46,23 @@ namespace SensorLogInserterRe.Utils
             gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME"));
 
             return gpsRawTable;
+        }
+
+        public static DataTable GetAndroidAccRawTable()
+        {
+            // TODO 並び順をデータベース通りに
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            DataTable accRawTable = new DataTable();
+
+            accRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
+            accRawTable.Columns.Add(new DataColumn("CAR_ID"));
+            accRawTable.Columns.Add(new DataColumn("SENSOR_ID"));
+            accRawTable.Columns.Add(new DataColumn("DATETIME"));
+            accRawTable.Columns.Add(new DataColumn("ACC_X"));
+            accRawTable.Columns.Add(new DataColumn("ACC_Y"));
+            accRawTable.Columns.Add(new DataColumn("ACC_Z"));
+
+            return accRawTable;
         }
     }
 }
