@@ -94,11 +94,13 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
         private static TextFieldParser GetParser(string filePath)
         {
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.Delimiters = new string[] { "," };
-            parser.HasFieldsEnclosedInQuotes = true;
-            parser.TrimWhiteSpace = true;
+            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932))
+            {
+                TextFieldType = FieldType.Delimited,
+                Delimiters = new string[] {","},
+                HasFieldsEnclosedInQuotes = true,
+                TrimWhiteSpace = true
+            };
 
             return parser;
         }

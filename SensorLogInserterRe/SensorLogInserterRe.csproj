@@ -84,6 +84,7 @@
     <Compile Include="Calculators\Components\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCalculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
+    <Compile Include="Calculators\HeadingCalculator.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="Daos\LinkDao.cs" />
     <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />
+    <Compile Include="Daos\TripsDao.cs" />
+    <Compile Include="Daos\TripsRawDao.cs" />
     <Compile Include="Handlers\DirectorySearcher.cs" />
     <Compile Include="Handlers\FileHandlers\AccFileHandler.cs" />
     <Compile Include="Handlers\ExceptionHandler.cs" />
