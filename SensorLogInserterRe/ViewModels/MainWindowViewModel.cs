@@ -282,7 +282,7 @@ namespace SensorLogInserterRe.ViewModels
 
         private void InitPeriod()
         {
-            this.IsCheckedPeriod = true;
+            this.IsCheckedPeriod = false;
             this.StartDate = DateTime.Now.AddDays(-7);
             this.EndDate = DateTime.Now;
         }
