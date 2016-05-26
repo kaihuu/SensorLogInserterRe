@@ -47,10 +47,19 @@ namespace SensorLogInserterRe.Inserters
             double latitudeBefore = 0;
             double longitudeBefore = 0;
 
-            DateTime beforeJST = DateTime.Now;
+            DateTime beforeJst = DateTime.Now;
             double beforeHeading = 0;
 
             #region CorrectedGps テーブルの生成
+
+            #region インデックスが 0 の場合
+            DataRow firstRow = correctedGpsTable.NewRow();
+            CopyRawDataToCorrectedRow(firstRow, gpsRawTable.Rows[0]);
+            firstRow[CorrectedGpsDao.ColumnDistanceDifference] = 0;
+            firstRow[CorrectedGpsDao.ColumnSpeed] = 0;
+            firstRow[CorrectedGpsDao.ColumnHeading] = 0;
+            beforeJst = DateTime.Parse(firstRow[CorrectedGpsDao.ColumnJst].ToString());
+            #endregion
 
             for (int i = 0; i < gpsRawTable.Rows.Count; i++)
             {
@@ -67,11 +76,7 @@ namespace SensorLogInserterRe.Inserters
                 //トリップの最初の点(2点のデータから計算される値は0とする)
                 if (i == 0)
                 {
-                    row[CorrectedGpsDao.ColumnDistanceDifference] = 0;
-                    row[CorrectedGpsDao.ColumnSpeed] = 0;
-                    row[CorrectedGpsDao.ColumnHeading] = 0;
-
-                    beforeJST = jstTime;
+                    
                 }
                 else
                 {
@@ -86,13 +91,13 @@ namespace SensorLogInserterRe.Inserters
 
                     //1つ前のデータとの時間差を取得(second)
                     TimeSpan span;
-                    span = jstTime - beforeJST;
+                    span = jstTime - beforeJst;
                     double spanTime = span.TotalSeconds;
 
                     //時間差が0でないとき(androidでは同時刻のデータが存在する場合があった　このデータが存在する場合主キーでエラーを起こすからいらないかも)
                     if (spanTime >= 1)
                     {
-                        row[CorrectedGpsDao.ColumnSpeed] = distance * 3.6/spanTime;
+                        row[CorrectedGpsDao.ColumnSpeed] = distance * 3.6 / spanTime;
                     }
                     else
                     {
@@ -100,7 +105,7 @@ namespace SensorLogInserterRe.Inserters
                     }
 
                     //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
-                    if (distance*3.6/spanTime >= 1)
+                    if (distance * 3.6 / spanTime >= 1)
                     {
                         double heading = HeadingCalculator.CalcHeading(latitudeBefore, longitudeBefore, latitudeNow,
                             longitudeNow);
@@ -134,6 +139,17 @@ namespace SensorLogInserterRe.Inserters
             TripsRawDao.Insert(tripsTable);
 
             #endregion
+        }
+
+        private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
+        {
+            correctedRow[CorrectedGpsDao.ColumnDriverId] = rawRow[AndroidGpsRawDao.ColumnDriverId];
+            correctedRow[CorrectedGpsDao.ColumnCarId] = rawRow[AndroidGpsRawDao.ColumnCarId];
+            correctedRow[CorrectedGpsDao.ColumnSensorId] = rawRow[AndroidGpsRawDao.ColumnSensorId];
+            DateTime jstTime = DateTime.Parse(rawRow[AndroidGpsRawDao.ColumnJst].ToString());
+            correctedRow[CorrectedGpsDao.ColumnJst] = jstTime.ToString(StringUtil.JstFormat);
+            correctedRow[CorrectedGpsDao.ColumnLatitude] = rawRow[AndroidGpsRawDao.ColumnLatitude];
+            correctedRow[CorrectedGpsDao.ColumnLongitude] = rawRow[AndroidGpsRawDao.ColumnLongitude];
         }
     }
 }
