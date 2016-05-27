@@ -21,11 +21,6 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertGps(List<string> insertFileList)
         {
-            InsertGpsRaw(insertFileList);
-        }
-
-        private static void InsertGpsRaw(List<string> insertFileList)
-        {
             foreach (var filePath in insertFileList)
             {
                 string[] word = filePath.Split('\\');
@@ -34,18 +29,33 @@ namespace SensorLogInserterRe.Inserters
                 int carId = CarNames.GetCarId(word[CarIndex]);
                 int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
 
-                var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+                var gpsRawTable = InsertGpsRaw(filePath, driverId, carId, sensorId);
+                InsertConrrectedGps(gpsRawTable);
+                InsertTrip(gpsRawTable);
             }
+        }
+
+        private static DataTable InsertGpsRaw(string filePath, int driverId, int carId, int sensorId)
+        {
+            var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+            AndroidGpsRawDao.Insert(gpsRawTable);
+
+            return gpsRawTable;
+        }
+
+        private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
+        {
+            correctedRow.SetField(CorrectedGpsDao.ColumnDriverId, rawRow.Field<int>(AndroidGpsRawDao.ColumnDriverId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnCarId, rawRow.Field<int>(AndroidGpsRawDao.ColumnCarId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnSensorId, rawRow.Field<int>(AndroidGpsRawDao.ColumnSensorId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnJst, rawRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst));
+            correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLatitude));
+            correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
 
         private static void InsertConrrectedGps(DataTable gpsRawTable)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
-
-            DateTime beforeJst = DateTime.Now;
-            double beforeHeading = 0;
-
-            #region CorrectedGps テーブルの生成
 
             #region インデックスが 0 の場合
             DataRow firstRow = correctedGpsTable.NewRow();
@@ -61,42 +71,48 @@ namespace SensorLogInserterRe.Inserters
 
                 CopyRawDataToCorrectedRow(row, gpsRawTable.Rows[i]);
 
-                latitudeNow = gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude);
-                longitudeNow = gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude);
-                latitudeBefore = gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude);
-                longitudeBefore = gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude);
-
                 // 距離の算出
-                row[CorrectedGpsDao.ColumnDistanceDifference] = DistanceCalculator.CalcDistance(
-                    new GeoCoordinate(latitudeBefore, longitudeBefore), new GeoCoordinate(latitudeNow, longitudeNow));
+                row.SetField<double>(CorrectedGpsDao.ColumnDistanceDifference, DistanceCalculator.CalcDistance(
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
 
                 // 速度の算出
-                row[CorrectedGpsDao.ColumnSpeed] = SpeedCalculator.CalcSpeed(
+                row.SetField(CorrectedGpsDao.ColumnSpeed, SpeedCalculator.CalcSpeed(
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
                     gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
-                    (gpsRawTable.Rows[i + 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst) - gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst)).TotalSeconds);
+                    (gpsRawTable.Rows[i + 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst) -
+                     gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst)).TotalSeconds));
 
                 //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
-                if ()
+                if (row.Field<double>(CorrectedGpsDao.ColumnSpeed) > 1.0)
                 {
-                    double heading = HeadingCalculator.CalcHeading(latitudeBefore, longitudeBefore, latitudeNow,
-                        longitudeNow);
-
-                    row[CorrectedGpsDao.ColumnHeading] = heading;
-                    beforeHeading = heading;
+                    row.SetField(CorrectedGpsDao.ColumnHeading, HeadingCalculator.CalcHeading(
+                        gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                        gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                        gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                        gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
                 }
                 else
                 {
-                    row[CorrectedGpsDao.ColumnHeading] = beforeHeading;
+                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<double>(CorrectedGpsDao.ColumnHeading));
                 }
-
             }
+
+            #region インデックスが最後の場合
+            DataRow lastRow = correctedGpsTable.NewRow();
+            CopyRawDataToCorrectedRow(lastRow, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1]);
+            lastRow.SetField(CorrectedGpsDao.ColumnDistanceDifference, 0);
+            lastRow.SetField(CorrectedGpsDao.ColumnSpeed, 0);
+            lastRow.SetField(CorrectedGpsDao.ColumnHeading, 0);
             #endregion
+        }
 
-            #region Trips テーブルの挿入
-
+        private static void InsertTrip(DataTable gpsRawTable)
+        {
             var tripsTable = DataTableUtil.GetTripsTable();
             DataRow tripsRow = tripsTable.NewRow();
 
@@ -111,18 +127,6 @@ namespace SensorLogInserterRe.Inserters
             tripsRow[TripsDao.ColumnEndLongitude] = double.Parse(gpsRawTable.Rows[gpsRawTable.Rows.Count - 1][AndroidGpsRawDao.ColumnLongitude].ToString());
 
             TripsRawDao.Insert(tripsTable);
-
-            #endregion
-        }
-
-        private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
-        {
-            correctedRow.SetField(CorrectedGpsDao.ColumnDriverId, rawRow.Field<int>(AndroidGpsRawDao.ColumnDriverId));
-            correctedRow.SetField(CorrectedGpsDao.ColumnCarId, rawRow.Field<int>(AndroidGpsRawDao.ColumnCarId));
-            correctedRow.SetField(CorrectedGpsDao.ColumnSensorId, rawRow.Field<int>(AndroidGpsRawDao.ColumnSensorId));
-            correctedRow.SetField(CorrectedGpsDao.ColumnJst, rawRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst));
-            correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLatitude));
-            correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
     }
 }
