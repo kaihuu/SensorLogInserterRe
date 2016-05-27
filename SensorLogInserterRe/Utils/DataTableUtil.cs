@@ -81,5 +81,20 @@ namespace SensorLogInserterRe.Utils
 
             return correctedGpsTable;
         }
+
+        public static DataTable GetCorrectedAccTable()
+        {
+            DataTable correctedAccTable = new DataTable();
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            correctedAccTable.Columns.Add(new DataColumn("DRIVER_ID"));
+            correctedAccTable.Columns.Add(new DataColumn("CAR_ID"));
+            correctedAccTable.Columns.Add(new DataColumn("SENSOR_ID"));
+            correctedAccTable.Columns.Add(new DataColumn("DATETIME"));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_X"));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_Y"));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_Z"));
+
+            return correctedAccTable;
+        }
     }
 }

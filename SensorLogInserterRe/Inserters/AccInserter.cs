@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SensorLogInserterRe.Constant;
+using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Handlers.FileHandlers;
 
 namespace SensorLogInserterRe.Inserters
@@ -16,11 +18,6 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertAcc(List<string> insertFileList)
         {
-            InsertAccRaw(insertFileList);
-        }
-
-        private static void InsertAccRaw(List<string> insertFileList)
-        {
             foreach (var filePath in insertFileList)
             {
                 string[] word = filePath.Split('\\');
@@ -29,11 +26,21 @@ namespace SensorLogInserterRe.Inserters
                 int carId = CarNames.GetCarId(word[CarIndex]);
                 int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
 
-                var gpsRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+                var accRawTable = InsertAccRaw(filePath, driverId, carId, sensorId);
+                InsertCorrectedAcc(accRawTable);
+                InsertTrip(gpsRawTable);
             }
         }
 
-        private static void InsertCorrectedAcc()
+        private static DataTable InsertAccRaw(string filePath, int driverId, int carId, int sensorId)
+        {
+            var accRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+            AndroidAccRawDao.Insert(accRawTable);
+
+            return accRawTable;
+        }
+
+        private static void InsertCorrectedAcc(DataTable rawTable)
         {
 
         }

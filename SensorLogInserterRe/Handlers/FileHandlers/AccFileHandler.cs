@@ -24,34 +24,29 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                 {
                     string[] fields = parser.ReadFields();
 
-                    DataRow dr = accRawTable.NewRow();
+                    DataRow row = accRawTable.NewRow();
 
-                    dr[AndroidGpsRawDao.ColumnDriverId] = driverId;
-                    dr[AndroidGpsRawDao.ColumnCarId] = carId;
-                    dr[AndroidGpsRawDao.ColumnSensorId] = sensorId;
+                    row.SetField(AndroidAccRawDao.ColumnDriverId, driverId);
+                    row.SetField(AndroidAccRawDao.ColumnCarId, carId);
+                    row.SetField(AndroidAccRawDao.ColumnSensorId, sensorId);
 
-                    //
-
-                    DateTime androidTime = DateTime.Parse(fields[0].ToString());
+                    DateTime androidTime = DateTime.Parse(fields[0]);
 
                     #region AndroidTimeの設定
                     if (androidTime.Year == 1970)
                     {
                         androidTime = androidTime.AddYears(42);
                         androidTime = androidTime.AddMonths(6);
-                        dr[AndroidAccRawDao.ColumnDateTime] = androidTime.ToString(StringUtil.JstFormat);
                     }
-                    else
-                    {
-                        dr[AndroidAccRawDao.ColumnDateTime] = fields[0];
-                    }
+                    
+                    row.SetField(AndroidAccRawDao.ColumnDateTime, androidTime);
                     #endregion
 
-                    dr[AndroidAccRawDao.ColumnAccX] = fields[1];
-                    dr[AndroidAccRawDao.ColumnAccY] = fields[2];
-                    dr[AndroidAccRawDao.ColumnAccZ] = fields[3];
+                    row.SetField(AndroidAccRawDao.ColumnAccX, fields[1]);
+                    row.SetField(AndroidAccRawDao.ColumnAccY, fields[2]);
+                    row.SetField(AndroidAccRawDao.ColumnAccZ, fields[3]);
 
-                    accRawTable.Rows.Add(dr);
+                    accRawTable.Rows.Add(row);
                 }
                 catch (NullReferenceException nre)
                 {
@@ -75,11 +70,13 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
         private static TextFieldParser GetParser(string filePath)
         {
-            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932));
-            parser.TextFieldType = FieldType.Delimited;
-            parser.Delimiters = new string[] { "," };
-            parser.HasFieldsEnclosedInQuotes = true;
-            parser.TrimWhiteSpace = true;
+            TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932))
+            {
+                TextFieldType = FieldType.Delimited,
+                Delimiters = new string[] {","},
+                HasFieldsEnclosedInQuotes = true,
+                TrimWhiteSpace = true
+            };
 
             return parser;
         }
