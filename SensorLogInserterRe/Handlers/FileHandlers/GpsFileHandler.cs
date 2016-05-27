@@ -19,17 +19,17 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
             var gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
             string beforeJst = null;
 
-            while ( !parser.EndOfData)
+            while (!parser.EndOfData)
             {
                 try
                 {
                     string[] fields = parser.ReadFields();
 
-                    DataRow dr = gpsRawTable.NewRow();
+                    DataRow row = gpsRawTable.NewRow();
 
-                    dr[AndroidGpsRawDao.ColumnDriverId] = driverId;
-                    dr[AndroidGpsRawDao.ColumnCarId] = carId;
-                    dr[AndroidGpsRawDao.ColumnSensorId] = sensorId;
+                    row.SetField(AndroidGpsRawDao.ColumnDriverId, driverId);
+                    row.SetField(AndroidGpsRawDao.ColumnCarId, carId);
+                    row.SetField(AndroidGpsRawDao.ColumnSensorId, sensorId);
 
                     DateTime jst = DateTime.Parse(fields[0].ToString());
                     DateTime androidTime = DateTime.Parse(fields[1].ToString());
@@ -38,36 +38,33 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     #region Jstの設定
                     //android端末で取得したGPSの時刻が1日進む現象への対処
                     if (span.TotalHours > 23 && span.TotalHours < 25)
-                    {
                         jst = jst.AddDays(-1);
-                        dr[AndroidGpsRawDao.ColumnJst] = jst.ToString(StringUtil.JstFormat);
-                    }
-                    else
-                    {
-                        dr[AndroidGpsRawDao.ColumnJst] = jst.ToString(StringUtil.JstFormat);
-                    }
+
+                    row.SetField(AndroidGpsRawDao.ColumnJst, jst);
+                    // TODO DateTime に変更したが、stringにすべき可能性もあり
+                    // row[AndroidGpsRawDao.ColumnJst] = jst.ToString(StringUtil.JstFormat);
                     #endregion
 
                     #region AndroidTimeの設定
+
                     if (androidTime.Year == 1970)
                     {
                         androidTime = androidTime.AddYears(42);
                         androidTime = androidTime.AddMonths(6);
-                        dr[AndroidGpsRawDao.ColumnAndroidTime] = androidTime.ToString(StringUtil.JstFormat);
                     }
-                    else
-                    {
-                        dr[AndroidGpsRawDao.ColumnAndroidTime] = fields[1];
-                    }
+                    row.SetField(AndroidGpsRawDao.ColumnAndroidTime, androidTime);
+                    // TODO string から DateTimeに変えて影響がないか 
+                    // row[AndroidGpsRawDao.ColumnAndroidTime] = androidTime.ToString(StringUtil.JstFormat);
+
                     #endregion
 
-                    dr[AndroidGpsRawDao.ColumnLatitude] = fields[2]; //　VALID
-                    dr[AndroidGpsRawDao.ColumnLongitude] = fields[3]; //　LATITUDE
-                    dr[AndroidGpsRawDao.ColumnAltitude] = fields[4]; //　LONGITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　VALID
+                    row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LATITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　LONGITUDE
 
                     if (beforeJst != jst.ToString(StringUtil.JstFormat))
                     {
-                        gpsRawTable.Rows.Add(dr);
+                        gpsRawTable.Rows.Add(row);
                     }
 
                     beforeJst = jst.ToString(StringUtil.JstFormat);
@@ -97,7 +94,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
             TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932))
             {
                 TextFieldType = FieldType.Delimited,
-                Delimiters = new string[] {","},
+                Delimiters = new string[] { "," },
                 HasFieldsEnclosedInQuotes = true,
                 TrimWhiteSpace = true
             };

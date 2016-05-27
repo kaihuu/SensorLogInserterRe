@@ -61,63 +61,48 @@ namespace SensorLogInserterRe.Inserters
             beforeJst = DateTime.Parse(firstRow[CorrectedGpsDao.ColumnJst].ToString());
             #endregion
 
-            for (int i = 0; i < gpsRawTable.Rows.Count; i++)
+            for (int i = 1; i < gpsRawTable.Rows.Count - 1; i++)
             {
                 DataRow row = correctedGpsTable.NewRow();
 
-                row[CorrectedGpsDao.ColumnDriverId] = gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnDriverId];
-                row[CorrectedGpsDao.ColumnCarId] = gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnCarId];
-                row[CorrectedGpsDao.ColumnSensorId] = gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnSensorId];
+                CopyRawDataToCorrectedRow(row, gpsRawTable.Rows[i]);
                 DateTime jstTime = DateTime.Parse(gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnJst].ToString());
-                row[CorrectedGpsDao.ColumnJst] = jstTime.ToString(StringUtil.JstFormat);
-                row[CorrectedGpsDao.ColumnLatitude] = gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLatitude];
-                row[CorrectedGpsDao.ColumnLongitude] = gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLongitude];
 
-                //トリップの最初の点(2点のデータから計算される値は0とする)
-                if (i == 0)
+                latitudeNow = double.Parse(gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLatitude].ToString());
+                longitudeNow = double.Parse(gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLongitude].ToString());
+                latitudeBefore = double.Parse(gpsRawTable.Rows[i - 1][AndroidGpsRawDao.ColumnLatitude].ToString());
+                longitudeBefore = double.Parse(gpsRawTable.Rows[i - 1][AndroidGpsRawDao.ColumnLongitude].ToString());
+
+                // 距離の算出
+                row[CorrectedGpsDao.ColumnDistanceDifference] = DistanceCalculator.CalcDistance(
+                    new GeoCoordinate(latitudeBefore, longitudeBefore), new GeoCoordinate(latitudeNow, longitudeNow));
+
+                // 速度の算出
+                row[CorrectedGpsDao.ColumnSpeed] = SpeedCalculator.CalcSpeed(
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude), );
+
+                //1つ前のデータとの時間差を取得(second)
+                TimeSpan span;
+                span = jstTime - beforeJst;
+                double spanTime = span.TotalSeconds;
+
+                //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
+                if (distance * 3.6 / spanTime >= 1)
                 {
-                    
+                    double heading = HeadingCalculator.CalcHeading(latitudeBefore, longitudeBefore, latitudeNow,
+                        longitudeNow);
+
+                    row[CorrectedGpsDao.ColumnHeading] = heading;
+                    beforeHeading = heading;
                 }
                 else
                 {
-                    latitudeNow = double.Parse(gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLatitude].ToString());
-                    longitudeNow = double.Parse(gpsRawTable.Rows[i][AndroidGpsRawDao.ColumnLongitude].ToString());
-                    latitudeBefore = double.Parse(gpsRawTable.Rows[i - 1][AndroidGpsRawDao.ColumnLatitude].ToString());
-                    longitudeBefore = double.Parse(gpsRawTable.Rows[i - 1][AndroidGpsRawDao.ColumnLongitude].ToString());
-
-                    double distance = DistanceCalculator.CalcDistance(
-                        new GeoCoordinate(latitudeBefore, longitudeBefore), new GeoCoordinate(latitudeNow, longitudeNow));
-                    row[CorrectedGpsDao.ColumnDistanceDifference] = distance;
-
-                    //1つ前のデータとの時間差を取得(second)
-                    TimeSpan span;
-                    span = jstTime - beforeJst;
-                    double spanTime = span.TotalSeconds;
-
-                    //時間差が0でないとき(androidでは同時刻のデータが存在する場合があった　このデータが存在する場合主キーでエラーを起こすからいらないかも)
-                    if (spanTime >= 1)
-                    {
-                        row[CorrectedGpsDao.ColumnSpeed] = distance * 3.6 / spanTime;
-                    }
-                    else
-                    {
-                        row[CorrectedGpsDao.ColumnSpeed] = distance * 3.6;
-                    }
-
-                    //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
-                    if (distance * 3.6 / spanTime >= 1)
-                    {
-                        double heading = HeadingCalculator.CalcHeading(latitudeBefore, longitudeBefore, latitudeNow,
-                            longitudeNow);
-
-                        row[CorrectedGpsDao.ColumnHeading] = heading;
-                        beforeHeading = heading;
-                    }
-                    else
-                    {
-                        row[CorrectedGpsDao.ColumnHeading] = beforeHeading;
-                    }
+                    row[CorrectedGpsDao.ColumnHeading] = beforeHeading;
                 }
+
             }
             #endregion
 
