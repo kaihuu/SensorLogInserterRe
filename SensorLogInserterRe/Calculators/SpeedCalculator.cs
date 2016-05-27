@@ -13,8 +13,8 @@ namespace SensorLogInserterRe.Calculators
 
         public static double CalcSpeed(double latitudeBefore, double longitudeBefore, double latitudeAfter, double longitudeAfter, double samplingSeconds)
         {
-            double speed = HubenyDistanceCalculator.CalcHubenyFormula(new GeoCoordinate(latitudeBefore, longitudeBefore), new GeoCoordinate(latitudeAfter, longitudeAfter)) / 2 / samplingSeconds; //中間差分法を用いた導出
-            return speed;
+            //中間差分法を用いた導出
+            return HubenyDistanceCalculator.CalcHubenyFormula(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) / 2 / samplingSeconds;
         }
     }
 }
