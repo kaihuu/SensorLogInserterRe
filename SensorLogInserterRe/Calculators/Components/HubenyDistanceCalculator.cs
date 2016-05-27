@@ -14,16 +14,16 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
         private static double ShortRadius = 6356752.314245; // 短半径
 
         //ヒュベニの公式
-        public static double CalcHubenyFormula(GeoCoordinate geoFirst, GeoCoordinate geoSecond)
+        public static double CalcHubenyFormula(double latitudeFirst, double longitudeFirst, double latitudeSecond, double longitudeSecond)
         {
-            double differenceLattitude = MathUtil.ConvertDegreeToRadian(geoFirst.Latitude - geoSecond.Latitude); // 緯度の差
-            double differenceLongitude = MathUtil.ConvertDegreeToRadian(geoFirst.Longitude - geoSecond.Longitude); // 経度の差
+            double differenceLattitude = MathUtil.ConvertDegreeToRadian(latitudeFirst - latitudeSecond); // 緯度の差
+            double differenceLongitude = MathUtil.ConvertDegreeToRadian(longitudeFirst - longitudeSecond); // 経度の差
 
-            double M = CalcMeridianCurvature(geoFirst.Latitude, geoSecond.Latitude); // 子午線曲率半径
-            double N = CalcPrimeVerticalCircleCurvature(geoFirst.Latitude, geoSecond.Latitude); // 卯酉線曲率半径
+            double M = CalcMeridianCurvature(latitudeFirst, latitudeSecond); // 子午線曲率半径
+            double N = CalcPrimeVerticalCircleCurvature(latitudeFirst, latitudeSecond); // 卯酉線曲率半径
 
-            double yFirst = MathUtil.ConvertDegreeToRadian(geoFirst.Latitude); // 緯度をラジアンに変換
-            double ySecond = MathUtil.ConvertDegreeToRadian(geoSecond.Latitude); // 緯度をラジアンに変換
+            double yFirst = MathUtil.ConvertDegreeToRadian(latitudeFirst); // 緯度をラジアンに変換
+            double ySecond = MathUtil.ConvertDegreeToRadian(latitudeSecond); // 緯度をラジアンに変換
 
             double cosMyuY = Math.Cos((yFirst + ySecond) / 2); // 緯度の平均値のコサイン
 
