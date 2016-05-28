@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
 using SensorLogInserterRe.Daos;
+using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class GpsFileHandler
     {
-        public static DataTable ConvertCsvToDataTable(string filePath, int driverId, int carId, int sensorId)
+        public static DataTable ConvertCsvToDataTable(string filePath, UserDatum datum)
         {
             var parser = GetParser(filePath);
 
@@ -27,9 +28,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                     DataRow row = gpsRawTable.NewRow();
 
-                    row.SetField(AndroidGpsRawDao.ColumnDriverId, driverId);
-                    row.SetField(AndroidGpsRawDao.ColumnCarId, carId);
-                    row.SetField(AndroidGpsRawDao.ColumnSensorId, sensorId);
+                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.DriverId);
+                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.CarId);
+                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.SensorId);
 
                     DateTime jst = DateTime.Parse(fields[0].ToString());
                     DateTime androidTime = DateTime.Parse(fields[1].ToString());

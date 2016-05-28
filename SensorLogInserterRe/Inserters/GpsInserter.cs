@@ -9,6 +9,7 @@ using SensorLogInserterRe.Calculators;
 using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Handlers.FileHandlers;
+using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Inserters
@@ -25,19 +26,20 @@ namespace SensorLogInserterRe.Inserters
             {
                 string[] word = filePath.Split('\\');
 
-                int driverId = DriverNames.GetDriverId(word[DriverIndex]);
-                int carId = CarNames.GetCarId(word[CarIndex]);
-                int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
-
-                var gpsRawTable = InsertGpsRaw(filePath, driverId, carId, sensorId);
+                var gpsRawTable = InsertGpsRaw(filePath, new UserDatum()
+                {
+                    DriverId = DriverNames.GetDriverId(word[DriverIndex]),
+                    CarId = CarNames.GetCarId(word[CarIndex]),
+                    SensorId = SensorNames.GetSensorId(word[SensorIndex])
+            });
                 InsertConrrectedGps(gpsRawTable);
                 TripInserter.InsertTripRaw(gpsRawTable);
             }
         }
 
-        private static DataTable InsertGpsRaw(string filePath, int driverId, int carId, int sensorId)
+        private static DataTable InsertGpsRaw(string filePath, UserDatum datum)
         {
-            var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+            var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
             AndroidGpsRawDao.Insert(gpsRawTable);
 
             return gpsRawTable;

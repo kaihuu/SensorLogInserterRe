@@ -9,10 +9,10 @@ namespace SensorLogInserterRe.Models
 {
     public class UserDatum : NotificationObject
     {
-        public Driver Driver { get; set; }
+        public int DriverId { get; set; }
 
-        public Car Car { get; set; }
+        public int CarId { get; set; }
 
-        public Sensor Sensor { get; set; }
+        public int SensorId { get; set; }
     }
 }
