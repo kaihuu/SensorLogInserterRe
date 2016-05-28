@@ -12,7 +12,8 @@ namespace SensorLogInserterRe.Calculators
     {
         public static double CalcAcc(GeoCoordinate geoBefore, GeoCoordinate geoThis, GeoCoordinate geoAfter, double samplingTime)
         {
-            return (HubenyDistanceCalculator.CalcHubenyFormula(geoThis, geoAfter) - HubenyDistanceCalculator.CalcHubenyFormula(geoBefore, geoThis)) / Math.Pow(samplingTime, 2); //中間差分法による導出
+            //中間差分法による導出
+            return (HubenyDistanceCalculator.CalcHubenyFormula(geoThis, geoAfter) - HubenyDistanceCalculator.CalcHubenyFormula(geoBefore, geoThis)) / Math.Pow(samplingTime, 2);
         }
     }
 }

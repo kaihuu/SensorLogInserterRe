@@ -12,12 +12,12 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 {
     class EfficiencyCalculator
     {
-        private static EfficiencyCalculator Instance;
+        private static EfficiencyCalculator _instance;
 
-        private DataTable efficiencyTable;
-        private DataTable efficiencyMaxTable;
-        private double maxRev;
-        private double maxTorque;
+        private DataTable _efficiencyTable;
+        private DataTable _efficiencyMaxTable;
+        private double _maxRev;
+        private double _maxTorque;
 
         private EfficiencyCalculator()
         {
@@ -26,26 +26,28 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 
         public static EfficiencyCalculator GetInstance()
         {
-            if(Instance == null)
+            if(_instance == null)
             {
-                initInstance();
+                InitInstance();
             }
 
-            return Instance;
+            return _instance;
         }
 
-        private static void initInstance()
+        private static void InitInstance()
         {
-            Instance = new EfficiencyCalculator();
+            _instance = new EfficiencyCalculator
+            {
+                _efficiencyTable = EfficiencyDao.Get(),
+                _efficiencyMaxTable = EfficiencyMaxDao.Get()
+            };
 
-            Instance.efficiencyTable = EfficiencyDao.Get();
-            Instance.efficiencyMaxTable = EfficiencyMaxDao.Get();
 
-            Instance.maxRev = (double) Instance.efficiencyTable
+            _instance._maxRev = (double) _instance._efficiencyTable
                 .AsEnumerable()
                 .Max(v => v[EfficiencyDao.ColumnRev]);
 
-            Instance.maxTorque = (double)Instance.efficiencyTable
+            _instance._maxTorque = (double)_instance._efficiencyTable
                 .AsEnumerable()
                 .Max(v => v[EfficiencyDao.ColumnTorque]);
         }
@@ -56,13 +58,13 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
 
             DataTable table;
 
-            if(rpm > maxRev || torque > maxTorque)
+            if(rpm > _maxRev || torque > _maxTorque)
             {
-                table = this.efficiencyMaxTable;
+                table = this._efficiencyMaxTable;
             }
             else
             {
-                table = this.efficiencyTable;
+                table = this._efficiencyTable;
             }
 
             return table.AsEnumerable()
