@@ -116,6 +116,7 @@
     <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Inserters\AccInserter.cs" />
     <Compile Include="Inserters\GpsInserter.cs" />
+    <Compile Include="Inserters\TripInserter.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />
