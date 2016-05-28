@@ -9,6 +9,26 @@ namespace SensorLogInserterRe.Utils
 {
     static class DataTableUtil
     {
+        public static DataTable GetTripsRawTable()
+        {
+            DataTable tripsRawTable = new DataTable();
+
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            tripsRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
+            tripsRawTable.Columns.Add(new DataColumn("CAR_ID"));
+            tripsRawTable.Columns.Add(new DataColumn("SENSOR_ID"));
+            tripsRawTable.Columns.Add(new DataColumn("START_TIME"));
+            tripsRawTable.Columns.Add(new DataColumn("END_TIME"));
+            tripsRawTable.Columns.Add(new DataColumn("START_LATITUDE"));
+            tripsRawTable.Columns.Add(new DataColumn("START_LONGITUDE"));
+            tripsRawTable.Columns.Add(new DataColumn("END_LATITUDE"));
+            tripsRawTable.Columns.Add(new DataColumn("END_LONGITUDE"));
+            tripsRawTable.Columns.Add(new DataColumn("CONSUMED_ENERGY"));
+            tripsRawTable.Columns.Add(new DataColumn("TRIP_DIRECTION"));
+
+            return tripsRawTable;
+        }
+
         public static DataTable GetTripsTable()
         {
             DataTable tripsTable = new DataTable();

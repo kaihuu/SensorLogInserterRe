@@ -16,20 +16,23 @@ namespace SensorLogInserterRe.Inserters
             var tripsTable = DataTableUtil.GetTripsTable();
             DataRow row = tripsTable.NewRow();
 
-            row[TripsDao.ColumnDriverId] = Int32.Parse(gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnDriverId].ToString());
-            row[TripsDao.ColumnCarId] = Int32.Parse(gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnCarId].ToString());
-            row[TripsDao.ColumnSensorId] = Int32.Parse(gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnSensorId].ToString());
-            row[TripsDao.ColumnStartTime] = gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnJst].ToString();
-            row[TripsDao.ColumnStartLatitude] = double.Parse(gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnLatitude].ToString());
-            row[TripsDao.ColumnStartLongitude] = double.Parse(gpsRawTable.Rows[0][AndroidGpsRawDao.ColumnLongitude].ToString());
-            row[TripsDao.ColumnEndTime] = gpsRawTable.Rows[gpsRawTable.Rows.Count - 1][AndroidGpsRawDao.ColumnJst].ToString();
-            row[TripsDao.ColumnEndLatitude] = double.Parse(gpsRawTable.Rows[gpsRawTable.Rows.Count - 1][AndroidGpsRawDao.ColumnLatitude].ToString());
-            row[TripsDao.ColumnEndLongitude] = double.Parse(gpsRawTable.Rows[gpsRawTable.Rows.Count - 1][AndroidGpsRawDao.ColumnLongitude].ToString());
-
+            row.SetField(TripsRawDao.ColumnDriverId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnDriverId));
+            row.SetField(TripsRawDao.ColumnCarId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnCarId));
+            row.SetField(TripsRawDao.ColumnSensorId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnSensorId));
+            row.SetField(TripsRawDao.ColumnStartTime, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnJst));
+            row.SetField(TripsRawDao.ColumnStartLatitude, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnLatitude));
+            row.SetField(TripsRawDao.ColumnStartLongitude, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnLongitude));
+            row.SetField(TripsRawDao.ColumnEndTime, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnJst));
+            row.SetField(TripsRawDao.ColumnEndLatitude, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnLatitude));
+            row.SetField(TripsRawDao.ColumnEndLongitude, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnLongitude));
             tripsTable.Rows.Add(row);
 
             TripsRawDao.Insert(tripsTable);
         }
 
+        public static void InsertTrip()
+        {
+            
+        }
     }
 }
