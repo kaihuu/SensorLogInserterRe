@@ -91,6 +91,7 @@
     <Compile Include="Cleansers\AbsLogCleanser.cs" />
     <Compile Include="Constant\CarNames.cs" />
     <Compile Include="Constant\DirectoryNames.cs" />
+    <Compile Include="Constant\Coordinate.cs" />
     <Compile Include="Constant\DriverNames.cs" />
     <Compile Include="Constant\LogTexts.cs" />
     <Compile Include="Constant\SensorNames.cs" />

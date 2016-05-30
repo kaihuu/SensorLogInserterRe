@@ -35,5 +35,13 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+
+        public static int GetMaxTripId()
+        {
+            string query = $"SELECT MAX({ColumnTripId}) AS max_id FROM {TableName}";
+
+            return DatabaseAccesser.GetResult(query).Rows[0].Field<int>("max_id");
+        }
+
     }
 }
