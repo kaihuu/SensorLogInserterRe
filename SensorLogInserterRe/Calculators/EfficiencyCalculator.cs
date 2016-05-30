@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SensorLogInserterRe.Calculators.CalculatorComponents
+namespace SensorLogInserterRe.Calculators
 {
     class EfficiencyCalculator
     {
@@ -52,7 +52,7 @@ namespace SensorLogInserterRe.Calculators.CalculatorComponents
                 .Max(v => v[EfficiencyDao.ColumnTorque]);
         }
 
-        public int GetEfficiency(Car car, float speed, float torque)
+        public int GetEfficiency(Car car, double speed, double torque)
         {
             double rpm = MathUtil.ConvertSpeedToRev(car, speed);
 
