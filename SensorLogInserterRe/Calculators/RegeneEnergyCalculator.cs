@@ -3,21 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Calculators.CalculatorComponents;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Calculators
 {
     class RegeneEnergyCalculator
     {
-        public static double CalcRegeneEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower)
+        public static double CalcRegeneEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower, Car car)
         {
-            double regeneEnergy = 1000;
-            if (drivingPower >= 0)
+            double drivingForce = drivingPower / vehicleSpeed / 3.6; //制動力[N]
+            double speedC = maxDrivingPower / maxDrivingForce / 3.6; //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[km/h] 
+            double regeneEnergy = 0;
+            if (drivingPower >= 0)//力行時
             {
                regeneEnergy = 0;
             }
-            else
+            else//回生時
             {
-               
+                if (vehicleSpeed < 7)//車速が7km/hより小さいとき
+                {
+                    regeneEnergy = 0;
+                }
+                else if(vehicleSpeed >= 7 && drivingPower >= maxDrivingPower &&
+                    drivingForce >= maxDrivingForce)//車速が7km/hより大きく，回生エネルギー限界[kW]を制動エネルギー[kW]が超えず，
+                   //回生による制動力[N]の限界を制動力[N]が超えない場合（負のため不等号逆転）
+                {
+                    regeneEnergy = drivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, (float)vehicleSpeed, (float)drivingForce);
+                }
+                else if(vehicleSpeed >=7 && vehicleSpeed <= speedC && drivingForce < maxDrivingForce) //限界回生力[N]を超えている場合
+                {
+                    regeneEnergy = maxDrivingForce * vehicleSpeed * 3.6 * EfficiencyCalculator.GetInstance().GetEfficiency(car, (float)vehicleSpeed, (float) drivingForce); 
+                }
+                else if(vehicleSpeed > speedC && drivingPower < maxDrivingPower)//回生エネルギー限界を超えている場合
+                {
+                    regeneEnergy = maxDrivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, (float)vehicleSpeed, (float)drivingForce);
+                }
             }
             return regeneEnergy;
         }
