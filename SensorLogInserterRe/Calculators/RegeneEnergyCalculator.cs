@@ -16,6 +16,7 @@ namespace SensorLogInserterRe.Calculators
             //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[km/h] 
             double speedC = maxDrivingPower * 1000 * 3600 / maxDrivingForce / 3.6;
             double regeneEnergy = 0;
+            double drivingTorque = drivingForce * car.TireRadius / car.ReductionRatio;
 
             //力行時
             if (drivingPower >= 0)
@@ -34,17 +35,17 @@ namespace SensorLogInserterRe.Calculators
                     drivingForce >= maxDrivingForce)//車速が7km/hより大きく，回生エネルギー限界[kW]を制動エネルギー[kW]が超えず，
                    //回生による制動力[N]の限界を制動力[N]が超えない場合（負のため不等号逆転）
                 {
-                    regeneEnergy = drivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingForce);
+                    regeneEnergy = drivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque);
                 }
                 //限界回生力[N]を超えている場合
                 else if (vehicleSpeed >=7 && vehicleSpeed <= speedC && drivingForce < maxDrivingForce)
                 {
-                    regeneEnergy = maxDrivingForce * vehicleSpeed * 3.6 * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingForce); 
+                    regeneEnergy = maxDrivingForce * vehicleSpeed * 3.6 * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque); 
                 }
                 //回生エネルギー限界を超えている場合
                 else if (vehicleSpeed > speedC && drivingPower < maxDrivingPower)
                 {
-                    regeneEnergy = maxDrivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingForce);
+                    regeneEnergy = maxDrivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque);
                 }
             }
             return regeneEnergy;
