@@ -7,7 +7,7 @@ using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Calculators
 {
-    class RegeneEnergyCalculator
+    static class RegeneEnergyCalculator
     {
         public static double CalcEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower, Car car)
         {
