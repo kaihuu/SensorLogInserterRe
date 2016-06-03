@@ -12,9 +12,9 @@ namespace SensorLogInserterRe.Calculators
         public static double CalcEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower, Car car)
         {
             //制動力[N]
-            double drivingForce = drivingPower / vehicleSpeed / 3.6;
+            double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
             //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[km/h] 
-            double speedC = maxDrivingPower / maxDrivingForce / 3.6;
+            double speedC = maxDrivingPower * 1000 * 3600 / maxDrivingForce / 3.6;
             double regeneEnergy = 0;
 
             //力行時
