@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Calculators
 {
     static class RegeneEnergyCalculator
     {
-        public static double CalcEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower, Car car)
+        public static double CalcEnergy(double drivingPower, double vehicleSpeed, double maxDrivingForce, double maxDrivingPower, Car car, double inverterEfficiency)
         {
             //制動力[N]
             double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
@@ -47,6 +47,7 @@ namespace SensorLogInserterRe.Calculators
                 {
                     regeneEnergy = maxDrivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque);
                 }
+                regeneEnergy = regeneEnergy / 100 * inverterEfficiency;
             }
             return regeneEnergy;
         }
