@@ -13,8 +13,15 @@ namespace SensorLogInserterRe.Calculators
         {
             double drivingTorque = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6 * car.TireRadius / car.ReductionRatio;
 
-            double regeneLoss = Math.Abs(drivingPower - regeneEnergy / EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque) *100 /inverterEfficiency);
+            double regeneLoss;
+            if (drivingPower >= 0)//力行時
+            {
+                regeneLoss = 0;
+            }
 
+            else {//回生時
+                regeneLoss = Math.Abs(drivingPower - regeneEnergy / EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque) * 100 / inverterEfficiency);
+            }
             return regeneLoss;
         }
     }
