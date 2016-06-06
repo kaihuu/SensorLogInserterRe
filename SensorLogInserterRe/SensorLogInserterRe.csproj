@@ -80,12 +80,14 @@
     <Compile Include="Calculators\AccResistanceCalculator.cs" />
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
     <Compile Include="Calculators\Components\Constants.cs" />
+    <Compile Include="Calculators\ConsumedEnergyCaluculator.cs" />
     <Compile Include="Calculators\EfficiencyCalculator.cs" />
     <Compile Include="Calculators\Components\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCalculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
     <Compile Include="Calculators\HeadingCalculator.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
+    <Compile Include="Calculators\RegeneLossCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Cleansers\AbsLogCleanser.cs" />
