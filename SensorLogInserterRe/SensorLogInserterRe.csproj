@@ -81,6 +81,7 @@
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
     <Compile Include="Calculators\Components\Constants.cs" />
     <Compile Include="Calculators\ConsumedEnergyCaluculator.cs" />
+    <Compile Include="Calculators\ConvertLossCaluculator.cs" />
     <Compile Include="Calculators\EfficiencyCalculator.cs" />
     <Compile Include="Calculators\Components\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCalculator.cs" />
