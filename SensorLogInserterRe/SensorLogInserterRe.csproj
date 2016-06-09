@@ -87,6 +87,7 @@
     <Compile Include="Calculators\ClimbingResistanceCalculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
     <Compile Include="Calculators\HeadingCalculator.cs" />
+    <Compile Include="Calculators\LostEnergyCalculator.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
     <Compile Include="Calculators\RegeneLossCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
