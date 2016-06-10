@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -29,6 +30,19 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static int GetMilliSencodTimeDiffBetweenJstAndAndroidTime(DateTime startTime, DateTime endTime, UserDatum datum)
+        {
+            var query = new StringBuilder();
+            query.AppendLine($"SELECT AVG(DATEDIFF(MILLISECOND, {ColumnAndroidTime}, {ColumnJst})) AS time_diff");
+            query.AppendLine($"FROM {TableName}");
+            query.AppendLine($"WHERE {ColumnJst} >= {startTime}");
+            query.AppendLine($" AND {ColumnJst} <= {endTime}");
+            query.AppendLine($" AND {ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($" AND {ColumnSensorId} = {datum.SensorId}");
+
+            return DatabaseAccesser.GetResult(query.ToString()).Rows[0].Field<int?>("time_diff") ?? 0;
         }
     }
 }

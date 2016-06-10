@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -34,6 +35,22 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static DataTable Get(DateTime startDate, DateTime endDate, UserDatum datum)
+        {
+            var query = new StringBuilder();
+
+            query.AppendLine("SELECT *");
+            query.AppendLine($"FROM {TripsDao.TableName}");
+            query.AppendLine($"WHERE {TripsDao.ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"AND {TripsDao.ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"AND {TripsDao.ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"AND {TripsDao.ColumnStartTime} >= {startDate}");
+            query.AppendLine($"AND {TripsDao.ColumnStartTime} <= {endDate}");
+            query.AppendLine($"ORDER BY {ColumnStartTime}");
+
+            return DatabaseAccesser.GetResult(query.ToString());
         }
 
         public static int GetMaxTripId()

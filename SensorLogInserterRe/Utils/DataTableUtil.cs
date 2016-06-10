@@ -116,5 +116,22 @@ namespace SensorLogInserterRe.Utils
 
             return correctedAccTable;
         }
+
+        public static DataTable GetTempCorrectedAccTable(DataTable table)
+        {
+            table.Columns.Add(new DataColumn("ROLL"));
+            table.Columns.Add(new DataColumn("PITCH"));
+            table.Columns.Add(new DataColumn("YAW"));
+
+            //補正データを記録するためのカラムを追加
+            table.Columns.Add(new DataColumn("ALPHA"));
+            table.Columns.Add(new DataColumn("VECTOR_X"));
+            table.Columns.Add(new DataColumn("VECTOR_Y"));
+            table.Columns.Add(new DataColumn("BETA"));
+            table.Columns.Add(new DataColumn("GAMMA"));
+
+            return table;
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -28,6 +29,28 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static DataTable Get(DateTime startTime, DateTime endTime, int timeDiff, UserDatum datum)
+        {
+            var query = new StringBuilder();
+            query.AppendLine("SELECT");
+            query.AppendLine($"   {ColumnDriverId},");
+            query.AppendLine($"   {ColumnCarId},");
+            query.AppendLine($"   {ColumnSensorId},");
+            query.AppendLine($"   {ColumnDriverId},");
+            query.AppendLine($"   CONVERT(varchar,DATEADD(MILLISECOND, {timeDiff} ,{ColumnDateTime}),121) AS jst,");
+            query.AppendLine($"   {ColumnAccX} AS LONGITUDINAL_ACC,"); // TODO 命名あってるか？
+            query.AppendLine($"   {ColumnAccY} AS LATERAL_ACC,"); // TODO 命名合ってるか？
+            query.AppendLine($"   ACC_Z AS VERTICAL_ACC"); // TODO 命名合ってるか？
+            query.AppendLine($"FROM {TableName}");
+            query.AppendLine($"WHERE {ColumnDateTime} >= {startTime}");
+            query.AppendLine($"   AND {ColumnDateTime} <= {endTime}");
+            query.AppendLine($"   AND {ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"ORDER BY {ColumnDateTime}");
+
+            return DatabaseAccesser.GetResult(query.ToString());
         }
     }
 }

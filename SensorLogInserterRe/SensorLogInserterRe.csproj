@@ -92,7 +92,7 @@
     <Compile Include="Calculators\RegeneLossCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
-    <Compile Include="Cleansers\AbsLogCleanser.cs" />
+    <Compile Include="Cleansers\AccCorrector.cs" />
     <Compile Include="Constant\CarNames.cs" />
     <Compile Include="Constant\DirectoryNames.cs" />
     <Compile Include="Constant\Coordinate.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Handlers\FileHandlers\GpsFileHandler.cs" />
     <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Inserters\AccInserter.cs" />
+    <Compile Include="Inserters\CorrectedAccInserter.cs" />
     <Compile Include="Inserters\GpsInserter.cs" />
     <Compile Include="Inserters\TripInserter.cs" />
     <Compile Include="Models\Car.cs" />
@@ -127,7 +128,9 @@
     <Compile Include="Models\Ecolog.cs" />
     <Compile Include="Models\InsertConfig.cs" />
     <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Quaternion.cs" />
     <Compile Include="Models\Sensor.cs" />
+    <Compile Include="Models\ThreeDimensionalVector.cs" />
     <Compile Include="Models\UserDatum.cs" />
     <Compile Include="Utils\DataTableUtil.cs" />
     <Compile Include="Utils\DateTimeUtil.cs" />
