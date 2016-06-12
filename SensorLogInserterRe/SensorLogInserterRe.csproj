@@ -121,13 +121,13 @@
     <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Inserters\AccInserter.cs" />
     <Compile Include="Inserters\CorrectedAccInserter.cs" />
+    <Compile Include="Inserters\EcologInserter.cs" />
     <Compile Include="Inserters\GpsInserter.cs" />
     <Compile Include="Inserters\TripInserter.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />
     <Compile Include="Models\InsertConfig.cs" />
-    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Quaternion.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\ThreeDimensionalVector.cs" />

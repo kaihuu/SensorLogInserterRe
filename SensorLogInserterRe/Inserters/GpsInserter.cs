@@ -28,9 +28,10 @@ namespace SensorLogInserterRe.Inserters
 
                 var gpsRawTable = InsertGpsRaw(filePath, new UserDatum()
                 {
-                    DriverId = DriverNames.GetDriverId(word[DriverIndex]),
-                    CarId = CarNames.GetCarId(word[CarIndex]),
-                    SensorId = SensorNames.GetSensorId(word[SensorIndex])
+                    // ここ間違ってる、UserDatumnを生成する処理は別クラスに移譲
+                    Driver = DriverNames.GetDriverId(word[DriverIndex]),
+                    Car = CarNames.GetCarId(word[CarIndex]),
+                    Sensor = SensorNames.GetSensorId(word[SensorIndex])
             });
                 InsertConrrectedGps(gpsRawTable);
                 TripInserter.InsertTripRaw(gpsRawTable);
@@ -118,6 +119,8 @@ namespace SensorLogInserterRe.Inserters
             correctedGpsTable.Rows.Add(lastRow);
 
             #endregion
+
+            CorrectedGpsDao.Insert(correctedGpsTable);
         }
     }
 }

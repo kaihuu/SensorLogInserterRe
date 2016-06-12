@@ -49,8 +49,8 @@ namespace SensorLogInserterRe.Daos
             query += "( ";
             query += "	select DRIVER_ID,SENSOR_ID,DATEADD(second,-1,JST) as START_TIME, JST as END_TIME ";
             query += "	from CORRECTED_GPS ";
-            query += "	where DRIVER_ID = " + datum.DriverId + " ";
-            query += "	and SENSOR_ID = " + datum.SensorId + " ";
+            query += "	where DRIVER_ID = " + datum.Driver.DriverId + " ";
+            query += "	and SENSOR_ID = " + datum.Sensor.SensorId + " ";
             query += "	and SPEED < 1 ";
             query += "	and JST >= '" + startTime + "' ";
             query += "	and JST <= '" + endTime + "' ";
@@ -102,11 +102,11 @@ namespace SensorLogInserterRe.Daos
             query += "( ";
             query += "	select g1.DRIVER_ID,g1.SENSOR_ID,g1.JST ";
             query += "	from CORRECTED_GPS g1,CORRECTED_GPS g2 ";
-            query += "	where g1.DRIVER_ID = " + datum.DriverId + " ";
-            query += "	and g1.SENSOR_ID = " + datum.SensorId + " ";
+            query += "	where g1.DRIVER_ID = " + datum.Driver.DriverId + " ";
+            query += "	and g1.SENSOR_ID = " + datum.Sensor.SensorId + " ";
             query += "	and g1.SPEED < 10 ";
-            query += "	and g2.DRIVER_ID = " + datum.DriverId + " ";
-            query += "	and g2.SENSOR_ID = " + datum.SensorId + " ";
+            query += "	and g2.DRIVER_ID = " + datum.Driver.DriverId + " ";
+            query += "	and g2.SENSOR_ID = " + datum.Sensor.SensorId + " ";
             query += "	and g2.SPEED > 10 ";
             query += "	and g1.JST = DATEADD(second,1,g2.JST) ";
             query += "	and g1.JST > '" + startTime + "' ";

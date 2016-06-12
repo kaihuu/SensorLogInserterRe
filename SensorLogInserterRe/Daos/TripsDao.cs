@@ -43,9 +43,9 @@ namespace SensorLogInserterRe.Daos
 
             query.AppendLine("SELECT *");
             query.AppendLine($"FROM {TripsDao.TableName}");
-            query.AppendLine($"WHERE {TripsDao.ColumnDriverId} = {datum.DriverId}");
-            query.AppendLine($"AND {TripsDao.ColumnCarId} = {datum.CarId}");
-            query.AppendLine($"AND {TripsDao.ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"WHERE {TripsDao.ColumnDriverId} = {datum.Driver.DriverId}");
+            query.AppendLine($"AND {TripsDao.ColumnCarId} = {datum.Car.CarId}");
+            query.AppendLine($"AND {TripsDao.ColumnSensorId} = {datum.Sensor.SensorId}");
             query.AppendLine($"AND {TripsDao.ColumnStartTime} >= {startDate}");
             query.AppendLine($"AND {TripsDao.ColumnStartTime} <= {endDate}");
             query.AppendLine($"ORDER BY {ColumnStartTime}");

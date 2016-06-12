@@ -96,7 +96,7 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.AyaseCityHall.LongitudeEnd
                 && date > Coordinate.AyaseCityHall.StartDate
                 && date < Coordinate.AyaseCityHall.EndDate
-                && datum.SensorId == Coordinate.AyaseCityHall.SensorId)
+                && datum.Sensor == Coordinate.AyaseCityHall.SensorId)
                 return true;
 
             return false;

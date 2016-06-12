@@ -88,6 +88,7 @@ namespace SensorLogInserterRe.Inserters
 
         private static void InsertCorrectedAcc(DataTable accRawTable)
         {
+            // TODO CorrectedAccInserterに機能を移譲
             accRawTable = SortTableByDateTime(accRawTable);
 
             var correctedAccTable = DataTableUtil.GetCorrectedAccTable();

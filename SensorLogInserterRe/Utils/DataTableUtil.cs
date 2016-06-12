@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Daos;
 
 namespace SensorLogInserterRe.Utils
 {
@@ -119,6 +120,8 @@ namespace SensorLogInserterRe.Utils
 
         public static DataTable GetTempCorrectedAccTable(DataTable table)
         {
+            // TODO これけっこうやばい、合ってない可能性大
+
             table.Columns.Add(new DataColumn("ROLL"));
             table.Columns.Add(new DataColumn("PITCH"));
             table.Columns.Add(new DataColumn("YAW"));
@@ -133,5 +136,48 @@ namespace SensorLogInserterRe.Utils
             return table;
         }
 
+        public static DataTable GetEcologTable()
+        {
+            var ecologTable = new DataTable();
+
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDriverId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnCarId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSensorId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnJst));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLatitude));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitude));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSpeed));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnHeading));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDistanceDifference));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerraubAltitude));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerrainAltitudeDiffarencce));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitudinalAcc));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLateralAcc));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnVerticalAcc));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAirResistance));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByRollingResistance));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByClimbingResistance));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAccResistance));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConvertLoss));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneLoss));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneEnergy));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergy));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEfficiency));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedElectricEnergy));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergyByWellToWheel));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuel));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuelByWellToWheel));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByEquipment));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByCooling));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByHeating));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripDirection));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnMeshId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLinkId));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRoadTheta));
+
+            return ecologTable;
+        }
     }
 }

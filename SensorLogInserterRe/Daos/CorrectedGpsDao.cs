@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -30,6 +31,20 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static DataTable Get(DateTime startTime, DateTime endTime, UserDatum datum)
+        {
+            var query = new StringBuilder();
+            query.AppendLine($"SELECT *");
+            query.AppendLine($"  FROM {TableName}");
+            query.AppendLine($" WHERE {ColumnDriverId} = {datum.Driver.DriverId}");
+            query.AppendLine($"   AND {ColumnCarId} = {datum.Car.CarId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.Sensor.SensorId}");
+            query.AppendLine($"   AND {ColumnJst} >= {startTime}");
+            query.AppendLine($"   AND {ColumnJst} <= {endTime}");
+
+            return DatabaseAccesser.GetResult(query.ToString());
         }
     }
 }
