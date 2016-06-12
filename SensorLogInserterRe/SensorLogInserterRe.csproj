@@ -79,6 +79,7 @@
     <Compile Include="Calculators\AccCalculator.cs" />
     <Compile Include="Calculators\AccResistanceCalculator.cs" />
     <Compile Include="Calculators\AirResistanceCalculator.cs" />
+    <Compile Include="Calculators\AltitudeCalculator.cs" />
     <Compile Include="Calculators\Components\Constants.cs" />
     <Compile Include="Calculators\ConsumedEnergyCaluculator.cs" />
     <Compile Include="Calculators\ConvertLossCaluculator.cs" />
@@ -86,7 +87,9 @@
     <Compile Include="Calculators\Components\HubenyDistanceCalculator.cs" />
     <Compile Include="Calculators\ClimbingResistanceCalculator.cs" />
     <Compile Include="Calculators\DistanceCalculator.cs" />
+    <Compile Include="Calculators\EquipmentEnergyCalculator.cs" />
     <Compile Include="Calculators\HeadingCalculator.cs" />
+    <Compile Include="Calculators\LinkMatcher.cs" />
     <Compile Include="Calculators\LostEnergyCalculator.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
     <Compile Include="Calculators\RegeneLossCalculator.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Handlers\FileHandlers\GpsFileHandler.cs" />
     <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Inserters\AccInserter.cs" />
+    <Compile Include="Inserters\Components\HagimotoEcologCalculator.cs" />
     <Compile Include="Inserters\CorrectedAccInserter.cs" />
     <Compile Include="Inserters\EcologInserter.cs" />
     <Compile Include="Inserters\GpsInserter.cs" />

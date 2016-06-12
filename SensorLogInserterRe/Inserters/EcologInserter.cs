@@ -20,11 +20,6 @@ namespace SensorLogInserterRe.Inserters
             {
                 // TODO 表示イベント
                 // StateLabel = "データを挿入中(ECOLOG):" + i + "/" + tripTable.Rows.Count + "件挿入完了";
-
-                var correctedGpsTable = CorrectedGpsDao.Get(row.Field<DateTime>(TripsDao.ColumnStartTime), 
-                    row.Field<DateTime>(TripsDao.ColumnEndTime), datum);
-
-                var ecologTable = Da
             }
         }
 

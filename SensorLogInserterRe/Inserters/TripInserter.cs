@@ -96,7 +96,7 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.AyaseCityHall.LongitudeEnd
                 && date > Coordinate.AyaseCityHall.StartDate
                 && date < Coordinate.AyaseCityHall.EndDate
-                && datum.Sensor == Coordinate.AyaseCityHall.SensorId)
+                && datum.Sensor.SensorId == Coordinate.AyaseCityHall.SensorId)
                 return true;
 
             return false;
@@ -130,6 +130,9 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude));
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnConsumedEnergy, DBNull.Value);
+                    row.SetField(TripsDao.ColumnTripDirection, "outward");
+                    row.SetField(TripsDao.ColumnValidation, DBNull.Value);
 
                     // TODO ログ出力
                     // WriteLog("DRIVER_ID:" + tripRawTable.Rows[i]["DRIVER_ID"] + " CAR_ID:" + tripRawTable.Rows[i]["CAR_ID"] + " SENSOR_ID:" + tripRawTable.Rows[i]["SENSOR_ID"] + "期間:" + tripRawTable.Rows[i]["START_TIME"] + "～" + tripRawTable.Rows[j]["END_TIME"], LogMode.trip);
@@ -215,6 +218,7 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude));
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnTripDirection, "homeward");
 
                     // TODO ログ出力
                     // WriteLog("DRIVER_ID:" + tripRawTable.Rows[i]["DRIVER_ID"] + " CAR_ID:" + tripRawTable.Rows[i]["CAR_ID"] + " SENSOR_ID:" + tripRawTable.Rows[i]["SENSOR_ID"] + "期間:" + tripRawTable.Rows[i]["START_TIME"] + "～" + tripRawTable.Rows[j]["END_TIME"], LogMode.trip);
