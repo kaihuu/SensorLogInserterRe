@@ -13,7 +13,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class GpsFileHandler
     {
-        public static DataTable ConvertCsvToDataTable(string filePath, UserDatum datum)
+        public static DataTable ConvertCsvToDataTable(string filePath, InsertDatum datum)
         {
             var parser = GetParser(filePath);
 
@@ -28,9 +28,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                     DataRow row = gpsRawTable.NewRow();
 
-                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.Driver.DriverId);
-                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.Car.CarId);
-                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.Sensor.SensorId);
+                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.DriverId.DriverId);
+                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.CarId.CarId);
+                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.SensorId.SensorId);
 
                     DateTime jst = DateTime.Parse(fields[0].ToString());
                     DateTime androidTime = DateTime.Parse(fields[1].ToString());

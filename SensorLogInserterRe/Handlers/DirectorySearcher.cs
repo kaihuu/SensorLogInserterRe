@@ -18,18 +18,18 @@ namespace SensorLogInserterRe.Handlers
             foreach (var driver in config.CheckeDrivers)
             {
                 if (driver.Equals(DriverNames.Tommy))
-                    CheckFiles(DirectoryNames.DirectoryTommy, config.StartDate, config.EndDate, ref insertFileList);
+                    CheckFiles(DirectoryNames.DirectoryTommy, config.StartDate, config.EndDate, insertFileList);
                 if (driver.Equals(DriverNames.Mori))
-                    CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate, ref insertFileList);
+                    CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate, insertFileList);
                 if (driver.Equals(DriverNames.Tamura))
-                    CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate, ref insertFileList);
+                    CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate, insertFileList);
                 // TODO 研究室メンバー
             }
 
             return insertFileList;
         }
 
-        private static void CheckFiles(string folderPass, DateTime startDate, DateTime endDate, ref List<string> insertFileList)
+        private static void CheckFiles(string folderPass, DateTime startDate, DateTime endDate, List<string> insertFileList)
         {
             long todayLong = DateTimeUtil.ConvertDateTimeToLongFormatted(DateTime.Now);
             long startLong = DateTimeUtil.ConvertDateTimeToLongFormatted(startDate);
@@ -80,7 +80,7 @@ namespace SensorLogInserterRe.Handlers
 
                 try
                 {
-                    CheckFiles(directory, startDate, endDate, ref insertFileList);
+                    CheckFiles(directory, startDate, endDate, insertFileList);
                 }
                 //隠しファイルなどのアクセス許可のないファイルをキャッチ(何もしない)
                 catch (System.UnauthorizedAccessException)

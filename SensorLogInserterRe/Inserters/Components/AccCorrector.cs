@@ -12,11 +12,11 @@ using SensorLogInserterRe.Utils;
  * クソみたいなコードだけどこれ以上無理だわ加速度使う人あとはこれを何とかしてくれ元のコードですら合ってるかわからんリファクタリングして更にわけわかんなくなってる
  ***/
 
-namespace SensorLogInserterRe.Cleansers
+namespace SensorLogInserterRe.Inserters.Components
 {
     class AccCorrector
     {
-        public static DataTable CorrectAcc(DateTime startTime, DateTime endTime, UserDatum datum, DataRow tripRow)
+        public static DataTable CorrectAcc(DateTime startTime, DateTime endTime, InsertDatum datum, DataRow tripRow)
         {
             /*** LocationListenerのtimestampとSystem.currentTimeMillis()の差分を計算している
             LocationListenerのtimestampはおそらく、システム時間を参照しているからこの処理は意味ないかも ***/

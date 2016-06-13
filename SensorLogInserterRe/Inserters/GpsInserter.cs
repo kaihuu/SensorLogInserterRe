@@ -20,25 +20,35 @@ namespace SensorLogInserterRe.Inserters
         private static readonly int CarIndex = 5;
         private static readonly int SensorIndex = 6;
 
-        public static void InsertGps(List<string> insertFileList)
+        public static void InsertGps(List<string> insertFileList, InsertConfig config, List<InsertDatum> insertDatumList)
         {
             foreach (var filePath in insertFileList)
             {
                 string[] word = filePath.Split('\\');
 
-                var gpsRawTable = InsertGpsRaw(filePath, new UserDatum()
+                // GPSファイルでない場合はcontinue
+                if (! System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}UnsentGPS.csv"))
+                    continue;
+
+                var datum = new InsertDatum()
                 {
-                    // ここ間違ってる、UserDatumnを生成する処理は別クラスに移譲
-                    Driver = DriverNames.GetDriverId(word[DriverIndex]),
-                    Car = CarNames.GetCarId(word[CarIndex]),
-                    Sensor = SensorNames.GetSensorId(word[SensorIndex])
-            });
+                    DriverId = DriverNames.GetDriverId(word[DriverIndex]),
+                    CarId = CarNames.GetCarId(word[CarIndex]),
+                    SensorId = SensorNames.GetSensorId(word[SensorIndex]),
+                    StartTime = config.StartDate,
+                    EndTime = config.EndDate,
+                    EstimatedCarModel = EstimatedCarModel.GetModel(config.CarModel)
+                };
+
+                InsertDatum.AddDatumToList(insertDatumList, datum);
+
+                var gpsRawTable = InsertGpsRaw(filePath, datum);
                 InsertConrrectedGps(gpsRawTable);
                 TripInserter.InsertTripRaw(gpsRawTable);
             }
         }
 
-        private static DataTable InsertGpsRaw(string filePath, UserDatum datum)
+        private static DataTable InsertGpsRaw(string filePath, InsertDatum datum)
         {
             var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
             AndroidGpsRawDao.Insert(gpsRawTable);

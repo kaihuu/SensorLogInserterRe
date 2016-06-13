@@ -31,7 +31,7 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
-        public static DataTable Get(DateTime startTime, DateTime endTime, int timeDiff, UserDatum datum)
+        public static DataTable Get(DateTime startTime, DateTime endTime, int timeDiff, InsertDatum datum)
         {
             var query = new StringBuilder();
             query.AppendLine("SELECT");
@@ -46,8 +46,8 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"FROM {TableName}");
             query.AppendLine($"WHERE {ColumnDateTime} >= {startTime}");
             query.AppendLine($"   AND {ColumnDateTime} <= {endTime}");
-            query.AppendLine($"   AND {ColumnDriverId} = {datum.Driver.DriverId}");
-            query.AppendLine($"   AND {ColumnSensorId} = {datum.Sensor.SensorId}");
+            query.AppendLine($"   AND {ColumnDriverId} = {datum.DriverId.DriverId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId.SensorId}");
             query.AppendLine($"ORDER BY {ColumnDateTime}");
 
             return DatabaseAccesser.GetResult(query.ToString());

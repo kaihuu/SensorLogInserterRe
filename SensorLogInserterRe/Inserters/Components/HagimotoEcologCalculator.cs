@@ -20,7 +20,7 @@ namespace SensorLogInserterRe.Inserters.Components
         private static readonly double Myu = 0.015;
         private static readonly double VehicleMass = 1600;
 
-        public static DataTable CalcEcolog(DataRow tripRow, UserDatum datum)
+        public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum)
         {
             var correctedGpsTable = CorrectedGpsDao.Get(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                     tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
@@ -110,27 +110,14 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnLatitude, correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
             newRow.SetField(EcologDao.ColumnLongitude, correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
-            double speed = SpeedCalculator.CalcSpeed(
-                beforeRow.Field<double>(EcologDao.ColumnLatitude),
-                beforeRow.Field<double>(EcologDao.ColumnLongitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
-                (correctedGpsRow.Field<DateTime>(CorrectedGpsDao.ColumnJst) -
-                 beforeRow.Field<DateTime>(EcologDao.ColumnJst)).TotalSeconds);
+            double speed = correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnSpeed);
 
             newRow.SetField(EcologDao.ColumnSpeed, speed);
 
-            newRow.SetField(EcologDao.ColumnHeading, HeadingCalculator.CalcHeading(
-                beforeRow.Field<double>(EcologDao.ColumnLatitude),
-                beforeRow.Field<double>(EcologDao.ColumnLongitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude)));
+            newRow.SetField(EcologDao.ColumnHeading,
+                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnHeading));
 
-            double distanceDiff = DistanceCalculator.CalcDistance(
-                beforeRow.Field<double>(EcologDao.ColumnLatitude),
-                beforeRow.Field<double>(EcologDao.ColumnLongitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
+            double distanceDiff = correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnDistanceDifference);
 
             newRow.SetField(EcologDao.ColumnDistanceDifference, distanceDiff);
 
@@ -185,10 +172,9 @@ namespace SensorLogInserterRe.Inserters.Components
             double drivingResistancePower =
                 airResistancePower + rollingResistancePower + climbingResistancePower + accResistancePower;
 
+            // ここから植村君よろしくorz
             newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
-                drivingResistancePower, new Car(), speed, ));
-
-            // ここから
+                drivingResistancePower, new Car(), speed, 0,0,0));
 
             newRow.SetField(EcologDao.ColumnRegeneLoss, 0);
             newRow.SetField(EcologDao.ColumnRegeneEnergy, 0);

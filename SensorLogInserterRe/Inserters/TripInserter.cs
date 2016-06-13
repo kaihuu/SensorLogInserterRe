@@ -37,9 +37,9 @@ namespace SensorLogInserterRe.Inserters
             TripsRawDao.Insert(tripsTable);
         }
 
-        public static void InsertTrip(DateTime startDate, DateTime endDate, UserDatum datum)
+        public static void InsertTrip(InsertDatum datum)
         {
-            var tripsRawTable = TripsRawDao.Get(startDate, endDate, datum);
+            var tripsRawTable = TripsRawDao.Get(datum);
 
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)
             {
@@ -62,7 +62,7 @@ namespace SensorLogInserterRe.Inserters
             }
         }
 
-        private static bool IsHome(double latitude, double longitude, DateTime date, UserDatum datum)
+        private static bool IsHome(double latitude, double longitude, DateTime date, InsertDatum datum)
         {
             if (latitude > Coordinate.TommyHome.LatitudeStart
                 && latitude < Coordinate.TommyHome.LatitudeEnd
@@ -96,7 +96,7 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.AyaseCityHall.LongitudeEnd
                 && date > Coordinate.AyaseCityHall.StartDate
                 && date < Coordinate.AyaseCityHall.EndDate
-                && datum.Sensor.SensorId == Coordinate.AyaseCityHall.SensorId)
+                && datum.SensorId == Coordinate.AyaseCityHall.SensorId)
                 return true;
 
             return false;
@@ -107,7 +107,7 @@ namespace SensorLogInserterRe.Inserters
             return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
         }
 
-        private static int InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, UserDatum datum, int i)
+        private static int InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
         {
             int j = i;
             bool tripChangeFlag = false;
@@ -192,7 +192,7 @@ namespace SensorLogInserterRe.Inserters
             return j;
         }
 
-        private static int InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, UserDatum datum, int i)
+        private static int InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
         {
             int j = i;
             bool tripChangeFlag = false;

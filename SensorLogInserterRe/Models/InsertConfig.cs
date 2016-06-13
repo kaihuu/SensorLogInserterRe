@@ -8,6 +8,11 @@ namespace SensorLogInserterRe.Models
 {
     class InsertConfig
     {
+        public enum EstimatedCarModel
+        {
+            LeafEarlyModel
+        }
+
         public enum EstimationModel
         {
             EvEnergyConsumptionModel,
@@ -26,13 +31,21 @@ namespace SensorLogInserterRe.Models
 
         public DateTime EndDate { get; set; }
 
-        public EstimationModel Model { get; set; }
+        public EstimationModel EstModel { get; set; }
 
         public GpsCorrection Correction { get; set; }
 
-        public InsertConfig()
+        public EstimatedCarModel CarModel { get; set; }
+
+        private InsertConfig()
         {
             this.CheckeDrivers = new List<string>();
+        }
+
+        public static InsertConfig GetInstance()
+        {
+            var instance = new InsertConfig();
+            return instance;
         }
     }
 }

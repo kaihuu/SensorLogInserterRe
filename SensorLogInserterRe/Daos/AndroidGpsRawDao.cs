@@ -32,15 +32,15 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
-        public static int GetMilliSencodTimeDiffBetweenJstAndAndroidTime(DateTime startTime, DateTime endTime, UserDatum datum)
+        public static int GetMilliSencodTimeDiffBetweenJstAndAndroidTime(DateTime startTime, DateTime endTime, InsertDatum datum)
         {
             var query = new StringBuilder();
             query.AppendLine($"SELECT AVG(DATEDIFF(MILLISECOND, {ColumnAndroidTime}, {ColumnJst})) AS time_diff");
             query.AppendLine($"FROM {TableName}");
             query.AppendLine($"WHERE {ColumnJst} >= {startTime}");
             query.AppendLine($" AND {ColumnJst} <= {endTime}");
-            query.AppendLine($" AND {ColumnDriverId} = {datum.Driver.DriverId}");
-            query.AppendLine($" AND {ColumnSensorId} = {datum.Sensor.SensorId}");
+            query.AppendLine($" AND {ColumnDriverId} = {datum.DriverId.DriverId}");
+            query.AppendLine($" AND {ColumnSensorId} = {datum.SensorId.SensorId}");
 
             return DatabaseAccesser.GetResult(query.ToString()).Rows[0].Field<int?>("time_diff") ?? 0;
         }

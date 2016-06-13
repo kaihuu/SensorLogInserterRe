@@ -33,14 +33,14 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
-        public static DataTable Get(DateTime startTime, DateTime endTime, UserDatum datum)
+        public static DataTable Get(DateTime startTime, DateTime endTime, InsertDatum datum)
         {
             var query = new StringBuilder();
             query.AppendLine($"SELECT *");
             query.AppendLine($"  FROM {TableName}");
-            query.AppendLine($" WHERE {ColumnDriverId} = {datum.Driver.DriverId}");
-            query.AppendLine($"   AND {ColumnCarId} = {datum.Car.CarId}");
-            query.AppendLine($"   AND {ColumnSensorId} = {datum.Sensor.SensorId}");
+            query.AppendLine($" WHERE {ColumnDriverId} = {datum.DriverId.DriverId}");
+            query.AppendLine($"   AND {ColumnCarId} = {datum.CarId.CarId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId.SensorId}");
             query.AppendLine($"   AND {ColumnJst} >= {startTime}");
             query.AppendLine($"   AND {ColumnJst} <= {endTime}");
 

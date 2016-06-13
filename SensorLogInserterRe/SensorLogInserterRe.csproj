@@ -95,11 +95,12 @@
     <Compile Include="Calculators\RegeneLossCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
-    <Compile Include="Cleansers\AccCorrector.cs" />
+    <Compile Include="Inserters\Components\AccCorrector.cs" />
     <Compile Include="Constant\CarNames.cs" />
     <Compile Include="Constant\DirectoryNames.cs" />
     <Compile Include="Constant\Coordinate.cs" />
     <Compile Include="Constant\DriverNames.cs" />
+    <Compile Include="Constant\EstimatedCarModel.cs" />
     <Compile Include="Constant\LogTexts.cs" />
     <Compile Include="Constant\SensorNames.cs" />
     <Compile Include="Daos\AndroidAccRawDao.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="Handlers\FileHandlers\NmeaFileHandler.cs" />
     <Compile Include="Inserters\AccInserter.cs" />
     <Compile Include="Inserters\Components\HagimotoEcologCalculator.cs" />
-    <Compile Include="Inserters\CorrectedAccInserter.cs" />
     <Compile Include="Inserters\EcologInserter.cs" />
     <Compile Include="Inserters\GpsInserter.cs" />
     <Compile Include="Inserters\TripInserter.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="Models\Quaternion.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\ThreeDimensionalVector.cs" />
-    <Compile Include="Models\UserDatum.cs" />
+    <Compile Include="Models\InsertDatum.cs" />
     <Compile Include="Utils\DataTableUtil.cs" />
     <Compile Include="Utils\DateTimeUtil.cs" />
     <Compile Include="Utils\JobScheduler.cs" />

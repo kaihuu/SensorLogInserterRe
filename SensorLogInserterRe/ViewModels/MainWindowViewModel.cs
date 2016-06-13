@@ -13,6 +13,7 @@ using Livet.EventListeners;
 using Livet.Messaging.Windows;
 using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Handlers;
+using SensorLogInserterRe.Inserters;
 using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.ViewModels
@@ -27,7 +28,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedTommy; }
             set
-            { 
+            {
                 if (_IsCheckedTommy == value)
                     return;
                 _IsCheckedTommy = value;
@@ -44,7 +45,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedMori; }
             set
-            { 
+            {
                 if (_IsCheckedMori == value)
                     return;
                 _IsCheckedMori = value;
@@ -61,7 +62,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedTamura; }
             set
-            { 
+            {
                 if (_IsCheckedTamura == value)
                     return;
                 _IsCheckedTamura = value;
@@ -78,7 +79,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedLabMember; }
             set
-            { 
+            {
                 if (_IsCheckedLabMember == value)
                     return;
                 _IsCheckedLabMember = value;
@@ -95,7 +96,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedPeriod; }
             set
-            { 
+            {
                 if (_IsCheckedPeriod == value)
                     return;
                 _IsCheckedPeriod = value;
@@ -112,7 +113,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _StartDate; }
             set
-            { 
+            {
                 if (_StartDate == value)
                     return;
                 _StartDate = value;
@@ -129,7 +130,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _EndDate; }
             set
-            { 
+            {
                 if (_EndDate == value)
                     return;
                 _EndDate = value;
@@ -146,7 +147,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedLeafEarlyModel; }
             set
-            { 
+            {
                 if (_IsCheckedLeafEarlyModel == value)
                     return;
                 _IsCheckedLeafEarlyModel = value;
@@ -163,7 +164,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedEvModel; }
             set
-            { 
+            {
                 if (_IsCheckedEvModel == value)
                     return;
                 _IsCheckedEvModel = value;
@@ -181,7 +182,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedMlModel; }
             set
-            { 
+            {
                 if (_IsCheckedMlModel == value)
                     return;
                 _IsCheckedMlModel = value;
@@ -199,7 +200,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedMapMatching; }
             set
-            { 
+            {
                 if (_IsCheckedMapMatching == value)
                     return;
                 _IsCheckedMapMatching = value;
@@ -216,7 +217,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsCheckedDeadReckoning; }
             set
-            { 
+            {
                 if (_IsCheckedDeadReckoning == value)
                     return;
                 _IsCheckedDeadReckoning = value;
@@ -233,7 +234,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsEnabledInsertButton; }
             set
-            { 
+            {
                 if (_IsEnabledInsertButton == value)
                     return;
                 _IsEnabledInsertButton = value;
@@ -250,7 +251,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _LoopButtonText; }
             set
-            { 
+            {
                 if (_LoopButtonText == value)
                     return;
                 _LoopButtonText = value;
@@ -267,7 +268,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _LogText; }
             set
-            { 
+            {
                 if (_LogText == value)
                     return;
                 _LogText = value;
@@ -279,6 +280,8 @@ namespace SensorLogInserterRe.ViewModels
         private InsertConfig InsertConfig { get; set; }
 
         private List<string> InsertFileList { get; set; }
+
+        private List<InsertDatum> InsertDatumList { get; set; }
 
         public void Initialize()
         {
@@ -330,21 +333,30 @@ namespace SensorLogInserterRe.ViewModels
         public void Insert()
         {
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
+            this.InsertConfig = this.GenerateInsertConfig();
 
-            InsertConfig = GenerateInsertConfig();
-            SearchDirectory();
+            this.SearchDirectory();
+            this.InsertGps();
+            this.InsertAcc();
+
+            foreach (var datum in InsertDatumList)
+            {
+                this.InsertTrips(datum);
+                this.InsertCorrectedAcc(datum);
+                this.InsertEcolog(datum);
+            }
         }
 
         private InsertConfig GenerateInsertConfig()
         {
-            var insertConfig = new InsertConfig();
+            var insertConfig = InsertConfig.GetInstance();
 
             #region ドライバーの設定
-            if(this.IsCheckedTommy)
+            if (this.IsCheckedTommy)
                 insertConfig.CheckeDrivers.Add(DriverNames.Tommy);
-            if(this.IsCheckedMori)
+            if (this.IsCheckedMori)
                 insertConfig.CheckeDrivers.Add(DriverNames.Mori);
-            if(this.IsCheckedTamura)
+            if (this.IsCheckedTamura)
                 insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             // TODO 研究室メンバー
             #endregion
@@ -356,12 +368,17 @@ namespace SensorLogInserterRe.ViewModels
 
             #endregion
 
+            #region 推定対象車両の設定
+            if (this.IsCheckedLeafEarlyModel)
+                insertConfig.CarModel = InsertConfig.EstimatedCarModel.LeafEarlyModel;
+            #endregion
+
             #region 推定モデルの設定
 
             if (this.IsCheckedEvModel)
-                insertConfig.Model = InsertConfig.EstimationModel.EvEnergyConsumptionModel;
+                insertConfig.EstModel = InsertConfig.EstimationModel.EvEnergyConsumptionModel;
             else if (this.IsCheckedMlModel)
-                insertConfig.Model = InsertConfig.EstimationModel.MachineLearningModel;
+                insertConfig.EstModel = InsertConfig.EstimationModel.MachineLearningModel;
 
             #endregion
 
@@ -383,10 +400,70 @@ namespace SensorLogInserterRe.ViewModels
 
             await Task.Run(() =>
             {
-                InsertFileList = DirectorySearcher.DirectorySearch(InsertConfig);
+                this.InsertFileList = DirectorySearcher.DirectorySearch(this.InsertConfig);
             });
 
-            this.LogText += String.Format("{0}: {1}", LogTexts.NumberOfTheInsertedFile, InsertFileList.Count);
+            this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
+        }
+
+        private async void InsertGps()
+        {
+            this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
+
+            await Task.Run(() =>
+            {
+                GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
+        }
+
+        private async void InsertAcc()
+        {
+            this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
+
+            await Task.Run(() =>
+            {
+                AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
+        }
+
+        private async void InsertTrips(InsertDatum datum)
+        {
+            this.LogText += LogTexts.TheStartOfTheInsertingTrips + "\n";
+
+            await Task.Run(() =>
+            {
+                TripInserter.InsertTrip(datum);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingTrips + "\n";
+        }
+
+        private async void InsertCorrectedAcc(InsertDatum datum)
+        {
+            this.LogText += LogTexts.TheStartOfTheInsertingCorrectedAcc + "\n";
+
+            await Task.Run(() =>
+            {
+                AccInserter.InsertCorrectedAcc(datum);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingCorrectedAcc + "\n";
+        }
+
+        private async void InsertEcolog(InsertDatum datum)
+        {
+            this.LogText += LogTexts.TheStartOfTheInsertingEcolog + "\n";
+
+            await Task.Run(() =>
+            {
+                EcologInserter.InsertEcolog(datum);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
         }
     }
 }

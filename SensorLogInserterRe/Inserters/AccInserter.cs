@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Handlers.FileHandlers;
+using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
+using SensorLogInserterRe.Inserters.Components;
 
 namespace SensorLogInserterRe.Inserters
 {
@@ -17,24 +19,36 @@ namespace SensorLogInserterRe.Inserters
         private static readonly int CarIndex = 5;
         private static readonly int SensorIndex = 6;
 
-        public static void InsertAcc(List<string> insertFileList)
+        public static void InsertAcc(List<string> insertFileList, InsertConfig config, List<InsertDatum> insertDatumList)
         {
             foreach (var filePath in insertFileList)
             {
                 string[] word = filePath.Split('\\');
 
-                int driverId = DriverNames.GetDriverId(word[DriverIndex]);
-                int carId = CarNames.GetCarId(word[CarIndex]);
-                int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
+                // ACCファイルでない場合はcontinue
+                if (!System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}Unsent16HzAccel.csv"))
+                    continue;
 
-                var accRawTable = InsertAccRaw(filePath, driverId, carId, sensorId);
-                InsertCorrectedAcc(accRawTable);
+                var datum = new InsertDatum()
+                {
+                    DriverId = DriverNames.GetDriverId(word[DriverIndex]),
+                    CarId = CarNames.GetCarId(word[CarIndex]),
+                    SensorId = SensorNames.GetSensorId(word[SensorIndex]),
+                    StartTime = config.StartDate,
+                    EndTime = config.EndDate,
+                    EstimatedCarModel = EstimatedCarModel.GetModel(config.CarModel)
+                };
+
+                InsertDatum.AddDatumToList(insertDatumList, datum);
+
+                InsertAccRaw(filePath, datum);
+
             }
         }
 
-        private static DataTable InsertAccRaw(string filePath, int driverId, int carId, int sensorId)
+        private static DataTable InsertAccRaw(string filePath, InsertDatum datum)
         {
-            var accRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, driverId, carId, sensorId);
+            var accRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, datum.DriverId, datum.CarId, datum.SensorId);
             accRawTable = SortTableByDateTime(accRawTable);
 
             var normalizedAccTable = DataTableUtil.GetAndroidAccRawTable();
@@ -86,24 +100,22 @@ namespace SensorLogInserterRe.Inserters
             return normalizedAccTable;
         }
 
-        private static void InsertCorrectedAcc(DataTable accRawTable)
-        {
-            // TODO CorrectedAccInserterに機能を移譲
-            accRawTable = SortTableByDateTime(accRawTable);
-
-            var correctedAccTable = DataTableUtil.GetCorrectedAccTable();
-
-            
-
-        }
-
         private static DataTable SortTableByDateTime(DataTable table)
         {
-            var view = new DataView(table);
-
-            view.Sort = CorrectedAccDao.ColumnDateTime;
+            var view = new DataView(table) {Sort = CorrectedAccDao.ColumnDateTime};
 
             return view.ToTable();
+        }
+
+        public static void InsertCorrectedAcc(InsertDatum datum)
+        {
+            var tripsTable = TripsDao.Get(datum.StartTime, datum.EndTime, datum);
+
+            foreach (DataRow row in tripsTable.Rows)
+            {
+                var correctedAccTable = AccCorrector.CorrectAcc(datum.StartTime, datum.EndTime, datum, row);
+                CorrectedAccDao.Insert(correctedAccTable);
+            }
         }
     }
 }

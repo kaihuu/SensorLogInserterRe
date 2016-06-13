@@ -33,17 +33,17 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
-        public static DataTable Get(DateTime startDate, DateTime endDate, UserDatum datum)
+        public static DataTable Get(InsertDatum datum)
         {
             var query = new StringBuilder();
 
             query.AppendLine("SELECT *");
             query.AppendLine($"FROM {TripsRawDao.TableName}");
-            query.AppendLine($"WHERE {TripsRawDao.ColumnDriverId} = {datum.Driver.DriverId}");
-            query.AppendLine($"AND {TripsRawDao.ColumnCarId} = {datum.Car.CarId}");
-            query.AppendLine($"AND {TripsRawDao.ColumnSensorId} = {datum.Sensor.SensorId}");
-            query.AppendLine($"AND {TripsRawDao.ColumnStartTime} >= {startDate}");
-            query.AppendLine($"AND {TripsRawDao.ColumnStartTime} <= {endDate}");
+            query.AppendLine($"WHERE {TripsRawDao.ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"AND {TripsRawDao.ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"AND {TripsRawDao.ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"AND {TripsRawDao.ColumnStartTime} >= {datum.StartTime}");
+            query.AppendLine($"AND {TripsRawDao.ColumnStartTime} <= {datum.EndTime}");
             query.AppendLine($"ORDER BY {ColumnStartTime}");
 
             return DatabaseAccesser.GetResult(query.ToString());
