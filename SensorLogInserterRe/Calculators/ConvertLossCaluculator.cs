@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Calculators
 {
     static class ConvertLossCaluculator
     {
-        static public double CalcEnergy(double drivingPower, Car car, double vehicleSpeed, double inverterEfficiency, double maxDrivingForce, double maxDrivingPower)
+        public static double CalcEnergy(double drivingPower, Car car, double vehicleSpeed, double inverterEfficiency, double maxDrivingForce, double maxDrivingPower)
         {
             double convertLoss;
             double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
