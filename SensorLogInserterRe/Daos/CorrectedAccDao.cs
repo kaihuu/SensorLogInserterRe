@@ -43,17 +43,17 @@ namespace SensorLogInserterRe.Daos
          * So let's start our journey 
          * Because you came to see me first
          ***/
-        public static DataTable GetAccurateStoppingAccRaw(DateTime startTime, DateTime endTime, int timeDiff, InsertDatum datum)
+        public static DataTable GetAccurateStoppingAccRaw(int timeDiff, InsertDatum datum)
         {
             string query = "with LOW_SPEED as ";
             query += "( ";
             query += "	select DRIVER_ID,SENSOR_ID,DATEADD(second,-1,JST) as START_TIME, JST as END_TIME ";
             query += "	from CORRECTED_GPS ";
-            query += "	where DRIVER_ID = " + datum.DriverId.DriverId + " ";
-            query += "	and SENSOR_ID = " + datum.SensorId.SensorId + " ";
+            query += "	where DRIVER_ID = " + datum.DriverId + " ";
+            query += "	and SENSOR_ID = " + datum.SensorId + " ";
             query += "	and SPEED < 1 ";
-            query += "	and JST >= '" + startTime + "' ";
-            query += "	and JST <= '" + endTime + "' ";
+            query += "	and JST >= '" + datum.StartTime + "' ";
+            query += "	and JST <= '" + datum.EndTime + "' ";
             query += ") ";
             query += ", UPPER_TIME as ";
             query += "( ";
@@ -102,11 +102,11 @@ namespace SensorLogInserterRe.Daos
             query += "( ";
             query += "	select g1.DRIVER_ID,g1.SENSOR_ID,g1.JST ";
             query += "	from CORRECTED_GPS g1,CORRECTED_GPS g2 ";
-            query += "	where g1.DRIVER_ID = " + datum.DriverId.DriverId + " ";
-            query += "	and g1.SENSOR_ID = " + datum.SensorId.SensorId + " ";
+            query += "	where g1.DRIVER_ID = " + datum.DriverId + " ";
+            query += "	and g1.SENSOR_ID = " + datum.SensorId + " ";
             query += "	and g1.SPEED < 10 ";
-            query += "	and g2.DRIVER_ID = " + datum.DriverId.DriverId + " ";
-            query += "	and g2.SENSOR_ID = " + datum.SensorId.SensorId + " ";
+            query += "	and g2.DRIVER_ID = " + datum.DriverId + " ";
+            query += "	and g2.SENSOR_ID = " + datum.SensorId + " ";
             query += "	and g2.SPEED > 10 ";
             query += "	and g1.JST = DATEADD(second,1,g2.JST) ";
             query += "	and g1.JST > '" + startTime + "' ";

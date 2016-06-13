@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Handlers.FileHandlers
 {
-    class NmeaFileHandler : IFileHandler
+    class NmeaFileHandler
     {
         public List<string> CheckFiles(string folderPass, DateTime startDate, DateTime endDate)
         {

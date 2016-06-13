@@ -47,8 +47,7 @@ namespace SensorLogInserterRe.Inserters.Components
             //WriteLog("Y方向平均(補正前)＝" + dtACC.Compute("AVG(LATERAL_ACC)", "JST > #" + tripStart + "# AND JST < #" + tripEnd + "#").ToString(), LogMode.acc);
             //WriteLog("Z方向平均(補正前)＝" + dtACC.Compute("AVG(VERTICAL_ACC)", "JST > #" + tripStart + "# AND JST < #" + tripEnd + "#").ToString(), LogMode.acc);   
 
-            var accurateStoppingAccRawTable = CorrectedAccDao.GetAccurateStoppingAccRaw(startTime, endTime,
-                millisecTimeDiff, datum);
+            var accurateStoppingAccRawTable = CorrectedAccDao.GetAccurateStoppingAccRaw(millisecTimeDiff, datum);
 
             if (accurateStoppingAccRawTable.Rows.Count == 0)
             {

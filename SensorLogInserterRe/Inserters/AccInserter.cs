@@ -109,7 +109,7 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertCorrectedAcc(InsertDatum datum)
         {
-            var tripsTable = TripsDao.Get(datum.StartTime, datum.EndTime, datum);
+            var tripsTable = TripsDao.Get(datum);
 
             foreach (DataRow row in tripsTable.Rows)
             {

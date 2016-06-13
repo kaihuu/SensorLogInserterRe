@@ -38,9 +38,9 @@ namespace SensorLogInserterRe.Daos
             var query = new StringBuilder();
             query.AppendLine($"SELECT *");
             query.AppendLine($"  FROM {TableName}");
-            query.AppendLine($" WHERE {ColumnDriverId} = {datum.DriverId.DriverId}");
-            query.AppendLine($"   AND {ColumnCarId} = {datum.CarId.CarId}");
-            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId.SensorId}");
+            query.AppendLine($" WHERE {ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"   AND {ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
             query.AppendLine($"   AND {ColumnJst} >= {startTime}");
             query.AppendLine($"   AND {ColumnJst} <= {endTime}");
 

@@ -28,9 +28,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                     DataRow row = gpsRawTable.NewRow();
 
-                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.DriverId.DriverId);
-                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.CarId.CarId);
-                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.SensorId.SensorId);
+                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.DriverId);
+                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.CarId);
+                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.SensorId);
 
                     DateTime jst = DateTime.Parse(fields[0].ToString());
                     DateTime androidTime = DateTime.Parse(fields[1].ToString());
