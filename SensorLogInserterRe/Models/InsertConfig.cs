@@ -47,5 +47,21 @@ namespace SensorLogInserterRe.Models
             var instance = new InsertConfig();
             return instance;
         }
+
+        public override string ToString()
+        {
+            var ret = new StringBuilder();
+
+            string drivers = "Driver ID: ";
+            this.CheckeDrivers.ForEach(x => { drivers += x + ","; });
+
+            ret.Append(drivers + " ");
+            ret.Append("StartDate: " + this.StartDate + " ");
+            ret.Append("EndDate: " + this.EndDate + " ");
+            ret.Append("EstModel: " + this.StartDate + " ");
+            ret.Append("Correction: " + this.Correction + " ");
+            ret.Append("CarModel: " + this.CarModel);
+            return ret.ToString();
+        }
     }
 }

@@ -15,6 +15,7 @@ using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Handlers;
 using SensorLogInserterRe.Inserters;
 using SensorLogInserterRe.Models;
+using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.ViewModels
 {
@@ -333,6 +334,7 @@ namespace SensorLogInserterRe.ViewModels
         public void Insert()
         {
             this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Search, LogTexts.TheStartOfTheCheckUpdateFile);
             this.InsertConfig = this.GenerateInsertConfig();
 
             this.SearchDirectory();
@@ -352,6 +354,7 @@ namespace SensorLogInserterRe.ViewModels
             var insertConfig = InsertConfig.GetInstance();
 
             #region ドライバーの設定
+
             if (this.IsCheckedTommy)
                 insertConfig.CheckeDrivers.Add(DriverNames.Tommy);
             if (this.IsCheckedMori)
@@ -359,6 +362,7 @@ namespace SensorLogInserterRe.ViewModels
             if (this.IsCheckedTamura)
                 insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             // TODO 研究室メンバー
+
             #endregion
 
             #region 期間の設定
@@ -371,6 +375,7 @@ namespace SensorLogInserterRe.ViewModels
             #region 推定対象車両の設定
             if (this.IsCheckedLeafEarlyModel)
                 insertConfig.CarModel = InsertConfig.EstimatedCarModel.LeafEarlyModel;
+
             #endregion
 
             #region 推定モデルの設定
@@ -390,6 +395,8 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
 
             #endregion
+
+            LogWritter.WriteLog(LogWritter.LogMode.Search, insertConfig.ToString());
 
             return insertConfig;
         }
