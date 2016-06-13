@@ -169,7 +169,7 @@ namespace SensorLogInserterRe.Inserters.Components
             double drivingResistancePower =
                 airResistancePower + rollingResistancePower + climbingResistancePower + accResistancePower;
 
-            // ここから植村君よろしくorz
+            // TODO ここから植村君よろしくorz
             newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
                 drivingResistancePower, new Car(), speed, 0,0,0));
 
