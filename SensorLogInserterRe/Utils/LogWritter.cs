@@ -11,6 +11,7 @@ namespace SensorLogInserterRe.Utils
     {
         public enum LogMode
         {
+            Search,
             Gps,
             Acc,
             Trip,
@@ -27,6 +28,16 @@ namespace SensorLogInserterRe.Utils
 
             switch (mode)
             {
+                case LogMode.Search:
+
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_search.log";
+
+                    using (StreamWriter writer = new StreamWriter(fileName, true))
+                    {
+                        writer.WriteLine(DateTime.Now + " : " + text);
+                    }
+                    break;
+
                 case LogMode.Gps:
 
                     fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_gps.log";
