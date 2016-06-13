@@ -138,6 +138,23 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsCheckedLeafEarlyModel変更通知プロパティ
+        private bool _IsCheckedLeafEarlyModel;
+
+        public bool IsCheckedLeafEarlyModel
+        {
+            get
+            { return _IsCheckedLeafEarlyModel; }
+            set
+            { 
+                if (_IsCheckedLeafEarlyModel == value)
+                    return;
+                _IsCheckedLeafEarlyModel = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         #region IsCheckedEvModel変更通知プロパティ
         private bool _IsCheckedEvModel;
 

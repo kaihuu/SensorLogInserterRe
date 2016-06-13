@@ -6,7 +6,7 @@
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:v="clr-namespace:SensorLogInserterRe.Views"
         xmlns:vm="clr-namespace:SensorLogInserterRe.ViewModels"
-        Title="SensorLogInserter Re ver 0.0.1"
+        Title="SensorLogInserter Re ver 0.1"
         Width="525"
         Height="525">
 
@@ -37,6 +37,7 @@
     <Grid Margin="10,0,10,10">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -87,6 +88,22 @@
         <GroupBox Grid.Row="2">
 
             <GroupBox.Header>
+                <Label Content="推定対象車両" />
+            </GroupBox.Header>
+
+            <StackPanel Grid.Row="1"
+                        Margin="10,0,0,0"
+                        Orientation="Horizontal">
+
+                <CheckBox Content="LEAF 前期型" IsChecked="{Binding  IsCheckedLeafEarlyModel }" />
+
+            </StackPanel>
+
+        </GroupBox>
+
+        <GroupBox Grid.Row="3">
+
+            <GroupBox.Header>
                 <Label Content="推定モデル" />
             </GroupBox.Header>
 
@@ -102,7 +119,7 @@
 
         </GroupBox>
 
-        <GroupBox Grid.Row="3">
+        <GroupBox Grid.Row="4">
 
             <GroupBox.Header>
                 <Label Content="GPS補正" />
@@ -120,7 +137,7 @@
 
         </GroupBox>
 
-        <Grid Grid.Row="4" Height="50">
+        <Grid Grid.Row="5" Height="50">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -154,7 +171,7 @@
 
         </Grid>
 
-        <ScrollViewer Grid.Row="5" Margin="5,0">
+        <ScrollViewer Grid.Row="6" Margin="5,0">
 
             <TextBox Text="{Binding LogText}"
                      TextWrapping="Wrap"
