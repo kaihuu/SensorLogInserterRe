@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.Daos
 {
-    class Altitude10mMeshRegisteredDao
+    class Altitude10MMeshRegisteredDao
     {
         private static readonly string TableName = "altitude_10m_mesh_registered";
         public static readonly string ColumnMeshId = "mesh_id";

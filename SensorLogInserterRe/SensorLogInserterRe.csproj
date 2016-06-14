@@ -96,7 +96,7 @@
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Daos\Altitude10MMeshDao.cs" />
-    <Compile Include="Daos\Altitude10mMeshRegisteredDao.cs" />
+    <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
     <Compile Include="Inserters\Components\AccCorrector.cs" />
     <Compile Include="Constant\CarNames.cs" />
     <Compile Include="Constant\DirectoryNames.cs" />
