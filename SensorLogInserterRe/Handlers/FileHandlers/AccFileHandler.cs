@@ -30,28 +30,26 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     row.SetField(AndroidAccRawDao.ColumnCarId, carId);
                     row.SetField(AndroidAccRawDao.ColumnSensorId, sensorId);
 
-                    DateTime androidTime = DateTime.Parse(fields[0]);
-
-                    #region AndroidTimeの設定
-                    if (androidTime.Year == 1970)
+                    if (fields != null)
                     {
-                        androidTime = androidTime.AddYears(42);
-                        androidTime = androidTime.AddMonths(6);
+                        DateTime androidTime = DateTime.Parse(fields[0]);
+
+                        #region AndroidTimeの設定
+                        if (androidTime.Year == 1970)
+                        {
+                            androidTime = androidTime.AddYears(42);
+                            androidTime = androidTime.AddMonths(6);
+                        }
+
+                        row.SetField(AndroidAccRawDao.ColumnDateTime, androidTime);
+                        #endregion
+
+                        row.SetField(AndroidAccRawDao.ColumnAccX, fields[1]);
+                        row.SetField(AndroidAccRawDao.ColumnAccY, fields[2]);
+                        row.SetField(AndroidAccRawDao.ColumnAccZ, fields[3]);
+
+                        accRawTable.Rows.Add(row);
                     }
-                    
-                    row.SetField(AndroidAccRawDao.ColumnDateTime, androidTime);
-                    #endregion
-
-                    row.SetField(AndroidAccRawDao.ColumnAccX, fields[1]);
-                    row.SetField(AndroidAccRawDao.ColumnAccY, fields[2]);
-                    row.SetField(AndroidAccRawDao.ColumnAccZ, fields[3]);
-
-                    accRawTable.Rows.Add(row);
-                }
-                catch (NullReferenceException nre)
-                {
-                    // TODO エラー処理
-                    continue;
                 }
                 catch (IndexOutOfRangeException iore)
                 {
@@ -73,7 +71,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
             TextFieldParser parser = new TextFieldParser(filePath, Encoding.GetEncoding(932))
             {
                 TextFieldType = FieldType.Delimited,
-                Delimiters = new string[] {","},
+                Delimiters = new string[] { "," },
                 HasFieldsEnclosedInQuotes = true,
                 TrimWhiteSpace = true
             };
