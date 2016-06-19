@@ -10,12 +10,10 @@ namespace SensorLogInserterRe.Calculators
 {
     static class DistanceCalculator
     {
-        public static float CalcDistance(double latitudeFirst, double longitudeFirst, double latitudeSecond, double longitudeSecond)
+        public static double CalcDistance(double latitudeFirst, double longitudeFirst, double latitudeSecond, double longitudeSecond)
         {
             //ヒュベニの公式で距離を計算
-            double result = HubenyDistanceCalculator.CalcHubenyFormula(latitudeFirst, longitudeFirst, latitudeSecond, longitudeSecond);
-
-            return (float)result;
+           return HubenyDistanceCalculator.CalcHubenyFormula(latitudeFirst, longitudeFirst, latitudeSecond, longitudeSecond);
         }
     }
 }
