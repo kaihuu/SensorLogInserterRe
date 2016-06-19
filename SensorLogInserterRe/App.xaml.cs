@@ -4,8 +4,9 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
-
+using System.Windows.Threading;
 using Livet;
+using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe
 {
@@ -20,17 +21,13 @@ namespace SensorLogInserterRe
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
 
-        //集約エラーハンドラ
-        //private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        //{
-        //    //TODO:ロギング処理など
-        //    MessageBox.Show(
-        //        "不明なエラーが発生しました。アプリケーションを終了します。",
-        //        "エラー",
-        //        MessageBoxButton.OK,
-        //        MessageBoxImage.Error);
-        //
-        //    Environment.Exit(1);
-        //}
+        private void Application_DispatcherUnhandledException(
+            object sender,
+            DispatcherUnhandledExceptionEventArgs e)
+        {
+            LogWritter.WriteLog(LogWritter.LogMode.Error, e.Exception.ToString() + e.Exception.Message);
+
+            e.Handled = true;
+        }
     }
 }
