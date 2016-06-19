@@ -117,7 +117,6 @@
     <Compile Include="Daos\EfficiencyDao.cs" />
     <Compile Include="Daos\EfficiencyMaxDao.cs" />
     <Compile Include="Daos\LinkDao.cs" />
-    <Compile Include="Daos\MeshDao.cs" />
     <Compile Include="Daos\SemanticLinkDao.cs" />
     <Compile Include="Daos\TripsDao.cs" />
     <Compile Include="Daos\TripsRawDao.cs" />
