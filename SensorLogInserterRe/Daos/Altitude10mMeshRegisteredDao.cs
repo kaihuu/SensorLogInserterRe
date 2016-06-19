@@ -4,12 +4,13 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
     class Altitude10MMeshRegisteredDao
     {
-        private static readonly string TableName = "altitude_10m_mesh_registered";
+        private static readonly string TableName = "altitude_10m_mesh_registered_fixed";
         public static readonly string ColumnMeshId = "mesh_id";
         public static readonly string ColumnLowerLatitude = "lower_latitude";
         public static readonly string ColumnLowerLongitude = "lower_longitude";
@@ -22,6 +23,14 @@ namespace SensorLogInserterRe.Daos
             DatabaseAccesser.Insert(TableName, dataTable);
         }
 
+        public static void Insert(int meshId, AltitudeDatum datum)
+        {
+            string query = $"INSERT INTO {TableName}({ColumnMeshId}, {ColumnLowerLatitude}, {ColumnLowerLongitude}, {ColumnUpperLatitude}, {ColumnUpperLongitude}, {ColumnAltitude}) ";
+            query += $"VALUES('{meshId}', '{datum.LowerLatitude}', '{ColumnLowerLongitude}', '{ColumnUpperLatitude}', '{ColumnUpperLatitude}', '{ColumnUpperLongitude}') ";
+
+            DatabaseAccesser.Insert(query);
+        }
+
         public static DataTable Get()
         {
             string query = "SELECT * FROM " + TableName;
@@ -29,5 +38,12 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
+        public static int GetMaxMeshId()
+        {
+            string query = "SELECT MAX(mesh_id) AS max_id ";
+            query += $"FROM {TableName}";
+
+            return DatabaseAccesser.GetResult(query).Rows[0].Field<int>("max_id");
+        }
     }
 }

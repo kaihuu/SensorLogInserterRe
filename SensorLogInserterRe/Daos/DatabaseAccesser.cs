@@ -61,5 +61,29 @@ namespace SensorLogInserterRe.Daos
                 }
             }
         }
+
+        public static void Insert(string query)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(DatabaseAccesser.ConnectionString))
+            {
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, DatabaseAccesser.ConnectionString);
+
+                try
+                {
+                    sqlConnection.Open();
+                    SqlCommand command = new SqlCommand(query, sqlConnection);
+                    command.CommandTimeout = 600;
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException sqlException)
+                {
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+        }
     }
 }

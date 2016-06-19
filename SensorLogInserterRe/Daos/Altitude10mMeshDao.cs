@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Effects;
+using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -27,6 +28,27 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static AltitudeDatum Get(double latitude, double longitude)
+        {
+            string query = "select * ";
+            query += $"FROM {TableName} ";
+            query += $"WHERE {ColumnLowerLatitude} <= " + latitude + " ";
+            query += $"AND {ColumnUpperLatitude} > " + latitude + " ";
+            query += $"AND {ColumnLowerLongitude} <= " + longitude + " ";
+            query += $"AND {ColumnUpperLongitude} > " + longitude + " ";
+
+            var result = DatabaseAccesser.GetResult(query);
+
+            return new AltitudeDatum
+            {
+                LowerLatitude = result.Rows[0].Field<double?>(ColumnLowerLatitude),
+                LowerLongitude = result.Rows[0].Field<double?>(ColumnLowerLongitude),
+                UpperLatitude = result.Rows[0].Field<double?>(ColumnUpperLatitude),
+                UpperLongitude = result.Rows[0].Field<double?>(ColumnUpperLongitude),
+                Altitude = result.Rows[0].Field<double?>(ColumnAltitude)
+            };
         }
     }
 }
