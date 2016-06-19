@@ -40,12 +40,12 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"   {ColumnSensorId},");
             query.AppendLine($"   {ColumnDriverId},");
             query.AppendLine($"   CONVERT(varchar,DATEADD(MILLISECOND, {timeDiff} ,{ColumnDateTime}),121) AS jst,");
-            query.AppendLine($"   {ColumnAccX} AS LONGITUDINAL_ACC,"); // TODO 命名あってるか？
-            query.AppendLine($"   {ColumnAccY} AS LATERAL_ACC,"); // TODO 命名合ってるか？
-            query.AppendLine($"   {ColumnAccZ} AS VERTICAL_ACC"); // TODO 命名合ってるか？
+            query.AppendLine($"   {ColumnAccX} AS {CorrectedAccDao.ColumnLongitudinalAcc},");
+            query.AppendLine($"   {ColumnAccY} AS {CorrectedAccDao.ColumnLateralAcc},");
+            query.AppendLine($"   {ColumnAccZ} AS {CorrectedAccDao.ColumnVerticalAcc}");
             query.AppendLine($"FROM {TableName}");
-            query.AppendLine($"WHERE {ColumnDateTime} >= {startTime}");
-            query.AppendLine($"   AND {ColumnDateTime} <= {endTime}");
+            query.AppendLine($"WHERE {ColumnDateTime} >= '{startTime}'");
+            query.AppendLine($"   AND {ColumnDateTime} <= '{endTime}'");
             query.AppendLine($"   AND {ColumnDriverId} = {datum.DriverId}");
             query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
             query.AppendLine($"ORDER BY {ColumnDateTime}");
