@@ -61,13 +61,13 @@ namespace SensorLogInserterRe.Daos
 
         public static DataTable Get(DateTime startPeriod, DateTime endPeriod)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT *");
-            sb.AppendLine("FROM " + TableName);
-            sb.AppendLine("WHERE jst >= " + startPeriod);
-            sb.AppendLine(" AND jst <= " + endPeriod);
+            StringBuilder query = new StringBuilder();
+            query.AppendLine($"SELECT *");
+            query.AppendLine($"FROM " + TableName);
+            query.AppendLine($"WHERE jst >= '{startPeriod}'");
+            query.AppendLine($" AND jst <= '{endPeriod}'");
 
-            return DatabaseAccesser.GetResult(sb.ToString());
+            return DatabaseAccesser.GetResult(query.ToString());
         }
     }
 }
