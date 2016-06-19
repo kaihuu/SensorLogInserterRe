@@ -31,7 +31,6 @@ namespace SensorLogInserterRe.Handlers
 
         private static void CheckFiles(string folderPass, DateTime startDate, DateTime endDate, List<string> insertFileList)
         {
-            long todayLong = DateTimeUtil.ConvertDateTimeToLongFormatted(DateTime.Now);
             long startLong = DateTimeUtil.ConvertDateTimeToLongFormatted(startDate);
             long endLong = DateTimeUtil.ConvertDateTimeToLongFormatted(endDate);
 
