@@ -69,8 +69,6 @@ namespace SensorLogInserterRe.Inserters
 
             #endregion
 
-            int removedCount = 0;
-
             for (int i = 1; i < accRawTable.Rows.Count; i++)
             {
                 //SQLSERVERのDATETIME型のミリ秒は0,3,7しか取らないため、5ミリ秒よりも短いデータが存在する場合は挿入時にエラーを出す可能性がある
@@ -88,10 +86,6 @@ namespace SensorLogInserterRe.Inserters
 
                     normalizedAccTable.Rows.Add(row);
                 }
-                else
-                {
-                    removedCount++;
-                }
             }
 
             // TODO 除去したデータ件数をログに出力
@@ -102,7 +96,7 @@ namespace SensorLogInserterRe.Inserters
 
         private static DataTable SortTableByDateTime(DataTable table)
         {
-            var view = new DataView(table) {Sort = CorrectedAccDao.ColumnDateTime};
+            var view = new DataView(table) {Sort = CorrectedAccDao.ColumnJst};
 
             return view.ToTable();
         }
