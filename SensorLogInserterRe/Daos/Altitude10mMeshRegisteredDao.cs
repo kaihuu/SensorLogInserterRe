@@ -26,7 +26,7 @@ namespace SensorLogInserterRe.Daos
         public static void Insert(int meshId, AltitudeDatum datum)
         {
             string query = $"INSERT INTO {TableName}({ColumnMeshId}, {ColumnLowerLatitude}, {ColumnLowerLongitude}, {ColumnUpperLatitude}, {ColumnUpperLongitude}, {ColumnAltitude}) ";
-            query += $"VALUES('{meshId}', '{datum.LowerLatitude}', '{ColumnLowerLongitude}', '{ColumnUpperLatitude}', '{ColumnUpperLatitude}', '{ColumnUpperLongitude}') ";
+            query += $"VALUES('{meshId}', '{datum.LowerLatitude}', '{datum.LowerLongitude}', '{datum.UpperLatitude}', '{datum.UpperLongitude}', '{datum.Altitude}') ";
 
             DatabaseAccesser.Insert(query);
         }
