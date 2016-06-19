@@ -15,7 +15,11 @@ namespace SensorLogInserterRe.Constant
             {
                 case InsertConfig.EstimatedCarModel.LeafEarlyModel:
                     // TODO LEAF前期型のスペックに
-                    return new Car();
+                    return new Car()
+                    {
+                        Battery = 1000,
+                        FrontalProjectedArea = 1000
+                    };
                 default:
                     return null;
             }
