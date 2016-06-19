@@ -30,7 +30,7 @@ namespace SensorLogInserterRe.Daos
 
         public static DataTable Get(string driverName)
         {
-            string query = String.Format("SELECT * FROM {0} WHERE {1} = '{2}'", TableName, ColumnName, driverName);
+            string query = $"SELECT * FROM {TableName} WHERE {ColumnName} = '{driverName}'";
 
             return DatabaseAccesser.GetResult(query);
         } 
