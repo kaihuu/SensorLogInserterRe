@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using SensorLogInserterRe.Models;
 
-// TODO 各DAOのjstなどの演算子に''シングルコーテーションが付いているか確認
-
 namespace SensorLogInserterRe.Daos
 {
     class CorrectedAccDao
