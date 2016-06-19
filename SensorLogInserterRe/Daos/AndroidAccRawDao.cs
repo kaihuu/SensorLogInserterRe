@@ -42,7 +42,7 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"   CONVERT(varchar,DATEADD(MILLISECOND, {timeDiff} ,{ColumnDateTime}),121) AS jst,");
             query.AppendLine($"   {ColumnAccX} AS LONGITUDINAL_ACC,"); // TODO 命名あってるか？
             query.AppendLine($"   {ColumnAccY} AS LATERAL_ACC,"); // TODO 命名合ってるか？
-            query.AppendLine($"   ACC_Z AS VERTICAL_ACC"); // TODO 命名合ってるか？
+            query.AppendLine($"   {ColumnAccZ} AS VERTICAL_ACC"); // TODO 命名合ってるか？
             query.AppendLine($"FROM {TableName}");
             query.AppendLine($"WHERE {ColumnDateTime} >= {startTime}");
             query.AppendLine($"   AND {ColumnDateTime} <= {endTime}");
