@@ -37,8 +37,8 @@ namespace SensorLogInserterRe.Daos
             var query = new StringBuilder();
             query.AppendLine($"SELECT AVG(DATEDIFF(MILLISECOND, {ColumnAndroidTime}, {ColumnJst})) AS time_diff");
             query.AppendLine($"FROM {TableName}");
-            query.AppendLine($"WHERE {ColumnJst} >= {startTime}");
-            query.AppendLine($" AND {ColumnJst} <= {endTime}");
+            query.AppendLine($"WHERE {ColumnJst} >= '{startTime}'");
+            query.AppendLine($" AND {ColumnJst} <= '{endTime}'");
             query.AppendLine($" AND {ColumnDriverId} = {datum.DriverId}");
             query.AppendLine($" AND {ColumnSensorId} = {datum.SensorId}");
 
