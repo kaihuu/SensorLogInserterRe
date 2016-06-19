@@ -120,8 +120,6 @@ namespace SensorLogInserterRe.Utils
 
         public static DataTable GetTempCorrectedAccTable(DataTable table)
         {
-            // TODO これけっこうやばい、合ってない可能性大
-
             table.Columns.Add(new DataColumn("ROLL"));
             table.Columns.Add(new DataColumn("PITCH"));
             table.Columns.Add(new DataColumn("YAW"));
