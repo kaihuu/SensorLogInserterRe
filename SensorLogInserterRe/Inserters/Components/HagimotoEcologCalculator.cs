@@ -57,7 +57,7 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnHeading, 0);
             newRow.SetField(EcologDao.ColumnDistanceDifference, 0);
 
-            var meshAndAltitude = AltitudeCalculator.CalcAltitude(
+            var meshAndAltitude = AltitudeCalculator.GetInstance().CalcAltitude(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
@@ -119,7 +119,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
             newRow.SetField(EcologDao.ColumnDistanceDifference, distanceDiff);
 
-            var meshAndAltitude = AltitudeCalculator.CalcAltitude(
+            var meshAndAltitude = AltitudeCalculator.GetInstance().CalcAltitude(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
