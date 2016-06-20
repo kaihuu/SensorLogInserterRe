@@ -214,19 +214,12 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
                     row.SetField(TripsDao.ColumnTripDirection, "homeward");
 
-                    // TODO ログ出力
-                    // WriteLog("DRIVER_ID:" + tripRawTable.Rows[i]["DRIVER_ID"] + " CAR_ID:" + tripRawTable.Rows[i]["CAR_ID"] + " SENSOR_ID:" + tripRawTable.Rows[i]["SENSOR_ID"] + "期間:" + tripRawTable.Rows[i]["START_TIME"] + "～" + tripRawTable.Rows[j]["END_TIME"], LogMode.trip);
-                    // WriteLog("YNU→自宅", LogMode.trip);
-
                     TimeSpan span = tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime)
                         - tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime);
 
                     if (span.TotalHours > 12)
                     {
-                        // TODO ログ出力
-                        //WriteLog("別々のトリップを結合する可能性があるので挿入しません", LogMode.trip);
-                        //WriteLog("TRIP:トリップ結合でエラー発生", LogMode.error);
-                        //errorCount++;
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません " + datum.ToString());
                         break;
                     }
                     else
@@ -241,9 +234,7 @@ namespace SensorLogInserterRe.Inserters
                 else if (IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude),
                     tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude)))
                 {
-                    // TODO ログ出力
-                    // WriteLog("DRIVER_ID:" + tripRawTable.Rows[i]["DRIVER_ID"] + " CAR_ID:" + tripRawTable.Rows[i]["CAR_ID"] + " SENSOR_ID:" + tripRawTable.Rows[i]["SENSOR_ID"] + "期間:" + tripRawTable.Rows[i]["START_TIME"] + "～" + tripRawTable.Rows[j]["END_TIME"], LogMode.trip);
-                    // WriteLog("自宅→自宅\r\n", LogMode.trip);
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません " + datum.ToString());
 
                     // Trip の挿入は行わない
                     // ループの初期化
@@ -262,8 +253,7 @@ namespace SensorLogInserterRe.Inserters
                         || IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude)))
                     {
                         tripChangeFlag = true;
-                        // TODO ログ出力
-                        // WriteLog("YNU→?\r\n", LogMode.trip);
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒？トリップなので挿入しません " + datum.ToString());
                     }
                 }
             }
