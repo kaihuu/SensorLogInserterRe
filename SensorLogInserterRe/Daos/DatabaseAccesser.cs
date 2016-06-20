@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Daos
 {
@@ -30,7 +31,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-                    
+                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally
                 {
@@ -53,7 +54,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-
+                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally
                 {
@@ -77,7 +78,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-
+                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally
                 {
