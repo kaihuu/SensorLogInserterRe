@@ -25,7 +25,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var ecologTable = DataTableUtil.GetEcologTable();
 
             var firstRow = GenerateFirstEcologRow(
-                ecologTable.NewRow(), tripRow, correctedGpsTable.Rows[0]);
+                ecologTable.NewRow(), tripRow, correctedGpsTable.Rows[0], datum);
 
             ecologTable.Rows.Add(firstRow);
 
@@ -44,7 +44,7 @@ namespace SensorLogInserterRe.Inserters.Components
             return ecologTable;
         }
 
-        private static DataRow GenerateFirstEcologRow(DataRow newRow, DataRow tripRow, DataRow correctedGpsRow)
+        private static DataRow GenerateFirstEcologRow(DataRow newRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum)
         {
             newRow.SetField(EcologDao.ColumnTripId, tripRow.Field<int>(TripsDao.ColumnTripId));
             newRow.SetField(EcologDao.ColumnDriverId, tripRow.Field<int>(TripsDao.ColumnDriverId));
@@ -87,9 +87,10 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnEnergyByCooling, DBNull.Value);
             newRow.SetField(EcologDao.ColumnEnergyByHeating, DBNull.Value);
 
-            var linkAndTheta = LinkMatcher.MatchLink(
+            var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
+                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
+                0, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
@@ -143,14 +144,14 @@ namespace SensorLogInserterRe.Inserters.Components
                 airResistancePower);
 
             double rollingResistancePower = RollingResistanceCalculator.CalcPower(
-                Myu, datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff/distanceDiff), speed);
+                Myu, datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speed);
 
             newRow.SetField(
                 EcologDao.ColumnEnergyByRollingResistance,
                 rollingResistancePower);
 
             double climbingResistancePower = ClimbingResistanceCalculator.CalcPower(
-                datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff/distanceDiff), speed);
+                datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speed);
 
             newRow.SetField(
                 EcologDao.ColumnEnergyByClimbingResistance,
@@ -169,17 +170,15 @@ namespace SensorLogInserterRe.Inserters.Components
             double drivingResistancePower =
                 airResistancePower + rollingResistancePower + climbingResistancePower + accResistancePower;
 
-            // TODO ここから植村君よろしくorz
-
             newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
                 drivingResistancePower, datum.EstimatedCarModel, speed));
 
-            newRow.SetField(EcologDao.ColumnRegeneLoss, RegeneLossCalculator.CalcEnergy(drivingResistancePower,RegeneEnergyCalculator.CalcEnergy(drivingResistancePower,
-                speed,datum.EstimatedCarModel),datum.EstimatedCarModel,speed));
+            newRow.SetField(EcologDao.ColumnRegeneLoss, RegeneLossCalculator.CalcEnergy(drivingResistancePower, RegeneEnergyCalculator.CalcEnergy(drivingResistancePower,
+                speed, datum.EstimatedCarModel), datum.EstimatedCarModel, speed));
             newRow.SetField(EcologDao.ColumnRegeneEnergy, RegeneEnergyCalculator.CalcEnergy(drivingResistancePower, speed, datum.EstimatedCarModel));
-            newRow.SetField(EcologDao.ColumnLostEnergy, LostEnergyCalculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed, Rho, WindSpeed, Myu, 
+            newRow.SetField(EcologDao.ColumnLostEnergy, LostEnergyCalculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed, Rho, WindSpeed, Myu,
                 Math.Atan(terrainAltitudeDiff / distanceDiff)));
-            newRow.SetField(EcologDao.ColumnEfficiency, EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speed, 
+            newRow.SetField(EcologDao.ColumnEfficiency, EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speed,
                 drivingResistancePower * 1000 * 3600 / speed / 3.6 * datum.EstimatedCarModel.TireRadius / datum.EstimatedCarModel.ReductionRatio));
             newRow.SetField(EcologDao.ColumnConsumedElectricEnergy, ConsumedEnergyCaluculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed));
             newRow.SetField(EcologDao.ColumnLostEnergyByWellToWheel, DBNull.Value);
@@ -190,9 +189,10 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnEnergyByCooling, DBNull.Value);
             newRow.SetField(EcologDao.ColumnEnergyByHeating, DBNull.Value);
 
-            var linkAndTheta = LinkMatcher.MatchLink(
+            var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
+                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
+                0, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);

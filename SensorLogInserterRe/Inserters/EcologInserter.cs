@@ -18,10 +18,8 @@ namespace SensorLogInserterRe.Inserters
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                // TODO 表示イベント
-                // StateLabel = "データを挿入中(ECOLOG):" + i + "/" + tripTable.Rows.Count + "件挿入完了";
-
-                HagimotoEcologCalculator.CalcEcolog(row, datum);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum);
+                EcologDao.Insert(ecologTable);
             }
         }
 
