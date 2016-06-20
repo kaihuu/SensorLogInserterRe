@@ -28,5 +28,10 @@ namespace SensorLogInserterRe.Models
             if(count == 0)
                 list.Add(datum);
         }
+
+        public override string ToString()
+        {
+            return $"START_TIME:{StartTime}, END_TIME:{EndTime}, DRIVER_ID:{DriverId}, CAR_ID:{CarId}, SENSOR_ID:{SensorId}, ESTIMATED_CAR_MODEL:{EstimatedCarModel}";
+        }
     }
 }

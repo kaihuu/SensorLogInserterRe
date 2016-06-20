@@ -42,6 +42,7 @@ namespace SensorLogInserterRe.Inserters
 
                 InsertDatum.AddDatumToList(insertDatumList, datum);
 
+                // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 InsertConrrectedGps(gpsRawTable);
                 TripInserter.InsertTripRaw(gpsRawTable);
@@ -130,6 +131,7 @@ namespace SensorLogInserterRe.Inserters
 
             #endregion
 
+            // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
             CorrectedGpsDao.Insert(correctedGpsTable);
         }
     }

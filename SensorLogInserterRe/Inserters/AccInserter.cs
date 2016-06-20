@@ -88,7 +88,7 @@ namespace SensorLogInserterRe.Inserters
                 }
             }
 
-            // TODO 除去したデータ件数をログに出力
+            // ファイルごとの処理なので主キー違反があっても挿入されないだけ
             AndroidAccRawDao.Insert(normalizedAccTable);
 
             return normalizedAccTable;
@@ -108,6 +108,9 @@ namespace SensorLogInserterRe.Inserters
             foreach (DataRow row in tripsTable.Rows)
             {
                 var correctedAccTable = AccCorrector.CorrectAcc(datum.StartTime, datum.EndTime, datum, row);
+
+                // Tripsテーブルの1行ごろの処理なので主キー違反があっても挿入されないだけ
+                // Trip単位で途中で挿入が異常終了した場合は、DELETEが必要
                 CorrectedAccDao.Insert(correctedAccTable);
             }
         }
