@@ -144,5 +144,56 @@ namespace SensorLogInserterRe.Models
             }
         }
         #endregion
+
+        #region InverterEfficiency変更通知プロパティ
+        private double _InverterEfficiency;
+
+        public double InverterEfficiency
+        {
+            get
+            { return _InverterEfficiency; }
+            set
+            { 
+                if (_InverterEfficiency == value)
+                    return;
+                _InverterEfficiency = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region MaxDrivingForce変更通知プロパティ
+        private double _MaxDrivingForce;
+
+        public double MaxDrivingForce
+        {
+            get
+            { return _MaxDrivingForce; }
+            set
+            { 
+                if (_MaxDrivingForce == value)
+                    return;
+                _MaxDrivingForce = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region MaxDrivingPower変更通知プロパティ
+        private double _MaxDrivingPower;
+
+        public double MaxDrivingPower
+        {
+            get
+            { return _MaxDrivingPower; }
+            set
+            { 
+                if (_MaxDrivingPower == value)
+                    return;
+                _MaxDrivingPower = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
     }
 }
