@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Calculators
 {
     static class RegeneLossCalculator
     {
-        public static double CalcEnergy(double drivingPower, double regeneEnergy, Car car, double vehicleSpeed, double inverterEfficiency)
+        public static double CalcEnergy(double drivingPower, double regeneEnergy, Car car, double vehicleSpeed)
         {
             double drivingTorque = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6 * car.TireRadius / car.ReductionRatio;
 
@@ -20,7 +20,7 @@ namespace SensorLogInserterRe.Calculators
             }
 
             else {//回生時
-                regeneLoss = Math.Abs(drivingPower - regeneEnergy / EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque) * 100 / inverterEfficiency);
+                regeneLoss = Math.Abs(drivingPower - regeneEnergy / EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque) * 100 / car.InverterEfficiency);
             }
             return regeneLoss;
         }

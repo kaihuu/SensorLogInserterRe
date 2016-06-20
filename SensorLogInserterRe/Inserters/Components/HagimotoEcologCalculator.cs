@@ -170,14 +170,18 @@ namespace SensorLogInserterRe.Inserters.Components
                 airResistancePower + rollingResistancePower + climbingResistancePower + accResistancePower;
 
             // TODO ここから植村君よろしくorz
-            newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
-                drivingResistancePower, new Car(), speed, 0,0,0));
 
-            newRow.SetField(EcologDao.ColumnRegeneLoss, 0);
-            newRow.SetField(EcologDao.ColumnRegeneEnergy, 0);
-            newRow.SetField(EcologDao.ColumnLostEnergy, 0);
-            newRow.SetField(EcologDao.ColumnEfficiency, 0);
-            newRow.SetField(EcologDao.ColumnConsumedElectricEnergy, 0);
+            newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
+                drivingResistancePower, datum.EstimatedCarModel, speed));
+
+            newRow.SetField(EcologDao.ColumnRegeneLoss, RegeneLossCalculator.CalcEnergy(drivingResistancePower,RegeneEnergyCalculator.CalcEnergy(drivingResistancePower,
+                speed,datum.EstimatedCarModel),datum.EstimatedCarModel,speed));
+            newRow.SetField(EcologDao.ColumnRegeneEnergy, RegeneEnergyCalculator.CalcEnergy(drivingResistancePower, speed, datum.EstimatedCarModel));
+            newRow.SetField(EcologDao.ColumnLostEnergy, LostEnergyCalculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed, Rho, WindSpeed, Myu, 
+                Math.Atan(terrainAltitudeDiff / distanceDiff)));
+            newRow.SetField(EcologDao.ColumnEfficiency, EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speed, 
+                drivingResistancePower * 1000 * 3600 / speed / 3.6 * datum.EstimatedCarModel.TireRadius / datum.EstimatedCarModel.ReductionRatio));
+            newRow.SetField(EcologDao.ColumnConsumedElectricEnergy, ConsumedEnergyCaluculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed));
             newRow.SetField(EcologDao.ColumnLostEnergyByWellToWheel, DBNull.Value);
             newRow.SetField(EcologDao.ColumnConsumedFuel, DBNull.Value);
             newRow.SetField(EcologDao.ColumnConsumedFuelByWellToWheel, DBNull.Value);
