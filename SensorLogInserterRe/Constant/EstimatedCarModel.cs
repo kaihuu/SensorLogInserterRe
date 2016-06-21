@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using SensorLogInserterRe.Models;
+using Constants = SensorLogInserterRe.Calculators.CalculatorComponents.Constants;
 
 namespace SensorLogInserterRe.Constant
 {
@@ -15,10 +17,16 @@ namespace SensorLogInserterRe.Constant
             {
                 case InsertConfig.EstimatedCarModel.LeafEarlyModel:
                     // TODO LEAF前期型のスペックに
-                    return new Car()
+                    return new Car
                     {
-                        Battery = 1000,
-                        FrontalProjectedArea = 1000
+                        Battery = 24,
+                        Weight = 1600,
+                        TireRadius = 0.3155f,
+                        ReductionRatio = 7.9377f,
+                        CdValue = 0.28f,
+                        FrontalProjectedArea = 2.19f,
+                        MaxDrivingPower = -30,
+                        MaxDrivingForce = -0.15 * Constants.GravityResistanceCoefficient * 1600
                     };
                 default:
                     return null;
