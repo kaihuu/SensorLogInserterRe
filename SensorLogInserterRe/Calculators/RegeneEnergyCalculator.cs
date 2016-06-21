@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Calculators
             //制動力[N]
             double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
             //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[km/h] 
-            double speedC = car.MaxDrivingPower * 1000 * 3600 / car.MaxDrivingPower / 3.6;
+            double speedC = car.MaxDrivingPower * 1000 * 3600 / car.MaxDrivingForce / 3.6;
             double regeneEnergy = 0;
             double drivingTorque = drivingForce * car.TireRadius / car.ReductionRatio;
 
