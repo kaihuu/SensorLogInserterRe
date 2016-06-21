@@ -32,7 +32,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var beforeRow = ecologTable.NewRow();
             beforeRow.ItemArray = firstRow.ItemArray;
 
-            for (int i = 0; i < correctedGpsTable.Rows.Count; i++)
+            for (int i = 1; i < correctedGpsTable.Rows.Count; i++)
             {
                 var row = GenerateEcologRow(
                     ecologTable.NewRow(), beforeRow, tripRow, correctedGpsTable.Rows[i], datum);
@@ -192,7 +192,8 @@ namespace SensorLogInserterRe.Inserters.Components
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
-                0, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
+                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnHeading),
+                tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
