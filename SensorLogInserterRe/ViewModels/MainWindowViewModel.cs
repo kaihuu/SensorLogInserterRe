@@ -349,12 +349,12 @@ namespace SensorLogInserterRe.ViewModels
             this.InsertGps();
             this.InsertAcc();
 
-            /*foreach (var datum in InsertDatumList)
+            foreach (var datum in InsertDatumList)
             {
                 this.InsertTrips(datum);
                 this.InsertCorrectedAcc(datum);
                 this.InsertEcolog(datum);
-            }*/
+            }
         }
 
         private InsertConfig GenerateInsertConfig()

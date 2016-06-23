@@ -40,6 +40,8 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertTrip(InsertDatum datum)
         {
+            Console.WriteLine("CALLED: InsertTrip, " + datum);
+
             var tripsRawTable = TripsRawDao.Get(datum);
 
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)

@@ -84,10 +84,14 @@ namespace SensorLogInserterRe.Inserters.Components
 
             for (int i = 0; i < accRawTable.Rows.Count; i++)
             {
+                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["LONGITUDINAL_ACC"].GetType());
+                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["LATERAL_ACC"].GetType());
+                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["VERTICAL_ACC"].GetType());
+
                 Quaternion p1 = new Quaternion(0,
-                    accRawTable.Rows[i].Field<double>("LONGITUDINAL_ACC"),
-                    accRawTable.Rows[i].Field<double>("LATERAL_ACC"),
-                    accRawTable.Rows[i].Field<double>("VERTICAL_ACC"));
+                    accRawTable.Rows[i].Field<Single>("LONGITUDINAL_ACC"),
+                    accRawTable.Rows[i].Field<Single>("LATERAL_ACC"),
+                    accRawTable.Rows[i].Field<Single>("VERTICAL_ACC"));
                 Quaternion rp1 = MathUtil.MultiplyQuaternion(r, p1);
                 Quaternion rpq1 = MathUtil.MultiplyQuaternion(rp1, q);
 

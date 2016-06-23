@@ -14,6 +14,8 @@ namespace SensorLogInserterRe.Inserters
     {
         public static void InsertEcolog(InsertDatum datum)
         {
+            Console.WriteLine("CALLED: InsertEcolog" + datum);
+
             var tripsTable = TripsDao.Get(datum);
 
             foreach (DataRow row in tripsTable.Rows)

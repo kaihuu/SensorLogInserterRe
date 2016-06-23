@@ -100,6 +100,8 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertCorrectedAcc(InsertDatum datum)
         {
+            Console.WriteLine("CALLED: InsertCorrectedAcc, " + datum);
+
             var tripsTable = TripsDao.Get(datum);
 
             foreach (DataRow row in tripsTable.Rows)
