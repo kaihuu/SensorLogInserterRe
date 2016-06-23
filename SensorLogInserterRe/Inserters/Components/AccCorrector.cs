@@ -84,10 +84,6 @@ namespace SensorLogInserterRe.Inserters.Components
 
             for (int i = 0; i < accRawTable.Rows.Count; i++)
             {
-                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["LONGITUDINAL_ACC"].GetType());
-                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["LATERAL_ACC"].GetType());
-                Console.WriteLine("ERROR: " + accRawTable.Rows[i]["VERTICAL_ACC"].GetType());
-
                 Quaternion p1 = new Quaternion(0,
                     accRawTable.Rows[i].Field<Single>("LONGITUDINAL_ACC"),
                     accRawTable.Rows[i].Field<Single>("LATERAL_ACC"),
@@ -96,16 +92,16 @@ namespace SensorLogInserterRe.Inserters.Components
                 Quaternion rpq1 = MathUtil.MultiplyQuaternion(rp1, q);
 
                 // TODO SetFieldに書き直し、する価値ないか
-                accRawTable.Rows[i]["LONGITUDINAL_ACC"] = rpq1.X.ToString();
-                accRawTable.Rows[i]["LATERAL_ACC"] = rpq1.Y.ToString();
-                accRawTable.Rows[i]["VERTICAL_ACC"] = rpq1.Z.ToString();
-                accRawTable.Rows[i]["ALPHA"] = angle * 360 / (2 * Math.PI);
-                accRawTable.Rows[i]["VECTOR_X"] = vasisVP.X;
-                accRawTable.Rows[i]["VECTOR_Y"] = vasisVP.Y;
+                accRawTable.Rows[i]["LONGITUDINAL_ACC"] = Single.Parse(rpq1.X.ToString());
+                accRawTable.Rows[i]["LATERAL_ACC"] = Single.Parse(rpq1.Y.ToString());
+                accRawTable.Rows[i]["VERTICAL_ACC"] = Single.Parse(rpq1.Z.ToString());
+                accRawTable.Rows[i]["ALPHA"] = (Single)(angle * 360 / (2 * Math.PI));
+                accRawTable.Rows[i]["VECTOR_X"] = (Single)vasisVP.X;
+                accRawTable.Rows[i]["VECTOR_Y"] = (Single)vasisVP.Y;
 
-                accRawTable.Rows[i]["ROLL"] = null;
-                accRawTable.Rows[i]["PITCH"] = null;
-                accRawTable.Rows[i]["YAW"] = null;
+                accRawTable.Rows[i]["ROLL"] = DBNull.Value;
+                accRawTable.Rows[i]["PITCH"] = DBNull.Value;
+                accRawTable.Rows[i]["YAW"] = DBNull.Value;
             }
 
             // TODO ログ出力
@@ -126,7 +122,7 @@ namespace SensorLogInserterRe.Inserters.Components
                 DateTime end = DateTime.Parse(tableBreaking.Rows[i]["JST"].ToString());
                 DateTime start = end.AddSeconds(-10);
 
-                DataRow[] rows = tableBreaking.Select("JST >= #" + start + "# AND JST <= #" + end + "#");
+                DataRow[] rows = accRawTable.Select("JST >= #" + start + "# AND JST <= #" + end + "#");
 
                 foreach (DataRow row in rows)
                 {
@@ -177,10 +173,10 @@ namespace SensorLogInserterRe.Inserters.Components
                     z2 = z;
                 }
 
-                accRawTable.Rows[j]["LONGITUDINAL_ACC"] = x2.ToString();
-                accRawTable.Rows[j]["LATERAL_ACC"] = y2.ToString();
-                accRawTable.Rows[j]["VERTICAL_ACC"] = z2.ToString();
-                accRawTable.Rows[j]["BETA"] = anglexy * 360 / (2 * Math.PI);
+                accRawTable.Rows[j]["LONGITUDINAL_ACC"] = Single.Parse(x2.ToString());
+                accRawTable.Rows[j]["LATERAL_ACC"] = Single.Parse(y2.ToString());
+                accRawTable.Rows[j]["VERTICAL_ACC"] = Single.Parse(z2.ToString());
+                accRawTable.Rows[j]["BETA"] = (Single)(anglexy * 360 / (2 * Math.PI));
             }
 
             avgX = double.Parse(accRawTable.Compute("AVG(LONGITUDINAL_ACC)", "JST > #" + tripRow.Field<DateTime>(TripsDao.ColumnStartTime) + "# AND JST < #" + tripRow.Field<DateTime>(TripsDao.ColumnEndTime) + "#").ToString());
@@ -224,10 +220,10 @@ namespace SensorLogInserterRe.Inserters.Components
                     z2 = Math.Sin(-anglexy) * x + Math.Cos(-anglexy) * z;
                 }
 
-                accRawTable.Rows[j]["LONGITUDINAL_ACC"] = x2.ToString();
-                accRawTable.Rows[j]["LATERAL_ACC"] = y2.ToString();
-                accRawTable.Rows[j]["VERTICAL_ACC"] = z2.ToString();
-                accRawTable.Rows[j]["GAMMA"] = anglexy * 360 / (2 * Math.PI);
+                accRawTable.Rows[j]["LONGITUDINAL_ACC"] = Single.Parse(x2.ToString());
+                accRawTable.Rows[j]["LATERAL_ACC"] = Single.Parse(y2.ToString());
+                accRawTable.Rows[j]["VERTICAL_ACC"] = Single.Parse(z2.ToString());
+                accRawTable.Rows[j]["GAMMA"] = (Single)(anglexy * 360 / (2 * Math.PI));
             }
 
             // TODO ログ出力

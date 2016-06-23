@@ -90,7 +90,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
-                0, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
+                0f, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
@@ -108,14 +108,14 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnLatitude, correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
             newRow.SetField(EcologDao.ColumnLongitude, correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
-            double speed = correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnSpeed);
+            double speed = correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnSpeed);
 
             newRow.SetField(EcologDao.ColumnSpeed, speed);
 
             newRow.SetField(EcologDao.ColumnHeading,
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnHeading));
+                correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnHeading));
 
-            double distanceDiff = correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnDistanceDifference);
+            double distanceDiff = correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnDistanceDifference);
 
             newRow.SetField(EcologDao.ColumnDistanceDifference, distanceDiff);
 
@@ -192,7 +192,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
-                correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnHeading),
+                correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnHeading),
                 tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);

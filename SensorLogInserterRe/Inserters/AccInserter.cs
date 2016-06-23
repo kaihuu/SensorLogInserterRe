@@ -60,9 +60,9 @@ namespace SensorLogInserterRe.Inserters
             firstRow.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnDriverId));
             firstRow.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnCarId));
             firstRow.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnSensorId));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccX));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccY));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccZ));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccX));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccY));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccZ));
 
             normalizedAccTable.Rows.Add(firstRow);
 
@@ -79,9 +79,9 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDriverId));
                     row.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnCarId));
                     row.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnSensorId));
-                    row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccX));
-                    row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccY));
-                    row.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccZ));
+                    row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccX));
+                    row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccY));
+                    row.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccZ));
 
                     normalizedAccTable.Rows.Add(row);
                 }

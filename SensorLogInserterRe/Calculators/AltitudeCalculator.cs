@@ -33,7 +33,7 @@ namespace SensorLogInserterRe.Calculators
         public Tuple<int, double> CalcAltitude(double latitude, double longitude)
         {
             int meshId;
-            double altitude;
+            float altitude;
 
             var selectedRows = RegisteredTable.AsEnumerable()
                 .Where(row => row.Field<double>("lower_latitude") <= latitude
@@ -45,7 +45,7 @@ namespace SensorLogInserterRe.Calculators
             //メッシュ登録済み
             if (selectedRows.Length > 0)
             {
-                altitude = selectedRows[0].Field<double>(Altitude10MMeshRegisteredDao.ColumnAltitude);
+                altitude = selectedRows[0].Field<Single>(Altitude10MMeshRegisteredDao.ColumnAltitude);
                 meshId = selectedRows[0].Field<int>(Altitude10MMeshRegisteredDao.ColumnMeshId);
             }
             else  //登録されていないメッシュ

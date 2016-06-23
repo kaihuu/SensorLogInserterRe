@@ -38,7 +38,6 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"   {ColumnDriverId},");
             query.AppendLine($"   {ColumnCarId},");
             query.AppendLine($"   {ColumnSensorId},");
-            query.AppendLine($"   {ColumnDriverId},");
             query.AppendLine($"   CONVERT(varchar,DATEADD(MILLISECOND, {timeDiff} ,{ColumnDateTime}),121) AS jst,");
             query.AppendLine($"   {ColumnAccX} AS {CorrectedAccDao.ColumnLongitudinalAcc},");
             query.AppendLine($"   {ColumnAccY} AS {CorrectedAccDao.ColumnLateralAcc},");

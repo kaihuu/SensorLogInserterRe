@@ -44,6 +44,8 @@ namespace SensorLogInserterRe.Inserters
 
             var tripsRawTable = TripsRawDao.Get(datum);
 
+            Console.WriteLine("TRIPS_RAW_COUNT: " + tripsRawTable.Rows.Count);
+
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)
             {
                 DataTable tripsTable = DataTableUtil.GetTripsTable();
@@ -126,7 +128,7 @@ namespace SensorLogInserterRe.Inserters
                 {
                     var row = tripsTable.NewRow();
 
-                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId());
+                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
@@ -204,7 +206,7 @@ namespace SensorLogInserterRe.Inserters
                 {
                     var row = tripsTable.NewRow();
 
-                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId());
+                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));

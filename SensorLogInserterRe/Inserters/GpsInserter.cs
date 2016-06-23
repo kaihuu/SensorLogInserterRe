@@ -88,7 +88,7 @@ namespace SensorLogInserterRe.Inserters
                 CopyRawDataToCorrectedRow(row, gpsRawTable.Rows[i]);
 
                 // 距離の算出
-                row.SetField<double>(CorrectedGpsDao.ColumnDistanceDifference, DistanceCalculator.CalcDistance(
+                row.SetField(CorrectedGpsDao.ColumnDistanceDifference, DistanceCalculator.CalcDistance(
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
                     gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
@@ -104,7 +104,7 @@ namespace SensorLogInserterRe.Inserters
                      gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst)).TotalSeconds));
 
                 //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
-                if (row.Field<double>(CorrectedGpsDao.ColumnSpeed) > 1.0)
+                if (row.Field<Single>(CorrectedGpsDao.ColumnSpeed) > 1.0)
                 {
                     row.SetField(CorrectedGpsDao.ColumnHeading, HeadingCalculator.CalcHeading(
                         gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
@@ -114,7 +114,7 @@ namespace SensorLogInserterRe.Inserters
                 }
                 else
                 {
-                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<double>(CorrectedGpsDao.ColumnHeading));
+                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<Single>(CorrectedGpsDao.ColumnHeading));
                 }
 
                 correctedGpsTable.Rows.Add(row);

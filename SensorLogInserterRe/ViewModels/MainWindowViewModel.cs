@@ -352,7 +352,7 @@ namespace SensorLogInserterRe.ViewModels
             foreach (var datum in InsertDatumList)
             {
                 this.InsertTrips(datum);
-                this.InsertCorrectedAcc(datum);
+                //this.InsertCorrectedAcc(datum);
                 this.InsertEcolog(datum);
             }
         }
@@ -463,38 +463,38 @@ namespace SensorLogInserterRe.ViewModels
             Console.WriteLine("FINISHED: InsertAcc");
         }
 
-        private async void InsertTrips(InsertDatum datum)
+        private void InsertTrips(InsertDatum datum)
         {
             this.LogText += LogTexts.TheStartOfTheInsertingTrips + "\n";
 
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 TripInserter.InsertTrip(datum);
-            });
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingTrips + "\n";
         }
 
-        private async void InsertCorrectedAcc(InsertDatum datum)
+        private void InsertCorrectedAcc(InsertDatum datum)
         {
             this.LogText += LogTexts.TheStartOfTheInsertingCorrectedAcc + "\n";
 
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 AccInserter.InsertCorrectedAcc(datum);
-            });
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingCorrectedAcc + "\n";
         }
 
-        private async void InsertEcolog(InsertDatum datum)
+        private void InsertEcolog(InsertDatum datum)
         {
             this.LogText += LogTexts.TheStartOfTheInsertingEcolog + "\n";
 
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 EcologInserter.InsertEcolog(datum);
-            });
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
         }

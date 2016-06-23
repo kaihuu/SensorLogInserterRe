@@ -37,7 +37,7 @@ namespace SensorLogInserterRe.Calculators
             return Instance;
         }
 
-        public Tuple<string, double?> MatchLink(double latitude, double longitude, double heading, string direction,
+        public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
             InsertDatum datum)
         {
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
@@ -108,18 +108,18 @@ namespace SensorLogInserterRe.Calculators
 
                 if (linkDetail.Rows.Count == 1)
                 {
-                    double linkHeading = linkDetail.Rows[0].Field<double>("road_heading");
-                    double carHeading = heading;
+                    Single linkHeading = linkDetail.Rows[0].Field<Single>("road_heading");
+                    Single carHeading = heading;
 
                     double angle = Math.Abs(linkHeading - carHeading);
 
                     if (angle < 90 || angle > 270)
                     {
-                        roadTheta = linkDetail.Rows[0].Field<double>("road_theta");
+                        roadTheta = linkDetail.Rows[0].Field<Single>("road_theta");
                     }
                     else
                     {
-                        roadTheta = -linkDetail.Rows[0].Field<double>("road_theta");
+                        roadTheta = -linkDetail.Rows[0].Field<Single>("road_theta");
                     }
                 }
             }

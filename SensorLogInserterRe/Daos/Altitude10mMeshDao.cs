@@ -47,7 +47,7 @@ namespace SensorLogInserterRe.Daos
                 LowerLongitude = result.Rows[0].Field<double?>(ColumnLowerLongitude),
                 UpperLatitude = result.Rows[0].Field<double?>(ColumnUpperLatitude),
                 UpperLongitude = result.Rows[0].Field<double?>(ColumnUpperLongitude),
-                Altitude = result.Rows[0].Field<double?>(ColumnAltitude)
+                Altitude = result.Rows[0].Field<float?>(ColumnAltitude)
             };
         }
     }

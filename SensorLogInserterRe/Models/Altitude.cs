@@ -12,6 +12,6 @@ namespace SensorLogInserterRe.Models
         public double? LowerLongitude { get; set; }
         public double? UpperLatitude { get; set; }
         public double? UpperLongitude { get; set; }
-        public double? Altitude { get; set; }
+        public float? Altitude { get; set; }
     }
 }
