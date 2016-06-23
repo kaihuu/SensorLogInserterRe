@@ -45,7 +45,9 @@ namespace SensorLogInserterRe.Inserters
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 InsertConrrectedGps(gpsRawTable);
+                Console.WriteLine("FINISHED: InsertConrrectedGps");
                 TripInserter.InsertTripRaw(gpsRawTable);
+                Console.WriteLine("FINISHED: TripInserter.InsertTripRaw");
             }
         }
 

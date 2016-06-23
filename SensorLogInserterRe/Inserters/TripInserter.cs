@@ -15,23 +15,23 @@ namespace SensorLogInserterRe.Inserters
     {
         public static void InsertTripRaw(DataTable gpsRawTable)
         {
-            var tripsTable = DataTableUtil.GetTripsTable();
+            var tripsTable = DataTableUtil.GetTripsRawTable();
             DataRow row = tripsTable.NewRow();
 
             row.SetField(TripsRawDao.ColumnDriverId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnDriverId));
             row.SetField(TripsRawDao.ColumnCarId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnCarId));
             row.SetField(TripsRawDao.ColumnSensorId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnSensorId));
-            row.SetField(TripsRawDao.ColumnStartTime, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnJst));
+            row.SetField(TripsRawDao.ColumnStartTime, gpsRawTable.Rows[0].Field<DateTime>(AndroidGpsRawDao.ColumnJst));
             row.SetField(TripsRawDao.ColumnStartLatitude,
-                gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnLatitude));
+                gpsRawTable.Rows[0].Field<double>(AndroidGpsRawDao.ColumnLatitude));
             row.SetField(TripsRawDao.ColumnStartLongitude,
-                gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnLongitude));
+                gpsRawTable.Rows[0].Field<double>(AndroidGpsRawDao.ColumnLongitude));
             row.SetField(TripsRawDao.ColumnEndTime,
-                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnJst));
+                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst));
             row.SetField(TripsRawDao.ColumnEndLatitude,
-                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnLatitude));
+                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude));
             row.SetField(TripsRawDao.ColumnEndLongitude,
-                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<int>(AndroidGpsRawDao.ColumnLongitude));
+                gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude));
             tripsTable.Rows.Add(row);
 
             // GPSファイルごとの処理なので主キー違反があっても挿入されないだけ

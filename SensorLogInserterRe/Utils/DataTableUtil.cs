@@ -24,8 +24,6 @@ namespace SensorLogInserterRe.Utils
             tripsRawTable.Columns.Add(new DataColumn("START_LONGITUDE"));
             tripsRawTable.Columns.Add(new DataColumn("END_LATITUDE"));
             tripsRawTable.Columns.Add(new DataColumn("END_LONGITUDE"));
-            tripsRawTable.Columns.Add(new DataColumn("CONSUMED_ENERGY"));
-            tripsRawTable.Columns.Add(new DataColumn("TRIP_DIRECTION"));
 
             return tripsRawTable;
         }
