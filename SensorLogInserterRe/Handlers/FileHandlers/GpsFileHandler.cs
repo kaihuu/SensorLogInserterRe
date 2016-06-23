@@ -41,7 +41,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     if (span.TotalHours > 23 && span.TotalHours < 25)
                         jst = jst.AddDays(-1);
 
-                    row.SetField(AndroidGpsRawDao.ColumnJst, jst);
+                    row.SetField<DateTime>(AndroidGpsRawDao.ColumnJst, jst);
                     // TODO DateTime に変更したが、stringにすべき可能性もあり
                     // row[AndroidGpsRawDao.ColumnJst] = jst.ToString(StringUtil.JstFormat);
                     #endregion

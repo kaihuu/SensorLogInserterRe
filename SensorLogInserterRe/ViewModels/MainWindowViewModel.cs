@@ -288,9 +288,12 @@ namespace SensorLogInserterRe.ViewModels
         {
             InitDriversChecked();
             InitPeriod();
+            InitEvEstimationModel();
             InitModelChecked();
             InitGpsCorrection();
             InitButton();
+
+            this.InsertDatumList = new List<InsertDatum>();
         }
 
         private void InitDriversChecked()
@@ -303,9 +306,14 @@ namespace SensorLogInserterRe.ViewModels
 
         private void InitPeriod()
         {
-            this.IsCheckedPeriod = false;
+            this.IsCheckedPeriod = true;
             this.StartDate = DateTime.Now.AddDays(-7);
             this.EndDate = DateTime.Now;
+        }
+
+        private void InitEvEstimationModel()
+        {
+            this.IsCheckedLeafEarlyModel = true;
         }
 
         private void InitModelChecked()
@@ -341,12 +349,12 @@ namespace SensorLogInserterRe.ViewModels
             this.InsertGps();
             this.InsertAcc();
 
-            foreach (var datum in InsertDatumList)
+            /*foreach (var datum in InsertDatumList)
             {
                 this.InsertTrips(datum);
                 this.InsertCorrectedAcc(datum);
                 this.InsertEcolog(datum);
-            }
+            }*/
         }
 
         private InsertConfig GenerateInsertConfig()
@@ -401,40 +409,58 @@ namespace SensorLogInserterRe.ViewModels
             return insertConfig;
         }
 
-        private async void SearchDirectory()
+        private void SearchDirectory()
         {
-            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+            Console.WriteLine("CALLED: SearchDirectory");
 
-            await Task.Run(() =>
-            {
+            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Search, LogTexts.DuringCheckOfTheUpdateFile + "\n");
+
+            //await Task.Run(() =>
+            //{
                 this.InsertFileList = DirectorySearcher.DirectorySearch(this.InsertConfig);
-            });
+            //});
 
             this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Search, $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n");
+
+            Console.WriteLine("FINISHED: SearchDirectory");
         }
 
-        private async void InsertGps()
+        private void InsertGps()
         {
-            this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
+            Console.WriteLine("CALLED: InsertGps");
 
-            await Task.Run(() =>
-            {
+            this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheSrartOfTheInsertingGps + "\n");
+
+            //await Task.Run(() =>
+            //{
                 GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
-            });
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
+
+            Console.WriteLine("FINISHED: InsertGps");
         }
 
-        private async void InsertAcc()
+        private void InsertAcc()
         {
-            this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
+            Console.WriteLine("CALLED: InsertAcc");
 
-            await Task.Run(() =>
-            {
+            this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheSrartOfTheInsertingAcc + "\n");
+
+            //await Task.Run(() =>
+            //{
                 AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
-            });
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheEndOfTheInsertingAcc + "\n");
+
+            Console.WriteLine("FINISHED: InsertAcc");
         }
 
         private async void InsertTrips(InsertDatum datum)

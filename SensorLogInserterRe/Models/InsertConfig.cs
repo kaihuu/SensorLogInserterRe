@@ -58,7 +58,7 @@ namespace SensorLogInserterRe.Models
             ret.Append(drivers + " ");
             ret.Append("StartDate: " + this.StartDate + " ");
             ret.Append("EndDate: " + this.EndDate + " ");
-            ret.Append("EstModel: " + this.StartDate + " ");
+            ret.Append("EstModel: " + this.EstModel + " ");
             ret.Append("Correction: " + this.Correction + " ");
             ret.Append("CarModel: " + this.CarModel);
             return ret.ToString();

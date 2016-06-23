@@ -31,6 +31,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
+                    Console.WriteLine("ERROR: " + sqlException.Message);
                     LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally
@@ -54,6 +55,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
+                    Console.WriteLine("ERROR: " + sqlException.Message);
                     LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally
@@ -78,6 +80,7 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
+                    Console.WriteLine("ERROR: " + sqlException.Message);
                     LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
                 }
                 finally

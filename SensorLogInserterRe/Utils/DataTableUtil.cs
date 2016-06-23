@@ -35,18 +35,18 @@ namespace SensorLogInserterRe.Utils
             DataTable tripsTable = new DataTable();
 
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
-            tripsTable.Columns.Add(new DataColumn("TRIP_ID"));
-            tripsTable.Columns.Add(new DataColumn("DRIVER_ID"));
-            tripsTable.Columns.Add(new DataColumn("CAR_ID"));
-            tripsTable.Columns.Add(new DataColumn("SENSOR_ID"));
-            tripsTable.Columns.Add(new DataColumn("START_TIME"));
-            tripsTable.Columns.Add(new DataColumn("END_TIME"));
-            tripsTable.Columns.Add(new DataColumn("START_LATITUDE"));
-            tripsTable.Columns.Add(new DataColumn("START_LONGITUDE"));
-            tripsTable.Columns.Add(new DataColumn("END_LATITUDE"));
-            tripsTable.Columns.Add(new DataColumn("END_LONGITUDE"));
-            tripsTable.Columns.Add(new DataColumn("CONSUMED_ENERGY"));
-            tripsTable.Columns.Add(new DataColumn("TRIP_DIRECTION"));
+            tripsTable.Columns.Add(new DataColumn("TRIP_ID", typeof(int)));
+            tripsTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            tripsTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            tripsTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            tripsTable.Columns.Add(new DataColumn("START_TIME", typeof(DateTime)));
+            tripsTable.Columns.Add(new DataColumn("END_TIME", typeof(DateTime)));
+            tripsTable.Columns.Add(new DataColumn("START_LATITUDE", typeof(double)));
+            tripsTable.Columns.Add(new DataColumn("START_LONGITUDE", typeof(double)));
+            tripsTable.Columns.Add(new DataColumn("END_LATITUDE", typeof(double)));
+            tripsTable.Columns.Add(new DataColumn("END_LONGITUDE", typeof(double)));
+            tripsTable.Columns.Add(new DataColumn("CONSUMED_ENERGY", typeof(double)));
+            tripsTable.Columns.Add(new DataColumn("TRIP_DIRECTION", typeof(string)));
 
             return tripsTable;
         }
@@ -57,14 +57,14 @@ namespace SensorLogInserterRe.Utils
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
             DataTable gpsRawTable = new DataTable();
 
-            gpsRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
-            gpsRawTable.Columns.Add(new DataColumn("CAR_ID"));
-            gpsRawTable.Columns.Add(new DataColumn("SENSOR_ID"));
-            gpsRawTable.Columns.Add(new DataColumn("JST"));
-            gpsRawTable.Columns.Add(new DataColumn("LATITUDE"));
-            gpsRawTable.Columns.Add(new DataColumn("LONGITUDE"));
-            gpsRawTable.Columns.Add(new DataColumn("ALTITUDE"));
-            gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME"));
+            gpsRawTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("JST", typeof(DateTime)));
+            gpsRawTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("ALTITUDE", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));
 
             return gpsRawTable;
         }
@@ -75,13 +75,13 @@ namespace SensorLogInserterRe.Utils
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
             DataTable accRawTable = new DataTable();
 
-            accRawTable.Columns.Add(new DataColumn("DRIVER_ID"));
-            accRawTable.Columns.Add(new DataColumn("CAR_ID"));
-            accRawTable.Columns.Add(new DataColumn("SENSOR_ID"));
-            accRawTable.Columns.Add(new DataColumn("DATETIME"));
-            accRawTable.Columns.Add(new DataColumn("ACC_X"));
-            accRawTable.Columns.Add(new DataColumn("ACC_Y"));
-            accRawTable.Columns.Add(new DataColumn("ACC_Z"));
+            accRawTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            accRawTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            accRawTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            accRawTable.Columns.Add(new DataColumn("DATETIME", typeof(DateTime)));
+            accRawTable.Columns.Add(new DataColumn("ACC_X", typeof(double)));
+            accRawTable.Columns.Add(new DataColumn("ACC_Y", typeof(double)));
+            accRawTable.Columns.Add(new DataColumn("ACC_Z", typeof(double)));
 
             return accRawTable;
         }
@@ -90,15 +90,15 @@ namespace SensorLogInserterRe.Utils
         {
             DataTable correctedGpsTable = new DataTable();
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
-            correctedGpsTable.Columns.Add(new DataColumn("DRIVER_ID"));
-            correctedGpsTable.Columns.Add(new DataColumn("CAR_ID"));
-            correctedGpsTable.Columns.Add(new DataColumn("SENSOR_ID"));
-            correctedGpsTable.Columns.Add(new DataColumn("JST"));
-            correctedGpsTable.Columns.Add(new DataColumn("LATITUDE"));
-            correctedGpsTable.Columns.Add(new DataColumn("LONGITUDE"));
-            correctedGpsTable.Columns.Add(new DataColumn("SPEED"));
-            correctedGpsTable.Columns.Add(new DataColumn("HEADING"));
-            correctedGpsTable.Columns.Add(new DataColumn("DISTANCE_DIFFERENCE"));
+            correctedGpsTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("JST", typeof(DateTime)));
+            correctedGpsTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("SPEED", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("HEADING", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("DISTANCE_DIFFERENCE", typeof(double)));
 
             return correctedGpsTable;
         }
@@ -107,29 +107,29 @@ namespace SensorLogInserterRe.Utils
         {
             DataTable correctedAccTable = new DataTable();
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
-            correctedAccTable.Columns.Add(new DataColumn("DRIVER_ID"));
-            correctedAccTable.Columns.Add(new DataColumn("CAR_ID"));
-            correctedAccTable.Columns.Add(new DataColumn("SENSOR_ID"));
-            correctedAccTable.Columns.Add(new DataColumn("DATETIME"));
-            correctedAccTable.Columns.Add(new DataColumn("ACC_X"));
-            correctedAccTable.Columns.Add(new DataColumn("ACC_Y"));
-            correctedAccTable.Columns.Add(new DataColumn("ACC_Z"));
+            correctedAccTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            correctedAccTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            correctedAccTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            correctedAccTable.Columns.Add(new DataColumn("DATETIME", typeof(DateTime)));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_X", typeof(double)));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_Y", typeof(double)));
+            correctedAccTable.Columns.Add(new DataColumn("ACC_Z", typeof(double)));
 
             return correctedAccTable;
         }
 
         public static DataTable GetTempCorrectedAccTable(DataTable table)
         {
-            table.Columns.Add(new DataColumn("ROLL"));
-            table.Columns.Add(new DataColumn("PITCH"));
-            table.Columns.Add(new DataColumn("YAW"));
+            table.Columns.Add(new DataColumn("ROLL", typeof(double)));
+            table.Columns.Add(new DataColumn("PITCH", typeof(double)));
+            table.Columns.Add(new DataColumn("YAW", typeof(double)));
 
             //補正データを記録するためのカラムを追加
-            table.Columns.Add(new DataColumn("ALPHA"));
-            table.Columns.Add(new DataColumn("VECTOR_X"));
-            table.Columns.Add(new DataColumn("VECTOR_Y"));
-            table.Columns.Add(new DataColumn("BETA"));
-            table.Columns.Add(new DataColumn("GAMMA"));
+            table.Columns.Add(new DataColumn("ALPHA", typeof(double)));
+            table.Columns.Add(new DataColumn("VECTOR_X", typeof(double)));
+            table.Columns.Add(new DataColumn("VECTOR_Y", typeof(double)));
+            table.Columns.Add(new DataColumn("BETA", typeof(double)));
+            table.Columns.Add(new DataColumn("GAMMA", typeof(double)));
 
             return table;
         }
@@ -138,42 +138,41 @@ namespace SensorLogInserterRe.Utils
         {
             var ecologTable = new DataTable();
 
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDriverId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnCarId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSensorId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnJst));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLatitude));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitude));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSpeed));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnHeading));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDistanceDifference));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerraubAltitude));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerrainAltitudeDiffarencce));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitudinalAcc));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLateralAcc));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnVerticalAcc));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAirResistance));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByRollingResistance));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByClimbingResistance));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAccResistance));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConvertLoss));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneLoss));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneEnergy));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergy));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEfficiency));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedElectricEnergy));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergyByWellToWheel));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuel));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuelByWellToWheel));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByEquipment));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByCooling));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByHeating));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripDirection));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnMeshId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLinkId));
-            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRoadTheta));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripId, typeof(int)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDriverId, typeof(int)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnCarId, typeof(int)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSensorId, typeof(int)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnJst, typeof(DateTime)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLatitude, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitude, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnSpeed, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnHeading, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnDistanceDifference, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerraubAltitude, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTerrainAltitudeDiffarencce, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLongitudinalAcc, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLateralAcc, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnVerticalAcc, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAirResistance, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByRollingResistance, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByClimbingResistance, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByAccResistance, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConvertLoss, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneLoss, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRegeneEnergy, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergy, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEfficiency, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedElectricEnergy, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLostEnergyByWellToWheel, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuel, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnConsumedFuelByWellToWheel, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByEquipment, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByCooling, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnEnergyByHeating, typeof(double)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnTripDirection, typeof(string)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnMeshId, typeof(int)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnLinkId, typeof(string)));
+            ecologTable.Columns.Add(new DataColumn(EcologDao.ColumnRoadTheta, typeof(double)));
 
             return ecologTable;
         }

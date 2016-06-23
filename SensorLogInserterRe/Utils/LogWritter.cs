@@ -30,7 +30,7 @@ namespace SensorLogInserterRe.Utils
             {
                 case LogMode.Search:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_search.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_search.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
@@ -40,7 +40,7 @@ namespace SensorLogInserterRe.Utils
 
                 case LogMode.Gps:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_gps.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_gps.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
@@ -50,7 +50,7 @@ namespace SensorLogInserterRe.Utils
 
                 case LogMode.Acc:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_acc.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_acc.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
@@ -60,7 +60,7 @@ namespace SensorLogInserterRe.Utils
 
                 case LogMode.Trip:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_trip.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_trip.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
@@ -70,7 +70,7 @@ namespace SensorLogInserterRe.Utils
 
                 case LogMode.Ecolog:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_ecolog.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_ecolog.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {
@@ -80,7 +80,7 @@ namespace SensorLogInserterRe.Utils
 
                 case LogMode.Error:
 
-                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_error.log";
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HHmm")}_error.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {

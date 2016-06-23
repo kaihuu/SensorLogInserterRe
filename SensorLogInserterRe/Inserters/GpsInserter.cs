@@ -51,8 +51,12 @@ namespace SensorLogInserterRe.Inserters
 
         private static DataTable InsertGpsRaw(string filePath, InsertDatum datum)
         {
+            Console.WriteLine("CALLED: InsertGpsRaw + " + filePath);
+
             var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
             AndroidGpsRawDao.Insert(gpsRawTable);
+
+            Console.WriteLine("FINISHED: InsertGpsRaw + " + filePath);
 
             return gpsRawTable;
         }
