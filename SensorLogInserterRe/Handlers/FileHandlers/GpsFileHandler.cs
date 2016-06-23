@@ -42,8 +42,6 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                         jst = jst.AddDays(-1);
 
                     row.SetField<DateTime>(AndroidGpsRawDao.ColumnJst, jst);
-                    // TODO DateTime に変更したが、stringにすべき可能性もあり
-                    // row[AndroidGpsRawDao.ColumnJst] = jst.ToString(StringUtil.JstFormat);
                     #endregion
 
                     #region AndroidTimeの設定

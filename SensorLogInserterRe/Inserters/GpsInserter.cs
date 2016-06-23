@@ -45,20 +45,14 @@ namespace SensorLogInserterRe.Inserters
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 InsertConrrectedGps(gpsRawTable);
-                Console.WriteLine("FINISHED: InsertConrrectedGps");
                 TripInserter.InsertTripRaw(gpsRawTable);
-                Console.WriteLine("FINISHED: TripInserter.InsertTripRaw");
             }
         }
 
         private static DataTable InsertGpsRaw(string filePath, InsertDatum datum)
         {
-            Console.WriteLine("CALLED: InsertGpsRaw + " + filePath);
-
             var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
             AndroidGpsRawDao.Insert(gpsRawTable);
-
-            Console.WriteLine("FINISHED: InsertGpsRaw + " + filePath);
 
             return gpsRawTable;
         }

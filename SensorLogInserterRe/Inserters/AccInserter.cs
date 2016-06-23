@@ -42,11 +42,10 @@ namespace SensorLogInserterRe.Inserters
                 InsertDatum.AddDatumToList(insertDatumList, datum);
 
                 InsertAccRaw(filePath, datum);
-
             }
         }
 
-        private static DataTable InsertAccRaw(string filePath, InsertDatum datum)
+        private static void InsertAccRaw(string filePath, InsertDatum datum)
         {
             var accRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, datum.DriverId, datum.CarId, datum.SensorId);
             accRawTable = SortTableByDateTime(accRawTable);
@@ -57,13 +56,13 @@ namespace SensorLogInserterRe.Inserters
 
             var firstRow = normalizedAccTable.NewRow();
 
-            firstRow.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnDateTime));
+            firstRow.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[0].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
             firstRow.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnDriverId));
             firstRow.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnCarId));
             firstRow.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnSensorId));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnAccX));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnAccY));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnAccZ));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccX));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccY));
+            firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<double>(AndroidAccRawDao.ColumnAccZ));
 
             normalizedAccTable.Rows.Add(firstRow);
 
@@ -76,13 +75,13 @@ namespace SensorLogInserterRe.Inserters
                     accRawTable.Rows[i - 1].Field<DateTime>(AndroidAccRawDao.ColumnDateTime)).TotalMilliseconds >= 4)
                 {
                     var row = normalizedAccTable.NewRow();
-                    row.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDateTime));
+                    row.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[i].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
                     row.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDriverId));
                     row.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnCarId));
                     row.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnSensorId));
-                    row.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDateTime));
-                    row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnAccX));
-                    row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnAccY));
+                    row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccX));
+                    row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccY));
+                    row.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[i].Field<double>(AndroidAccRawDao.ColumnAccZ));
 
                     normalizedAccTable.Rows.Add(row);
                 }
@@ -90,13 +89,11 @@ namespace SensorLogInserterRe.Inserters
 
             // ファイルごとの処理なので主キー違反があっても挿入されないだけ
             AndroidAccRawDao.Insert(normalizedAccTable);
-
-            return normalizedAccTable;
         }
 
         private static DataTable SortTableByDateTime(DataTable table)
         {
-            var view = new DataView(table) {Sort = CorrectedAccDao.ColumnJst};
+            var view = new DataView(table) {Sort = AndroidAccRawDao.ColumnDateTime};
 
             return view.ToTable();
         }
