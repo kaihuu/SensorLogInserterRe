@@ -69,10 +69,7 @@ namespace SensorLogInserterRe.Calculators
 
                     selectedRows = _outwardHighwaySemanticLinkTable
                         .AsEnumerable()
-                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
-                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
-                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
-                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
+                        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
                         .ToArray();
 
                     if (selectedRows.Length != 0)
@@ -85,10 +82,7 @@ namespace SensorLogInserterRe.Calculators
 
                     selectedRows = _homewardHighwaySemanticLinkTable
                         .AsEnumerable()
-                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
-                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
-                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
-                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
+                        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
                         .ToArray();
 
                     if (selectedRows.Length != 0)
@@ -102,10 +96,7 @@ namespace SensorLogInserterRe.Calculators
 
                 selectedRows = _semanticLinkTable
                     .AsEnumerable()
-                    .Where(row => row.Field<double>(1) > (latitude - 0.0001))
-                        .Where(row => row.Field<double>(1) < (latitude + 0.0001))
-                        .Where(row => row.Field<double>(2) > (longitude - 0.0001))
-                        .Where(row => row.Field<double>(2) < (longitude + 0.0001))
+                    .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
                     .ToArray();
 
                 if (selectedRows.Length != 0)
@@ -133,10 +124,7 @@ namespace SensorLogInserterRe.Calculators
 
                 selectedRows = _linkTable
                     .AsEnumerable()
-                    .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
-                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
-                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
-                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
+                    .Where(row => Math.Abs(row.Field<double>(1) - latitude) < 0.002 && Math.Abs(row.Field<double>(2) - longitude) < 0.002)
                     .ToArray();
 
                 if (selectedRows.Length != 0)
