@@ -10,19 +10,19 @@ namespace SensorLogInserterRe.Calculators
 {
     class AltitudeCalculator
     {
-        private static AltitudeCalculator Instance { get; set; }
+        private static AltitudeCalculator _instance;
 
-        private DataTable RegisteredTable { get; set; }
+        private DataTable _registeredTable;
 
         public static AltitudeCalculator GetInstance()
         {
-            if (Instance == null)
-                Instance = new AltitudeCalculator
+            if (_instance == null)
+                _instance = new AltitudeCalculator
                 {
-                    RegisteredTable = Altitude10MMeshRegisteredDao.Get()
+                    _registeredTable = Altitude10MMeshRegisteredDao.Get()
                 };
 
-            return Instance;
+            return _instance;
         }
 
         private AltitudeCalculator()
@@ -35,7 +35,7 @@ namespace SensorLogInserterRe.Calculators
             int meshId;
             float altitude;
 
-            var selectedRows = RegisteredTable.AsEnumerable()
+            var selectedRows = _registeredTable.AsEnumerable()
                 .Where(row => row.Field<double>("lower_latitude") <= latitude
                     && row.Field<double>("upper_latitude") > latitude
                     && row.Field<double>("lower_longitude") <= longitude
@@ -69,7 +69,7 @@ namespace SensorLogInserterRe.Calculators
                     Altitude10MMeshRegisteredDao.Insert(meshId, altitudeDatum);
 
                     //データテーブルに新しい標高データを登録
-                    DataRow newrow = RegisteredTable.NewRow();
+                    DataRow newrow = _registeredTable.NewRow();
                     newrow.SetField(Altitude10MMeshRegisteredDao.ColumnMeshId, meshId);
                     newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLatitude, altitudeDatum.LowerLatitude);
                     newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLongitude, altitudeDatum.LowerLongitude);
@@ -77,7 +77,7 @@ namespace SensorLogInserterRe.Calculators
                     newrow.SetField(Altitude10MMeshRegisteredDao.ColumnUpperLongitude, altitudeDatum.UpperLongitude);
                     newrow.SetField(Altitude10MMeshRegisteredDao.ColumnAltitude, altitudeDatum.Altitude);
 
-                    RegisteredTable.Rows.Add(newrow);
+                    _registeredTable.Rows.Add(newrow);
                 }
             }
 

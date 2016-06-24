@@ -9,11 +9,11 @@ namespace SensorLogInserterRe.Calculators
 {
     static class LostEnergyCalculator
     {
-        public static double CalcEnergy(double drivingPower, Car car, double vehicleSpeed, double rho, double windspeed, double myu, double theta)
+        public static double CalcEnergy(double drivingPower, Car car, double vehicleSpeed, double rho, double windspeed, double myu, double theta, int efficiency)
         {
-            double regeneEnergy = RegeneEnergyCalculator.CalcEnergy(drivingPower, vehicleSpeed, car);
-            return Math.Abs(ConvertLossCaluculator.CalcEnergy(drivingPower ,car, vehicleSpeed))
-                + RegeneLossCalculator.CalcEnergy(drivingPower,regeneEnergy,car,vehicleSpeed)
+            double regeneEnergy = RegeneEnergyCalculator.CalcEnergy(drivingPower, vehicleSpeed, car, efficiency);
+            return Math.Abs(ConvertLossCaluculator.CalcEnergy(drivingPower ,car, vehicleSpeed, efficiency))
+                + RegeneLossCalculator.CalcEnergy(drivingPower,regeneEnergy,car,vehicleSpeed, efficiency)
                 + AirResistanceCalculator.CalcPower(rho, car.CdValue, car.FrontalProjectedArea, windspeed, vehicleSpeed)
                 + RollingResistanceCalculator.CalcPower(myu, car.Weight, theta, vehicleSpeed);
         }

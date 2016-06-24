@@ -12,33 +12,38 @@ namespace SensorLogInserterRe.Calculators
 {
     class LinkMatcher
     {
-        private static LinkMatcher Instance { get; set; }
-        private DataTable SemanticLinkTable { get; set; }
-        private DataTable LinkTable { get; set; }
-        private DataTable OutwardHighwaySemanticLinkTable { get; set; }
-        private DataTable HomewardHighwaySemanticLinkTable { get; set; }
+        private static LinkMatcher _instance;
+        private DataTable _semanticLinkTable;
+        private DataTable _linkTable;
+        private DataTable _outwardHighwaySemanticLinkTable;
+        private DataTable _homewardHighwaySemanticLinkTable;
 
         private static readonly int OutwardHighwaySemanticLinkId = 184;
         private static readonly int HomewardHighwaySemanticLinkId = 183;
 
         public static LinkMatcher GetInstance()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = new LinkMatcher()
+                _instance = new LinkMatcher
                 {
-                    SemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(),
-                    LinkTable = LinkDao.GetLinkTableWithHeadingAndLine(),
-                    OutwardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(OutwardHighwaySemanticLinkId),
-                    HomewardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(HomewardHighwaySemanticLinkId)
+                    _semanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(),
+                    _linkTable = LinkDao.GetLinkTableWithHeadingAndLine(),
+                    _outwardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(OutwardHighwaySemanticLinkId),
+                    _homewardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(HomewardHighwaySemanticLinkId)
                 };
             }
 
-            return Instance;
+            return _instance;
+        }
+
+        private LinkMatcher()
+        {
+            // for singleton
         }
 
         public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
-            InsertDatum datum)
+            InsertDatum datum, int i )
         {
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
 
@@ -54,13 +59,15 @@ namespace SensorLogInserterRe.Calculators
             // TODO 中身はじつは緯度、経度からリンクを返すルックアップテーブル
             // TODO これはけっこうクール
 
-            if (datum.DriverId == 4 || datum.DriverId == 9)
+            if (datum.DriverId != 4 && datum.DriverId != 9)
             {
                 if (direction == "outward")
                 {
-                    selectedRows = Instance.OutwardHighwaySemanticLinkTable.AsEnumerable()
-                        .Where(row => Math.Abs(latitude - row.Field<double>("latitude")) < 0.002
-                                      && Math.Abs(longitude - row.Field<double>("longitude")) < 0.002)
+                    Console.WriteLine($"INDEX: {i}, outward scope");
+
+                    selectedRows = _outwardHighwaySemanticLinkTable
+                        .AsEnumerable()
+                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
                         .ToArray();
 
                     if (selectedRows.Length != 0)
@@ -69,9 +76,11 @@ namespace SensorLogInserterRe.Calculators
                 }
                 else if (direction == "homeward")
                 {
-                    selectedRows = Instance.HomewardHighwaySemanticLinkTable.AsEnumerable()
-                        .Where(row => Math.Abs(latitude - row.Field<double>("latitude")) < 0.002
-                                      && Math.Abs(longitude - row.Field<double>("longitude")) < 0.002)
+                    Console.WriteLine($"INDEX: {i}, homeward scope");
+
+                    selectedRows = _homewardHighwaySemanticLinkTable
+                        .AsEnumerable()
+                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
                         .ToArray();
 
                     if (selectedRows.Length != 0)
@@ -81,22 +90,27 @@ namespace SensorLogInserterRe.Calculators
 
             if (selectedRows == null || selectedRows.Length == 0)
             {
-                selectedRows = Instance.SemanticLinkTable.AsEnumerable()
-                    .Where(row => Math.Abs(latitude - row.Field<double>("latitude")) < 0.0001
-                                  && Math.Abs(longitude - row.Field<double>("longitude")) < 0.0001)
+                Console.WriteLine($"INDEX: {i}, semantic_link scope");
+
+                selectedRows = _semanticLinkTable
+                    .AsEnumerable()
+                    .Where(row => row.Field<double>("latitude") > (latitude - 0.0001) && row.Field<double>("latitude") < (latitude + 0.0001) && row.Field<double>("longitude") > (longitude - 0.0001) && row.Field<double>("longitude") < (longitude + 0.0001))
                     .ToArray();
+
                 if (selectedRows.Length != 0)
                     linkId = SelectLink(latitude, longitude, heading, selectedRows);
             }
 
             if (selectedRows.Length == 0)
             {
-                selectedRows = Instance.LinkTable.AsEnumerable()
-                    .Where(row => Math.Abs(latitude - row.Field<double>("latitude")) < 0.002
-                                  && Math.Abs(longitude - row.Field<double>("longitude")) < 0.002)
+                Console.WriteLine($"INDEX: {i}, link scope");
+
+                selectedRows = _linkTable
+                    .AsEnumerable()
+                    .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
                     .ToArray();
 
-                if(selectedRows.Length != 0)
+                if (selectedRows.Length != 0)
                     linkId = SelectLink(latitude, longitude, heading, selectedRows);
             }
 

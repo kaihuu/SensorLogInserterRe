@@ -16,8 +16,8 @@ namespace SensorLogInserterRe.Calculators
 
         private DataTable _efficiencyTable;
         private DataTable _efficiencyMaxTable;
-        private double _maxRev;
-        private double _maxTorque;
+        private int _maxRev;
+        private int _maxTorque;
 
         private EfficiencyCalculator()
         {
@@ -26,7 +26,7 @@ namespace SensorLogInserterRe.Calculators
 
         public static EfficiencyCalculator GetInstance()
         {
-            if(_instance == null)
+            if (_instance == null)
             {
                 InitInstance();
             }
@@ -43,13 +43,13 @@ namespace SensorLogInserterRe.Calculators
             };
 
 
-            _instance._maxRev = (double) _instance._efficiencyTable
+            _instance._maxRev = _instance._efficiencyTable
                 .AsEnumerable()
-                .Max(v => v[EfficiencyDao.ColumnRev]);
+                .Max(v => v.Field<int>(EfficiencyDao.ColumnRev));
 
-            _instance._maxTorque = (double)_instance._efficiencyTable
+            _instance._maxTorque = (int)_instance._efficiencyTable
                 .AsEnumerable()
-                .Max(v => v[EfficiencyDao.ColumnTorque]);
+                .Max(v => v.Field<int>(EfficiencyDao.ColumnTorque));
         }
 
         public int GetEfficiency(Car car, double speed, double torque)
@@ -67,12 +67,12 @@ namespace SensorLogInserterRe.Calculators
                 table = this._efficiencyTable;
             }
 
+            //return EfficiencyDao.GetEfficiency((int)Math.Round(torque), (int)Math.Round(rpm / 10) * 10);
+
             return table.AsEnumerable()
-                   .Where(v => (int)v[EfficiencyDao.ColumnRev] == (int)Math.Round(rpm / 10) * 10)
-                   .Where(v => (int)v[EfficiencyDao.ColumnTorque] == (int)Math.Round(torque))
-                   .Select(v => v[EfficiencyDao.ColumnEfficiency])
-                   .Cast<int>()
-                   .ElementAt(0);
-        } 
+                .Where(v => v.Field<int>(EfficiencyDao.ColumnRev) == (int) Math.Round(rpm/10) * 10 )
+                .Where(v => v.Field<int>(EfficiencyDao.ColumnTorque) == (int) Math.Round(torque) )
+                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? -1;
+        }
     }
 }

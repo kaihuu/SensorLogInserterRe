@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Inserters.Components;
 using SensorLogInserterRe.Models;
+using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Inserters
 {
@@ -14,14 +15,15 @@ namespace SensorLogInserterRe.Inserters
     {
         public static void InsertEcolog(InsertDatum datum)
         {
-            Console.WriteLine("CALLED: InsertEcolog" + datum);
-
             var tripsTable = TripsDao.Get(datum);
+            int i = 1;
 
             foreach (DataRow row in tripsTable.Rows)
             {
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, START: {DateTime.Now}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum);
                 EcologDao.Insert(ecologTable);
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, END: {DateTime.Now}");
             }
         }
 

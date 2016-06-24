@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Calculators
 {
     static class RegeneEnergyCalculator
     {
-        public static double CalcEnergy(double drivingPower, double vehicleSpeed, Car car)
+        public static double CalcEnergy(double drivingPower, double vehicleSpeed, Car car, int efficiency)
         {
             //制動力[N]
             double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
@@ -35,17 +35,17 @@ namespace SensorLogInserterRe.Calculators
                     drivingForce >= car.MaxDrivingForce)//車速が7km/hより大きく，回生エネルギー限界[kW]を制動エネルギー[kW]が超えず，
                    //回生による制動力[N]の限界を制動力[N]が超えない場合（負のため不等号逆転）
                 {
-                    regeneEnergy = drivingPower * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque);
+                    regeneEnergy = drivingPower * efficiency;
                 }
                 //限界回生力[N]を超えている場合
                 else if (vehicleSpeed >=7 && vehicleSpeed <= speedC && drivingForce < car.MaxDrivingForce)
                 {
-                    regeneEnergy = car.MaxDrivingForce * vehicleSpeed * 3.6 * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque); 
+                    regeneEnergy = car.MaxDrivingForce * vehicleSpeed * 3.6 * efficiency; 
                 }
                 //回生エネルギー限界を超えている場合
                 else if (vehicleSpeed > speedC && drivingPower * 3600 < car.MaxDrivingPower)
                 {
-                    regeneEnergy = car.MaxDrivingPower / 1000 * EfficiencyCalculator.GetInstance().GetEfficiency(car, vehicleSpeed, drivingTorque);
+                    regeneEnergy = car.MaxDrivingPower / 1000 * efficiency;
                 }
                 regeneEnergy = regeneEnergy / 100 * car.InverterEfficiency;
             }
