@@ -102,10 +102,10 @@ namespace SensorLogInserterRe.Calculators
 
                 selectedRows = _semanticLinkTable
                     .AsEnumerable()
-                    .Where(row => row.Field<double>("latitude") > (latitude - 0.0001))
-                        .Where(row => row.Field<double>("latitude") < (latitude + 0.0001))
-                        .Where(row => row.Field<double>("longitude") > (longitude - 0.0001))
-                        .Where(row => row.Field<double>("longitude") < (longitude + 0.0001))
+                    .Where(row => row.Field<double>(1) > (latitude - 0.0001))
+                        .Where(row => row.Field<double>(1) < (latitude + 0.0001))
+                        .Where(row => row.Field<double>(2) > (longitude - 0.0001))
+                        .Where(row => row.Field<double>(2) < (longitude + 0.0001))
                     .ToArray();
 
                 if (selectedRows.Length != 0)
