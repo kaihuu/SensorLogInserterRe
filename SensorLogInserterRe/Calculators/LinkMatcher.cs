@@ -34,6 +34,8 @@ namespace SensorLogInserterRe.Calculators
                 };
             }
 
+            _instance._linkTable.DefaultView.Sort = "latitude, longitude";
+
             return _instance;
         }
 
@@ -67,11 +69,14 @@ namespace SensorLogInserterRe.Calculators
 
                     selectedRows = _outwardHighwaySemanticLinkTable
                         .AsEnumerable()
-                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
+                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
+                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
+                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
+                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
                         .ToArray();
 
                     if (selectedRows.Length != 0)
-                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
 
                 }
                 else if (direction == "homeward")
@@ -80,11 +85,14 @@ namespace SensorLogInserterRe.Calculators
 
                     selectedRows = _homewardHighwaySemanticLinkTable
                         .AsEnumerable()
-                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
+                        .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
+                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
+                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
+                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
                         .ToArray();
 
                     if (selectedRows.Length != 0)
-                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
                 }
             }
 
@@ -94,24 +102,45 @@ namespace SensorLogInserterRe.Calculators
 
                 selectedRows = _semanticLinkTable
                     .AsEnumerable()
-                    .Where(row => row.Field<double>("latitude") > (latitude - 0.0001) && row.Field<double>("latitude") < (latitude + 0.0001) && row.Field<double>("longitude") > (longitude - 0.0001) && row.Field<double>("longitude") < (longitude + 0.0001))
+                    .Where(row => row.Field<double>("latitude") > (latitude - 0.0001))
+                        .Where(row => row.Field<double>("latitude") < (latitude + 0.0001))
+                        .Where(row => row.Field<double>("longitude") > (longitude - 0.0001))
+                        .Where(row => row.Field<double>("longitude") < (longitude + 0.0001))
                     .ToArray();
 
                 if (selectedRows.Length != 0)
-                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                    linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
             }
 
             if (selectedRows.Length == 0)
             {
                 Console.WriteLine($"INDEX: {i}, link scope");
 
+                /*List<DataRow> selectedList = new List<DataRow>();
+
+                for (int j = 0; j < _linkTable.Rows.Count; j++)
+                {
+                    if (_linkTable.Rows[j].Field<double>("latitude") > (latitude - 0.002)
+                        && _linkTable.Rows[j].Field<double>("latitude") < (latitude + 0.002)
+                        && _linkTable.Rows[j].Field<double>("longitude") > (longitude - 0.002)
+                        && _linkTable.Rows[j].Field<double>("longitude") < (longitude + 0.002))
+                    {
+                        selectedList.Add(_linkTable.Rows[j]);
+                    }
+                }
+
+                linkId = SelectLink(latitude, longitude, heading, selectedList.ToArray());*/
+
                 selectedRows = _linkTable
                     .AsEnumerable()
-                    .Where(row => row.Field<double>("latitude") > (latitude - 0.002) && row.Field<double>("latitude") < (latitude + 0.002) && row.Field<double>("longitude") > (longitude - 0.002) && row.Field<double>("longitude") < (longitude + 0.002))
+                    .Where(row => row.Field<double>("latitude") > (latitude - 0.002))
+                        .Where(row => row.Field<double>("latitude") < (latitude + 0.002))
+                        .Where(row => row.Field<double>("longitude") > (longitude - 0.002))
+                        .Where(row => row.Field<double>("longitude") < (longitude + 0.002))
                     .ToArray();
 
                 if (selectedRows.Length != 0)
-                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                    linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
             }
 
             #endregion
@@ -141,8 +170,10 @@ namespace SensorLogInserterRe.Calculators
             return new Tuple<string, double?>(linkId, roadTheta);
         }
 
-        private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows)
+        private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows, int i)
         {
+            Console.WriteLine($"INDEX: {i}, link scope");
+
             string matchedLink = "";
             double minDistance = double.PositiveInfinity;
 
