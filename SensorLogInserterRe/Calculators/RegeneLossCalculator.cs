@@ -11,7 +11,6 @@ namespace SensorLogInserterRe.Calculators
     {
         public static double CalcEnergy(double drivingPower, double regeneEnergy, Car car, double vehicleSpeed, int efficiency)
         {
-            double drivingTorque = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6 * car.TireRadius / car.ReductionRatio;
 
             double regeneLoss;
             if (drivingPower >= 0)//力行時

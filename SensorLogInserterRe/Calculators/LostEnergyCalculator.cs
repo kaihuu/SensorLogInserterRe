@@ -17,5 +17,11 @@ namespace SensorLogInserterRe.Calculators
                 + AirResistanceCalculator.CalcPower(rho, car.CdValue, car.FrontalProjectedArea, windspeed, vehicleSpeed)
                 + RollingResistanceCalculator.CalcPower(myu, car.Weight, theta, vehicleSpeed);
         }
+
+        public static double CalcEnergy(double convertLoss, double regeneLoss, double airResistance,
+            double rollingResistance)
+        {
+            return Math.Abs(convertLoss) + regeneLoss + airResistance + rollingResistance;
+        }
     }
 }
