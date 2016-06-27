@@ -78,9 +78,9 @@ namespace SensorLogInserterRe.Calculators
             Console.WriteLine("TORQUE: " + torque);
 
             return table.AsEnumerable()
-                .Where(v => v.Field<int>(EfficiencyDao.ColumnRev) == (int) (Math.Round(rpm / 10)) * 10 )
-                .Where(v => v.Field<int>(EfficiencyDao.ColumnTorque) == (int) Math.Round(torque) )
-                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? 70;
+                .Where(v => v.Field<int>(0) == (int)Math.Round(torque))
+                .Where(v => v.Field<int>(1) == (int) (Math.Round(rpm / 10)) * 10 )
+                .Select(v => v.Field<int?>(2)).FirstOrDefault() ?? 70;
         }
     }
 }
