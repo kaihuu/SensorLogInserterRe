@@ -59,7 +59,7 @@ namespace SensorLogInserterRe.Calculators
 
         public int GetEfficiency(Car car, double speed, double torque)
         {
-            Console.WriteLine($"TORQUE: {torque}");
+            //Console.WriteLine($"TORQUE: {torque}");
 
             double rpm = MathUtil.ConvertSpeedToRev(car, speed);
 
@@ -79,7 +79,7 @@ namespace SensorLogInserterRe.Calculators
             return table.AsEnumerable()
                 .Where(v => v.Field<int>(EfficiencyDao.ColumnRev) == (int) Math.Round(rpm / 10) * 10 )
                 .Where(v => v.Field<int>(EfficiencyDao.ColumnTorque) == (int) Math.Round(torque) )
-                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? -1;
+                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? 70;
         }
     }
 }
