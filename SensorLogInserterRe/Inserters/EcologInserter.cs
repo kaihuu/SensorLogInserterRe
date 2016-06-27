@@ -20,10 +20,13 @@ namespace SensorLogInserterRe.Inserters
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, START: {DateTime.Now}");
+                Console.WriteLine($"TRIP INDEX: {i}, START: {DateTime.Now}");
+                //LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, START: {DateTime.Now}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum);
                 EcologDao.Insert(ecologTable);
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, END: {DateTime.Now}");
+                //LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"TRIP INDEX: {i}, END: {DateTime.Now}");
+
+                i++;
             }
         }
 

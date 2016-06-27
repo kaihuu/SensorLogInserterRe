@@ -160,8 +160,6 @@ namespace SensorLogInserterRe.Calculators
 
         private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows, int i)
         {
-            Console.WriteLine($"INDEX: {i}, link scope");
-
             string matchedLink = "";
             double minDistance = double.PositiveInfinity;
 

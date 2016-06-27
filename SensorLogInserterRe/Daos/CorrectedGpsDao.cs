@@ -46,5 +46,30 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query.ToString());
         }
+
+        public static DataTable GetNormalized(DateTime startTime, DateTime endTime, InsertDatum datum)
+        {
+            var query = new StringBuilder();
+            query.AppendLine("SELECT driver_id");
+            query.AppendLine("  car_id,");
+            query.AppendLine("  sensor_id,");
+            query.AppendLine("  CONVERT(DateTime, ");
+            query.AppendLine("    CONVERT(Varchar(30), ");
+            query.AppendLine(
+                "      CONVERT(DateTime, (CASE WHEN DATEPART(Ms, jst) >= 500 THEN DATEADD(SECOND, 1, jst) ELSE jst END)), 20)) AS jst,");
+            query.AppendLine("  latitude,");
+            query.AppendLine("  longitude,");
+            query.AppendLine("  speed,");
+            query.AppendLine("  heading,");
+            query.AppendLine("  distance_difference");
+            query.AppendLine($"FROM {TableName}");
+            query.AppendLine($" WHERE {ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"   AND {ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"   AND {ColumnJst} >= '{startTime}'");
+            query.AppendLine($"   AND {ColumnJst} <= '{endTime}'");
+
+            return DatabaseAccesser.GetResult(query.ToString());
+        }
     }
 }

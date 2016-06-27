@@ -19,7 +19,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
         public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum)
         {
-            var correctedGpsTable = CorrectedGpsDao.Get(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
+            var correctedGpsTable = CorrectedGpsDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                     tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
 
             var ecologTable = DataTableUtil.GetEcologTable();
@@ -32,7 +32,8 @@ namespace SensorLogInserterRe.Inserters.Components
             var beforeRow = ecologTable.NewRow();
             beforeRow.ItemArray = firstRow.ItemArray;
 
-            for (int i = 1; i < correctedGpsTable.Rows.Count; i++)
+            // correctedGpsTable.Rows.Count
+            for (int i = 1; i < 20; i++)
             {
                 var row = GenerateEcologRow(
                     ecologTable.NewRow(), beforeRow, tripRow, correctedGpsTable.Rows[i], datum, i);
@@ -87,12 +88,14 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnEnergyByCooling, DBNull.Value);
             newRow.SetField(EcologDao.ColumnEnergyByHeating, DBNull.Value);
 
+            newRow.SetField(EcologDao.ColumnTripDirection, tripRow.Field<string>(TripsDao.ColumnTripDirection));
+
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
                 0f, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum, i);
 
-            newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
+            newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
 
             return newRow;
@@ -173,12 +176,17 @@ namespace SensorLogInserterRe.Inserters.Components
                 airResistancePower + rollingResistancePower + climbingResistancePower + accResistancePower;
 
             int efficiency = EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speed,
-                drivingResistancePower*1000*3600/speed/3.6*datum.EstimatedCarModel.TireRadius/
+                drivingResistancePower * 1000 * 3600 / speed / 3.6 * datum.EstimatedCarModel.TireRadius /
                 datum.EstimatedCarModel.ReductionRatio);
+
+            Console.WriteLine("EFFICIENCY: " + efficiency);
 
             newRow.SetField(EcologDao.ColumnEfficiency, efficiency);
 
             newRow.SetField(EcologDao.ColumnConvertLoss, ConvertLossCaluculator.CalcEnergy(
+                drivingResistancePower, datum.EstimatedCarModel, speed, efficiency));
+
+            Console.WriteLine("CONVERTLOSS: " + ConvertLossCaluculator.CalcEnergy(
                 drivingResistancePower, datum.EstimatedCarModel, speed, efficiency));
 
             newRow.SetField(EcologDao.ColumnRegeneLoss, RegeneLossCalculator.CalcEnergy(drivingResistancePower, RegeneEnergyCalculator.CalcEnergy(drivingResistancePower,
@@ -197,13 +205,15 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnEnergyByCooling, DBNull.Value);
             newRow.SetField(EcologDao.ColumnEnergyByHeating, DBNull.Value);
 
+            newRow.SetField(EcologDao.ColumnTripDirection, tripRow.Field<string>(TripsDao.ColumnTripDirection));
+
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
                 correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnHeading),
                 tripRow.Field<string>(TripsDao.ColumnTripDirection), datum, i);
 
-            newRow.SetField(EcologDao.ColumnTripDirection, linkAndTheta.Item1);
+            newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
 
             return newRow;

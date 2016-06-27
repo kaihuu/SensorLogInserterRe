@@ -25,6 +25,7 @@ namespace SensorLogInserterRe.Constant
                         ReductionRatio = 7.9377f,
                         CdValue = 0.28f,
                         FrontalProjectedArea = 2.19f,
+                        InverterEfficiency = 0.95,
                         MaxDrivingPower = -30,
                         MaxDrivingForce = -0.15 * Constants.GravityResistanceCoefficient * 1600
                     };
