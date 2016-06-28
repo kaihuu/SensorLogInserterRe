@@ -10,11 +10,13 @@ namespace SensorLogInserterRe.Calculators
 {
    　static class SpeedCalculator
     {
-
-        public static double CalcSpeed(double latitudeBefore, double longitudeBefore, double latitudeAfter, double longitudeAfter, double samplingSeconds)
+        /** km/h の速度を返す **/
+        public static double CalcSpeed(double latitudeBefore, double longitudeBefore, DateTime timeBefore, double latitudeAfter, double longitudeAfter, DateTime timeAfter)
         {
             //中間差分法を用いた導出
-            return DistanceCalculator.CalcDistance(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) / 2 / samplingSeconds * 3.6;
+            //return DistanceCalculator.CalcDistance(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) / 2 / samplingSeconds * 3.6;
+            return DistanceCalculator.CalcDistance(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) /
+                   (timeAfter - timeBefore).TotalSeconds / 3.6;
         }
     }
 }

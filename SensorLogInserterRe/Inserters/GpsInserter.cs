@@ -98,10 +98,10 @@ namespace SensorLogInserterRe.Inserters
                 row.SetField(CorrectedGpsDao.ColumnSpeed, SpeedCalculator.CalcSpeed(
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
                     gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
-                    (gpsRawTable.Rows[i + 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst) -
-                     gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst)).TotalSeconds) / 2);
+                    gpsRawTable.Rows[i + 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst)));
 
                 //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
                 if (row.Field<Single>(CorrectedGpsDao.ColumnSpeed) > 1.0)
