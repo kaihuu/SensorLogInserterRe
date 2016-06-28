@@ -45,7 +45,7 @@ namespace SensorLogInserterRe.Calculators
         }
 
         public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
-            InsertDatum datum, int i )
+            InsertDatum datum)
         {
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
 
@@ -65,70 +65,47 @@ namespace SensorLogInserterRe.Calculators
             {
                 if (direction == "outward")
                 {
-                    Console.WriteLine($"INDEX: {i}, outward scope");
-
                     selectedRows = _outwardHighwaySemanticLinkTable
                         .AsEnumerable()
                         .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
                         .ToArray();
 
                     if (selectedRows.Length != 0)
-                        linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
 
                 }
                 else if (direction == "homeward")
                 {
-                    Console.WriteLine($"INDEX: {i}, homeward scope");
-
-                    selectedRows = _homewardHighwaySemanticLinkTable
+                        selectedRows = _homewardHighwaySemanticLinkTable
                         .AsEnumerable()
                         .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
                         .ToArray();
 
                     if (selectedRows.Length != 0)
-                        linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
                 }
             }
 
             if (selectedRows == null || selectedRows.Length == 0)
             {
-                Console.WriteLine($"INDEX: {i}, semantic_link scope");
-
                 selectedRows = _semanticLinkTable
                     .AsEnumerable()
                     .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.0001 && Math.Abs(row.Field<double>(3) - longitude) < 0.0001)
                     .ToArray();
 
                 if (selectedRows.Length != 0)
-                    linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
+                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
             }
 
             if (selectedRows.Length == 0)
             {
-                Console.WriteLine($"INDEX: {i}, link scope");
-
-                /*List<DataRow> selectedList = new List<DataRow>();
-
-                for (int j = 0; j < _linkTable.Rows.Count; j++)
-                {
-                    if (_linkTable.Rows[j].Field<double>("latitude") > (latitude - 0.002)
-                        && _linkTable.Rows[j].Field<double>("latitude") < (latitude + 0.002)
-                        && _linkTable.Rows[j].Field<double>("longitude") > (longitude - 0.002)
-                        && _linkTable.Rows[j].Field<double>("longitude") < (longitude + 0.002))
-                    {
-                        selectedList.Add(_linkTable.Rows[j]);
-                    }
-                }
-
-                linkId = SelectLink(latitude, longitude, heading, selectedList.ToArray());*/
-
                 selectedRows = _linkTable
                     .AsEnumerable()
                     .Where(row => Math.Abs(row.Field<double>(1) - latitude) < 0.002 && Math.Abs(row.Field<double>(2) - longitude) < 0.002)
                     .ToArray();
 
                 if (selectedRows.Length != 0)
-                    linkId = SelectLink(latitude, longitude, heading, selectedRows, i);
+                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
             }
 
             #endregion
@@ -158,7 +135,7 @@ namespace SensorLogInserterRe.Calculators
             return new Tuple<string, double?>(linkId, roadTheta);
         }
 
-        private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows, int i)
+        private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows)
         {
             string matchedLink = "";
             double minDistance = double.PositiveInfinity;

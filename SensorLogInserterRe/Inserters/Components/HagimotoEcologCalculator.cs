@@ -25,7 +25,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var ecologTable = DataTableUtil.GetEcologTable();
 
             var firstRow = GenerateFirstEcologRow(
-                ecologTable.NewRow(), tripRow, correctedGpsTable.Rows[0], datum, 0);
+                ecologTable.NewRow(), tripRow, correctedGpsTable.Rows[0], datum);
 
             ecologTable.Rows.Add(firstRow);
 
@@ -35,7 +35,7 @@ namespace SensorLogInserterRe.Inserters.Components
             for (int i = 1; i < correctedGpsTable.Rows.Count; i++)
             {
                 var row = GenerateEcologRow(
-                    ecologTable.NewRow(), beforeRow, tripRow, correctedGpsTable.Rows[i], datum, i);
+                    ecologTable.NewRow(), beforeRow, tripRow, correctedGpsTable.Rows[i], datum);
                 ecologTable.Rows.Add(row);
 
                 beforeRow.ItemArray = row.ItemArray;
@@ -44,7 +44,7 @@ namespace SensorLogInserterRe.Inserters.Components
             return ecologTable;
         }
 
-        private static DataRow GenerateFirstEcologRow(DataRow newRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum, int i)
+        private static DataRow GenerateFirstEcologRow(DataRow newRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum)
         {
             newRow.SetField(EcologDao.ColumnTripId, tripRow.Field<int>(TripsDao.ColumnTripId));
             newRow.SetField(EcologDao.ColumnDriverId, tripRow.Field<int>(TripsDao.ColumnDriverId));
@@ -94,7 +94,7 @@ namespace SensorLogInserterRe.Inserters.Components
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
-                0f, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum, i);
+                0f, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
@@ -102,7 +102,7 @@ namespace SensorLogInserterRe.Inserters.Components
             return newRow;
         }
 
-        private static DataRow GenerateEcologRow(DataRow newRow, DataRow beforeRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum, int i)
+        private static DataRow GenerateEcologRow(DataRow newRow, DataRow beforeRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum)
         {
             newRow.SetField(EcologDao.ColumnTripId, tripRow.Field<int>(TripsDao.ColumnTripId));
             newRow.SetField(EcologDao.ColumnDriverId, tripRow.Field<int>(TripsDao.ColumnDriverId));
@@ -245,7 +245,7 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
                 correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnHeading),
-                tripRow.Field<string>(TripsDao.ColumnTripDirection), datum, i);
+                tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
             newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
             newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);

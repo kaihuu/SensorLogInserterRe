@@ -50,24 +50,43 @@ namespace SensorLogInserterRe.Daos
         public static DataTable GetNormalized(DateTime startTime, DateTime endTime, InsertDatum datum)
         {
             var query = new StringBuilder();
-            query.AppendLine("SELECT driver_id");
-            query.AppendLine("  car_id,");
-            query.AppendLine("  sensor_id,");
-            query.AppendLine("  CONVERT(DateTime, ");
-            query.AppendLine("    CONVERT(Varchar(30), ");
-            query.AppendLine(
-                "      CONVERT(DateTime, (CASE WHEN DATEPART(Ms, jst) >= 500 THEN DATEADD(SECOND, 1, jst) ELSE jst END)), 20)) AS jst,");
-            query.AppendLine("  latitude,");
-            query.AppendLine("  longitude,");
-            query.AppendLine("  speed,");
-            query.AppendLine("  heading,");
-            query.AppendLine("  distance_difference");
-            query.AppendLine($"FROM {TableName}");
-            query.AppendLine($" WHERE {ColumnDriverId} = {datum.DriverId}");
-            query.AppendLine($"   AND {ColumnCarId} = {datum.CarId}");
-            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
-            query.AppendLine($"   AND {ColumnJst} >= '{startTime}'");
-            query.AppendLine($"   AND {ColumnJst} <= '{endTime}'");
+            query.AppendLine($"WITH convert_gps");
+            query.AppendLine($"AS (");
+            query.AppendLine($"	SELECT {ColumnDriverId}");
+            query.AppendLine($"		,{ColumnCarId}");
+            query.AppendLine($"		,{ColumnSensorId}");
+            query.AppendLine($"		,CONVERT(DATETIME, CONVERT(VARCHAR(30), CONVERT(DATETIME, (");
+            query.AppendLine($"						CASE ");
+            query.AppendLine($"							WHEN DATEPART(Ms, {ColumnJst}) >= 500");
+            query.AppendLine($"								THEN DATEADD(SECOND, 1, {ColumnJst})");
+            query.AppendLine($"							ELSE {ColumnJst}");
+            query.AppendLine($"							END");
+            query.AppendLine($"						)), 20)) AS {ColumnJst}");
+            query.AppendLine($"		,{ColumnLatitude}");
+            query.AppendLine($"		,{ColumnLongitude}");
+            query.AppendLine($"		,{ColumnSpeed}");
+            query.AppendLine($"		,{ColumnHeading}");
+            query.AppendLine($"		,{ColumnDistanceDifference}");
+            query.AppendLine($"	FROM {TableName}");
+            query.AppendLine($"	WHERE {ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"		AND {ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"		AND {ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"	)");
+            query.AppendLine($"SELECT {ColumnDriverId}");
+            query.AppendLine($"	,{ColumnCarId}");
+            query.AppendLine($"	,{ColumnSensorId}");
+            query.AppendLine($"	,{ColumnJst}");
+            query.AppendLine($"	,AVG({ColumnLatitude}) AS {ColumnLatitude}");
+            query.AppendLine($"	,AVG({ColumnLongitude}) AS {ColumnLongitude}");
+            query.AppendLine($"	,AVG({ColumnSpeed}) AS {ColumnSpeed}");
+            query.AppendLine($"	,AVG({ColumnHeading}) AS {ColumnHeading}");
+            query.AppendLine($"	,SUM({ColumnDistanceDifference}) AS {ColumnDistanceDifference}");
+            query.AppendLine($"FROM convert_gps");
+            query.AppendLine($"GROUP BY {ColumnDriverId}");
+            query.AppendLine($"	,{ColumnCarId}");
+            query.AppendLine($"	,{ColumnSensorId}");
+            query.AppendLine($"	,{ColumnJst}");
+            query.AppendLine($"ORDER BY {ColumnJst}");
 
             return DatabaseAccesser.GetResult(query.ToString());
         }
