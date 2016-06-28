@@ -16,7 +16,7 @@ namespace SensorLogInserterRe.Utils
 
         public static double ConvertSpeedToRev(Car car, double speed)
         {
-            return speed / 3.6 * 60 / (car.TireRadius * 2 * Math.PI) * car.ReductionRatio;
+            return speed * 60 / (car.TireRadius * 2 * Math.PI) * car.ReductionRatio;
         }
 
         public static double CalcVectorAbsoluteValue(ThreeDimensionalVector vector)

@@ -113,7 +113,7 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnLongitude, correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
             double speed = correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnSpeed);
-
+            double speedMeterPerSec = speed / 3.6;
             //Console.WriteLine("SPEED: " + speed);
 
             newRow.SetField(EcologDao.ColumnSpeed, speed);
@@ -149,7 +149,7 @@ namespace SensorLogInserterRe.Inserters.Components
             double airResistancePower = 0;
             if (speed > 1 && distanceDiff > 0)
                 airResistancePower = AirResistanceCalculator.CalcPower(
-                    Rho, datum.EstimatedCarModel.CdValue, datum.EstimatedCarModel.FrontalProjectedArea, (speed + WindSpeed) / 3.6, speed / 3.6);
+                    Rho, datum.EstimatedCarModel.CdValue, datum.EstimatedCarModel.FrontalProjectedArea, (speed + WindSpeed) / 3.6, speedMeterPerSec);
 
             //Console.WriteLine("AIR: " + airResistancePower);
 
@@ -160,7 +160,7 @@ namespace SensorLogInserterRe.Inserters.Components
             double rollingResistancePower = 0;
             if (speed > 1 && distanceDiff > 0)
                 rollingResistancePower = RollingResistanceCalculator.CalcPower(
-                    Myu, datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speed / 3.6);
+                    Myu, datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speedMeterPerSec);
 
             //Console.WriteLine("ROLLING: " + rollingResistancePower);
 
@@ -171,7 +171,7 @@ namespace SensorLogInserterRe.Inserters.Components
             double climbingResistancePower = 0;
             if (speed > 1 && distanceDiff > 0)
                 climbingResistancePower = ClimbingResistanceCalculator.CalcPower(
-                    datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speed / 3.6);
+                    datum.EstimatedCarModel.Weight, Math.Atan(terrainAltitudeDiff / distanceDiff), speedMeterPerSec);
 
             //Console.WriteLine("CLIMBING: " + climbingResistancePower);
 
@@ -182,8 +182,8 @@ namespace SensorLogInserterRe.Inserters.Components
             double accResistancePower = 0;
             if (speed > 1 && distanceDiff > 0)
                 accResistancePower = AccResistanceCalculator.CalcPower(
-                    beforeRow.Field<Single>(EcologDao.ColumnSpeed),
-                    speed / 3.6, datum.EstimatedCarModel.Weight,
+                    beforeRow.Field<Single>(EcologDao.ColumnSpeed) / 3.6,
+                    speedMeterPerSec, datum.EstimatedCarModel.Weight,
                     (correctedGpsRow.Field<DateTime>(CorrectedGpsDao.ColumnJst) -
                     beforeRow.Field<DateTime>(EcologDao.ColumnJst)).TotalSeconds);
 
@@ -201,26 +201,26 @@ namespace SensorLogInserterRe.Inserters.Components
                 torque = drivingResistancePower * 1000 * 3600 / speed * 3.6 * datum.EstimatedCarModel.TireRadius /
                          datum.EstimatedCarModel.ReductionRatio;
 
-            int efficiency = EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speed, torque);
+            int efficiency = EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speedMeterPerSec, torque);
 
             //Console.WriteLine("EFFICIENCY: " + efficiency);
 
             newRow.SetField(EcologDao.ColumnEfficiency, efficiency);
 
             double convertLoss = ConvertLossCaluculator.CalcEnergy(
-                drivingResistancePower, datum.EstimatedCarModel, speed / 3.6, efficiency);
+                drivingResistancePower, datum.EstimatedCarModel, speedMeterPerSec, efficiency);
 
             newRow.SetField(EcologDao.ColumnConvertLoss, convertLoss);
 
             //Console.WriteLine("CONVERTLOSS: " + convertLoss);
 
             double regeneEnergy = RegeneEnergyCalculator.CalcEnergy(drivingResistancePower,
-                speed / 3.6, datum.EstimatedCarModel, efficiency);
+                speedMeterPerSec, datum.EstimatedCarModel, efficiency);
 
             newRow.SetField(EcologDao.ColumnRegeneEnergy, regeneEnergy);
 
             double regeneLoss = RegeneLossCalculator.CalcEnergy(drivingResistancePower, regeneEnergy,
-                datum.EstimatedCarModel, speed, efficiency);
+                datum.EstimatedCarModel, speedMeterPerSec, efficiency);
 
             newRow.SetField(EcologDao.ColumnRegeneLoss, regeneLoss);
 
@@ -229,7 +229,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
             newRow.SetField(EcologDao.ColumnLostEnergy, lostEnergy);
 
-            newRow.SetField(EcologDao.ColumnConsumedElectricEnergy, ConsumedEnergyCaluculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speed, efficiency));
+            newRow.SetField(EcologDao.ColumnConsumedElectricEnergy, ConsumedEnergyCaluculator.CalcEnergy(drivingResistancePower, datum.EstimatedCarModel, speedMeterPerSec, efficiency));
 
             newRow.SetField(EcologDao.ColumnLostEnergyByWellToWheel, DBNull.Value);
             newRow.SetField(EcologDao.ColumnConsumedFuel, DBNull.Value);

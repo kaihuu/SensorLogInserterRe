@@ -15,8 +15,9 @@ namespace SensorLogInserterRe.Calculators
         {
             //中間差分法を用いた導出
             //return DistanceCalculator.CalcDistance(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) / 2 / samplingSeconds * 3.6;
+
             return DistanceCalculator.CalcDistance(latitudeBefore, longitudeBefore, latitudeAfter, longitudeAfter) /
-                   (timeAfter - timeBefore).TotalSeconds / 3.6;
+                   (timeAfter - timeBefore).TotalSeconds * 3.6;
         }
     }
 }
