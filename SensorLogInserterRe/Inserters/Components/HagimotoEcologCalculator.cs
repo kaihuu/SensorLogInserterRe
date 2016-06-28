@@ -183,9 +183,9 @@ namespace SensorLogInserterRe.Inserters.Components
             if (speed > 1 && distanceDiff > 0)
                 accResistancePower = AccResistanceCalculator.CalcPower(
                     beforeRow.Field<Single>(EcologDao.ColumnSpeed) / 3.6,
-                    speedMeterPerSec, datum.EstimatedCarModel.Weight,
-                    (correctedGpsRow.Field<DateTime>(CorrectedGpsDao.ColumnJst) -
-                    beforeRow.Field<DateTime>(EcologDao.ColumnJst)).TotalSeconds);
+                    beforeRow.Field<DateTime>(EcologDao.ColumnJst),
+                    speedMeterPerSec, correctedGpsRow.Field<DateTime>(CorrectedGpsDao.ColumnJst),
+                    datum.EstimatedCarModel.Weight);
 
             //Console.WriteLine("ACC: " + accResistancePower);
 
@@ -198,7 +198,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
             double torque = 0;
             if (drivingResistancePower > 0 && speed > 0)
-                torque = drivingResistancePower * 1000 * 3600 / speed * 3.6 * datum.EstimatedCarModel.TireRadius /
+                torque = drivingResistancePower * 1000 * 3600 / speedMeterPerSec * datum.EstimatedCarModel.TireRadius /
                          datum.EstimatedCarModel.ReductionRatio;
 
             int efficiency = EfficiencyCalculator.GetInstance().GetEfficiency(datum.EstimatedCarModel, speedMeterPerSec, torque);

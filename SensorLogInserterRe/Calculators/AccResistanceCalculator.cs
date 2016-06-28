@@ -16,9 +16,9 @@ namespace SensorLogInserterRe.Calculators
         }
 
         //加速抵抗による損失エネルギー，kWh/s, 萩本モデル
-        public static double CalcPower(double vehicleSpeedBefore, double vehicleSpeedThis, double vehicleMass, double samplingTime)
+        public static double CalcPower(double vehicleSpeedBefore, DateTime timeBefore, double vehicleSpeedThis, DateTime timeThis, double vehicleMass)
         {
-            return vehicleMass * (Math.Pow(vehicleSpeedThis, 2) - Math.Pow(vehicleSpeedBefore, 2)) / 2 / samplingTime / 3600 / 1000;
+            return vehicleMass * (Math.Pow(vehicleSpeedThis, 2) - Math.Pow(vehicleSpeedBefore, 2)) / (timeThis - timeThis).TotalSeconds / 3600 / 1000;
         }
     }
 }
