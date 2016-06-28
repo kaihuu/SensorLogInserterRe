@@ -141,7 +141,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
             newRow.SetField(EcologDao.ColumnTerrainAltitudeDiffarencce, terrainAltitudeDiff);
 
-            // TODO 加速度ってどれで取るべきだ？Androidの加速度センサの値？
+            // TODO 加速度を追加する場合はここへ
             newRow.SetField(EcologDao.ColumnLongitudinalAcc, DBNull.Value);
             newRow.SetField(EcologDao.ColumnLateralAcc, DBNull.Value);
             newRow.SetField(EcologDao.ColumnVerticalAcc, DBNull.Value);

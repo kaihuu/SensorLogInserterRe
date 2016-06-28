@@ -65,17 +65,12 @@ namespace SensorLogInserterRe.Calculators
 
             if(rpm > _maxRev || torque > _maxTorque || torque < _minTorque)
             {
-                Console.WriteLine("SCOPE: EfficiencyMaxTable");
                 table = this._efficiencyMaxTable;
             }
             else
             {
-                Console.WriteLine("SCOPE: EfficiencyTable");
                 table = this._efficiencyTable;
             }
-
-            Console.WriteLine("REV: " + rpm);
-            Console.WriteLine("TORQUE: " + torque);
 
             return table.AsEnumerable()
                 .Where(v => v.Field<int>(0) == (int)Math.Round(torque))
