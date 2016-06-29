@@ -51,7 +51,7 @@ namespace SensorLogInserterRe.Calculators
             else  //登録されていないメッシュ
             {
                 //登録用のIDを取得
-                meshId = Altitude10MMeshRegisteredDao.GetMaxMeshId();
+                meshId = Altitude10MMeshRegisteredDao.GetMaxMeshId() + 1;
                 var altitudeDatum = Altitude10MMeshDao.Get(latitude, longitude);
                 
                 //標高データが存在しなかった場合

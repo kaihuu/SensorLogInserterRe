@@ -36,6 +36,7 @@ namespace SensorLogInserterRe.Inserters.Components
             {
                 var row = GenerateEcologRow(
                     ecologTable.NewRow(), beforeRow, tripRow, correctedGpsTable.Rows[i], datum);
+
                 ecologTable.Rows.Add(row);
 
                 beforeRow.ItemArray = row.ItemArray;

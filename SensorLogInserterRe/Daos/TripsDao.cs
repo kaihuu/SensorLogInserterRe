@@ -47,7 +47,7 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"AND {TripsDao.ColumnCarId} = {datum.CarId}");
             query.AppendLine($"AND {TripsDao.ColumnSensorId} = {datum.SensorId}");
             query.AppendLine($"AND {TripsDao.ColumnStartTime} >= '{datum.StartTime}'");
-            query.AppendLine($"AND {TripsDao.ColumnStartTime} <= '{datum.EndTime}'");
+            query.AppendLine($"AND {TripsDao.ColumnEndTime} <= '{datum.EndTime}'");
             query.AppendLine($"ORDER BY {ColumnStartTime}");
 
             return DatabaseAccesser.GetResult(query.ToString());

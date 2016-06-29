@@ -71,6 +71,8 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"	WHERE {ColumnDriverId} = {datum.DriverId}");
             query.AppendLine($"		AND {ColumnCarId} = {datum.CarId}");
             query.AppendLine($"		AND {ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"     AND {ColumnJst} >= '{startTime}'");
+            query.AppendLine($"     AND {ColumnJst} <= '{endTime}'");
             query.AppendLine($"	)");
             query.AppendLine($"SELECT {ColumnDriverId}");
             query.AppendLine($"	,{ColumnCarId}");
@@ -78,9 +80,9 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"	,{ColumnJst}");
             query.AppendLine($"	,AVG({ColumnLatitude}) AS {ColumnLatitude}");
             query.AppendLine($"	,AVG({ColumnLongitude}) AS {ColumnLongitude}");
-            query.AppendLine($"	,AVG({ColumnSpeed}) AS {ColumnSpeed}");
-            query.AppendLine($"	,AVG({ColumnHeading}) AS {ColumnHeading}");
-            query.AppendLine($"	,SUM({ColumnDistanceDifference}) AS {ColumnDistanceDifference}");
+            query.AppendLine($"	,CAST(AVG({ColumnSpeed}) AS real) AS {ColumnSpeed}");
+            query.AppendLine($"	,CAST(AVG({ColumnHeading}) AS real) AS {ColumnHeading}");
+            query.AppendLine($"	,CAST(SUM({ColumnDistanceDifference}) AS real) AS {ColumnDistanceDifference}");
             query.AppendLine($"FROM convert_gps");
             query.AppendLine($"GROUP BY {ColumnDriverId}");
             query.AppendLine($"	,{ColumnCarId}");
