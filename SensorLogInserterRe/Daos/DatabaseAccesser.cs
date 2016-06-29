@@ -12,6 +12,7 @@ namespace SensorLogInserterRe.Daos
     public class DatabaseAccesser
     {
         private static readonly string ConnectionString = "Data Source=" + "ECOLOGDB" + ";Initial Catalog=ECOLOGDBver3;Integrated Security=Yes;Connect Timeout=15;";
+        private static readonly int NumberOfViolationOfPrimaryKey = 2627;
 
         public static DataTable GetResult(string query)
         {
@@ -31,8 +32,9 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-                    Console.WriteLine("ERROR: " + sqlException.Message);
-                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
+                    // Console.WriteLine($"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                    LogWritter.WriteLog(LogWritter.LogMode.Error, $"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                    
                 }
                 finally
                 {
@@ -55,8 +57,11 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-                    Console.WriteLine("ERROR: " + sqlException.Message);
-                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
+                    if (sqlException.Number != NumberOfViolationOfPrimaryKey)
+                    {
+                        Console.WriteLine($"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                        LogWritter.WriteLog(LogWritter.LogMode.Error, $"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                    }
                 }
                 finally
                 {
@@ -80,8 +85,11 @@ namespace SensorLogInserterRe.Daos
                 }
                 catch (SqlException sqlException)
                 {
-                    Console.WriteLine("ERROR: " + sqlException.Message);
-                    LogWritter.WriteLog(LogWritter.LogMode.Error, sqlException.Message);
+                    if (sqlException.Number != NumberOfViolationOfPrimaryKey)
+                    {
+                        Console.WriteLine($"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                        LogWritter.WriteLog(LogWritter.LogMode.Error, $"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                    }
                 }
                 finally
                 {

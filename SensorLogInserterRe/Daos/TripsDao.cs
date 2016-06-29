@@ -60,5 +60,20 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query).Rows[0].Field<int?>("max_id") ?? 0;
         }
 
+        public static bool IsExsistsTrip(DataRow row)
+        {
+            var query = new StringBuilder();
+            query.AppendLine($"SELECT *");
+            query.AppendLine($"FROM {TableName}");
+            query.AppendLine($"WHERE {ColumnDriverId} = {row.Field<int>(ColumnDriverId)}");
+            query.AppendLine($"  AND {ColumnCarId} = {row.Field<int>(ColumnCarId)}");
+            query.AppendLine($"  AND {ColumnSensorId} = {row.Field<int>(ColumnSensorId)}");
+            // SQL ServerではDateTime(1)型のミリ秒を切り上げするので±１秒の間をもうける
+            query.AppendLine($"  AND {ColumnStartTime} > '{row.Field<DateTime>(ColumnStartTime).AddSeconds(-1)}'");
+            query.AppendLine($"  AND {ColumnEndTime} < '{row.Field<DateTime>(ColumnEndTime).AddSeconds(1)}'");
+
+            return DatabaseAccesser.GetResult(query.ToString()).AsEnumerable().Count() != 0;
+        }
+
     }
 }

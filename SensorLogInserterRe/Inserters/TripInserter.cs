@@ -56,13 +56,13 @@ namespace SensorLogInserterRe.Inserters
                     tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime),
                     datum))
                 {
-                    i = InsertOutwardTrip(tripsRawTable, tripsTable, datum, i);
+                    InsertOutwardTrip(tripsRawTable, tripsTable, datum, i);
                 }
                 // YNU出発
                 else if (IsYnu(tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude),
                     tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude)))
                 {
-                    i = InsertHomewardTrip(tripsRawTable, tripsTable, datum, i);
+                    InsertHomewardTrip(tripsRawTable, tripsTable, datum, i);
                 }
 
                 // 1トリップごとなので主キー違反があっても挿入されないだけ
@@ -115,7 +115,7 @@ namespace SensorLogInserterRe.Inserters
             return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
         }
 
-        private static int InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
+        private static void InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
         {
             int j = i;
             bool tripChangeFlag = false;
@@ -147,13 +147,16 @@ namespace SensorLogInserterRe.Inserters
 
                     if (span.TotalHours > 12)
                     {
-                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません " + datum.ToString());
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                         break;
                     }
-                    else
-                    {
+
+                    if( !TripsDao.IsExsistsTrip(row))
                         tripsTable.Rows.Add(row);
-                    }
+                    else
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
 
                     tripChangeFlag = true;
                 }
@@ -161,9 +164,10 @@ namespace SensorLogInserterRe.Inserters
                 // 自宅 ⇒ 自宅
                 else if (IsHome(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude),
                     tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude),
-                    tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime), datum))
+                    tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime), datum))
                 {
-                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒自宅トリップなので挿入しません " + datum.ToString());
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒自宅トリップなので挿入しません "
+                          + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                     // Trip の挿入は行わない
                     // ループの初期化
                     tripChangeFlag = true;
@@ -176,21 +180,20 @@ namespace SensorLogInserterRe.Inserters
                 {
                     // 自宅にも、学校にも到着しないまま、開始地点が自宅か学校になった場合
                     if (IsHome(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude),
-                        tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude),
-                        tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnStartTime), datum)
-                        || IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude)))
+                            tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude),
+                            tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnStartTime), datum)
+                        || IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude)))
                     {
                         tripChangeFlag = true;
                         // TODO ログ出力
-                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒？トリップなので挿入しません " + datum.ToString());
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒？トリップなので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                     }
                 }
             }
-
-            return j;
         }
 
-        private static int InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
+        private static void InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
         {
             int j = i;
             bool tripChangeFlag = false;
@@ -201,7 +204,7 @@ namespace SensorLogInserterRe.Inserters
                 // YNU ⇒ 自宅
                 if (IsHome(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude),
                     tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude),
-                    tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime),
+                    tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime),
                     datum))
                 {
                     var row = tripsTable.NewRow();
@@ -223,13 +226,16 @@ namespace SensorLogInserterRe.Inserters
 
                     if (span.TotalHours > 12)
                     {
-                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません " + datum.ToString());
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                            + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                         break;
                     }
-                    else
-                    {
+
+                    if (!TripsDao.IsExsistsTrip(row))
                         tripsTable.Rows.Add(row);
-                    }
+                    else
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
 
                     tripChangeFlag = true;
                 }
@@ -238,7 +244,8 @@ namespace SensorLogInserterRe.Inserters
                 else if (IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude),
                     tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude)))
                 {
-                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません " + datum.ToString());
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません "
+                          + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
 
                     // Trip の挿入は行わない
                     // ループの初期化
@@ -252,17 +259,27 @@ namespace SensorLogInserterRe.Inserters
                 {
                     // 自宅にも、学校にも到着しないまま、開始地点が自宅か学校になった場合
                     if (IsHome(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude),
-                        tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude),
-                        tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnStartTime), datum)
-                        || IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude)))
+                            tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude),
+                            tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnStartTime), datum)
+                        || IsYnu(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnStartLongitude)))
                     {
                         tripChangeFlag = true;
-                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "自宅⇒？トリップなので挿入しません " + datum.ToString());
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒？トリップなので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                     }
                 }
             }
-
-            return j;
         }
+
+        private static string ConvertRowToString(DataRow firstRow, DataRow lastRow)
+        {
+            return $"DRIVER_ID: {firstRow.Field<int>(TripsDao.ColumnDriverId)}, " +
+                   $"CAR_ID: {firstRow.Field<int>(TripsDao.ColumnCarId)}, " +
+                   $"SENSOR_ID: {firstRow.Field<int>(TripsDao.ColumnSensorId)}, " +
+                   $"START_TIME:{firstRow.Field<DateTime>(TripsDao.ColumnStartTime)}, " +
+                   $"END_TIME: {lastRow.Field<DateTime>(TripsDao.ColumnEndTime)}";
+        }
+
+
     }
 }
