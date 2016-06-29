@@ -25,7 +25,7 @@ namespace SensorLogInserterRe
             object sender,
             DispatcherUnhandledExceptionEventArgs e)
         {
-            LogWritter.WriteLog(LogWritter.LogMode.Error, e.Exception.ToString() + e.Exception.Message);
+            LogWritter.WriteLog(LogWritter.LogMode.Error, e.Exception.Message + ", " + e.Exception.StackTrace);
 
             e.Handled = true;
         }
