@@ -74,8 +74,6 @@ namespace SensorLogInserterRe.Daos
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseAccesser.ConnectionString))
             {
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, DatabaseAccesser.ConnectionString);
-
                 try
                 {
                     sqlConnection.Open();
@@ -90,6 +88,29 @@ namespace SensorLogInserterRe.Daos
                         Console.WriteLine($"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
                         LogWritter.WriteLog(LogWritter.LogMode.Error, $"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
                     }
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+        }
+
+        public static void Update(string query)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(DatabaseAccesser.ConnectionString))
+            {
+                try
+                {
+                    sqlConnection.Open();
+                    SqlCommand command = new SqlCommand(query, sqlConnection);
+                    command.CommandTimeout = 600;
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException sqlException)
+                {
+                    Console.WriteLine($"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
+                    LogWritter.WriteLog(LogWritter.LogMode.Error, $"ERROR: {sqlException.Message}, {sqlException.StackTrace}");
                 }
                 finally
                 {

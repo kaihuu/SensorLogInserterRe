@@ -75,5 +75,26 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query.ToString()).AsEnumerable().Count() != 0;
         }
 
+        public static void UpdateConsumedEnergy()
+        {
+            var selectQuery = new StringBuilder();
+            selectQuery.AppendLine("SELECT trip.trip_id, SUM(consumed_electric_energy) AS consumed_energy");
+            selectQuery.AppendLine("FROM trips AS trip, ecolog AS ecolog");
+            selectQuery.AppendLine("WHERE consumed_energy IS NULL");
+            selectQuery.AppendLine("  AND trip.trip_id = ecolog.trip_id");
+            selectQuery.AppendLine("GROUP BY trip.trip_id");
+
+            var resultTable = DatabaseAccesser.GetResult(selectQuery.ToString());
+
+            foreach (DataRow row in resultTable.Rows)
+            {
+                var updateQuery = new StringBuilder();
+                updateQuery.AppendLine($"UPDATE trips");
+                updateQuery.AppendLine($"SET consumed_energy = '{row.Field<double>(1)}'");
+                updateQuery.AppendLine($"WHERE trip_id = {row.Field<int>(0)}");
+
+                DatabaseAccesser.Update(updateQuery.ToString());
+            }
+        }
     }
 }
