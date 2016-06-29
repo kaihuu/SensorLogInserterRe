@@ -8,6 +8,7 @@ using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
+using SensorLogInserterRe.ViewModels;
 
 namespace SensorLogInserterRe.Inserters
 {
@@ -40,11 +41,11 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertTrip(InsertDatum datum)
         {
-            Console.WriteLine("CALLED: InsertTrip, " + datum);
+            LogWritter.WriteLog(LogWritter.LogMode.Trip, $"TRIP挿入開始, DRIVER_ID: {datum.DriverId}, CAR_ID: {datum.CarId}, SENSOR_ID: {datum.SensorId}");
 
             var tripsRawTable = TripsRawDao.Get(datum);
 
-            Console.WriteLine("TRIPS_RAW_COUNT: " + tripsRawTable.Rows.Count);
+            LogWritter.WriteLog(LogWritter.LogMode.Trip, $"挿入対象のRAWデータ: {tripsRawTable.Rows.Count}");
 
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)
             {

@@ -8,19 +8,20 @@ using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Inserters.Components;
 using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
+using SensorLogInserterRe.ViewModels;
 
 namespace SensorLogInserterRe.Inserters
 {
     class EcologInserter
     {
-        public static void InsertEcolog(InsertDatum datum)
+        public static void InsertEcolog(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate)
         {
             var tripsTable = TripsDao.Get(datum);
             int i = 1;
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                Console.WriteLine($"TRIP INDEX: {i}, START: {DateTime.Now}");
+                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum);
                 EcologDao.Insert(ecologTable);
 

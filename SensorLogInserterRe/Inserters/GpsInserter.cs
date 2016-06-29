@@ -11,6 +11,7 @@ using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Handlers.FileHandlers;
 using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
+using SensorLogInserterRe.ViewModels;
 
 namespace SensorLogInserterRe.Inserters
 {

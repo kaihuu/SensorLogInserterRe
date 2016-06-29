@@ -227,6 +227,40 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsCheckedInsertAcc変更通知プロパティ
+        private bool _IsCheckedInsertAcc;
+
+        public bool IsCheckedInsertAcc
+        {
+            get
+            { return _IsCheckedInsertAcc; }
+            set
+            {
+                if (_IsCheckedInsertAcc == value)
+                    return;
+                _IsCheckedInsertAcc = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region IsCheckedInsertCorrectedAcc変更通知プロパティ
+        private bool _IsCheckedInsertCorrectedAcc;
+
+        public bool IsCheckedInsertCorrectedAcc
+        {
+            get
+            { return _IsCheckedInsertCorrectedAcc; }
+            set
+            {
+                if (_IsCheckedInsertCorrectedAcc == value)
+                    return;
+                _IsCheckedInsertCorrectedAcc = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         #region IsEnabledInsertButton変更通知プロパティ
         private bool _IsEnabledInsertButton;
 
@@ -284,6 +318,10 @@ namespace SensorLogInserterRe.ViewModels
 
         private List<InsertDatum> InsertDatumList { get; set; }
 
+        public delegate void UpdateTextDelegate(string text);
+
+        private UpdateTextDelegate UpdateText { get; set; }
+
         public void Initialize()
         {
             InitDriversChecked();
@@ -291,9 +329,15 @@ namespace SensorLogInserterRe.ViewModels
             InitEvEstimationModel();
             InitModelChecked();
             InitGpsCorrection();
+            InitInsertionTarget();
             InitButton();
 
             this.InsertDatumList = new List<InsertDatum>();
+
+            UpdateText += (s) =>
+            {
+                this.LogText += s + "\n";
+            };
         }
 
         private void InitDriversChecked()
@@ -328,6 +372,12 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedDeadReckoning = false;
         }
 
+        private void InitInsertionTarget()
+        {
+            this.IsCheckedInsertAcc = true;
+            this.IsCheckedInsertCorrectedAcc = false;
+        }
+
         private void InitButton()
         {
             IsEnabledInsertButton = true;
@@ -339,21 +389,89 @@ namespace SensorLogInserterRe.ViewModels
             MessageBox.Show("StartUpLoop");
         }
 
-        public void Insert()
+        public async void Insert()
         {
-            this.LogText += LogTexts.TheStartOfTheCheckUpdateFile + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Search, LogTexts.TheStartOfTheCheckUpdateFile);
             this.InsertConfig = this.GenerateInsertConfig();
 
-            this.SearchDirectory();
-            this.InsertGps();
-            this.InsertAcc();
+            #region ファイル検索
+
+            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Search, LogTexts.DuringCheckOfTheUpdateFile + "\n");
+
+            await Task.Run(() =>
+            {
+                this.InsertFileList = DirectorySearcher.DirectorySearch(this.InsertConfig);
+            });
+
+            this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Search, $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n");
+
+            #endregion
+
+            #region GPS挿入
+
+            this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheSrartOfTheInsertingGps + "\n");
+
+            await Task.Run(() =>
+            {
+                GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+            });
+
+            this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
+            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
+
+            #endregion
+
+            #region 加速度挿入
+
+            if (IsCheckedInsertAcc)
+            {
+                this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
+                LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheSrartOfTheInsertingAcc + "\n");
+
+                await Task.Run(() =>
+                {
+                    AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+                });
+
+                this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
+                LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheEndOfTheInsertingAcc + "\n");
+            }
+
+            #endregion
 
             foreach (var datum in InsertDatumList)
             {
-                this.InsertTrips(datum);
-                //this.InsertCorrectedAcc(datum);
-                this.InsertEcolog(datum);
+                #region トリップ挿入
+
+                await Task.Run(() =>
+                {
+                    TripInserter.InsertTrip(datum);
+                });
+
+                #endregion
+
+                #region 補正加速度挿入
+
+                if (IsCheckedInsertCorrectedAcc)
+                {
+                    await Task.Run(() =>
+                    {
+                        AccInserter.InsertCorrectedAcc(datum);
+                    });
+                }
+
+                #endregion
+
+                #region ECOLOG挿入
+
+                await Task.Run(() =>
+                {
+                    EcologInserter.InsertEcolog(datum, this.UpdateText);
+                });
+
+                #endregion
             }
         }
 
@@ -407,96 +525,6 @@ namespace SensorLogInserterRe.ViewModels
             LogWritter.WriteLog(LogWritter.LogMode.Search, insertConfig.ToString());
 
             return insertConfig;
-        }
-
-        private void SearchDirectory()
-        {
-            Console.WriteLine("CALLED: SearchDirectory");
-
-            this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Search, LogTexts.DuringCheckOfTheUpdateFile + "\n");
-
-            //await Task.Run(() =>
-            //{
-                this.InsertFileList = DirectorySearcher.DirectorySearch(this.InsertConfig);
-            //});
-
-            this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Search, $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n");
-
-            Console.WriteLine("FINISHED: SearchDirectory");
-        }
-
-        private void InsertGps()
-        {
-            Console.WriteLine("CALLED: InsertGps");
-
-            this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheSrartOfTheInsertingGps + "\n");
-
-            //await Task.Run(() =>
-            //{
-                GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
-            //});
-
-            this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
-
-            Console.WriteLine("FINISHED: InsertGps");
-        }
-
-        private void InsertAcc()
-        {
-            Console.WriteLine("CALLED: InsertAcc");
-
-            this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheSrartOfTheInsertingAcc + "\n");
-
-            //await Task.Run(() =>
-            //{
-                AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
-            //});
-
-            this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
-            LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheEndOfTheInsertingAcc + "\n");
-
-            Console.WriteLine("FINISHED: InsertAcc");
-        }
-
-        private void InsertTrips(InsertDatum datum)
-        {
-            this.LogText += LogTexts.TheStartOfTheInsertingTrips + "\n";
-
-            //await Task.Run(() =>
-            //{
-                TripInserter.InsertTrip(datum);
-            //});
-
-            this.LogText += LogTexts.TheEndOfTheInsertingTrips + "\n";
-        }
-
-        private void InsertCorrectedAcc(InsertDatum datum)
-        {
-            this.LogText += LogTexts.TheStartOfTheInsertingCorrectedAcc + "\n";
-
-            //await Task.Run(() =>
-            //{
-                AccInserter.InsertCorrectedAcc(datum);
-            //});
-
-            this.LogText += LogTexts.TheEndOfTheInsertingCorrectedAcc + "\n";
-        }
-
-        private void InsertEcolog(InsertDatum datum)
-        {
-            this.LogText += LogTexts.TheStartOfTheInsertingEcolog + "\n";
-
-            //await Task.Run(() =>
-            //{
-                EcologInserter.InsertEcolog(datum);
-            //});
-
-            this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
         }
     }
 }

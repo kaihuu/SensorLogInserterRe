@@ -43,6 +43,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -113,7 +114,7 @@
 
                 <CheckBox Content="EVエネルギー消費モデル" IsChecked="{Binding IsCheckedEvModel}" />
 
-                <CheckBox Margin="10,0,0,0" Content="機械学習モデル" IsChecked="{Binding IsCheckedMlModel}" />
+                <CheckBox Margin="10,0,0,0" Content="機械学習モデル" IsChecked="{Binding IsCheckedMlModel}" IsEnabled="False" />
 
             </StackPanel>
 
@@ -125,19 +126,36 @@
                 <Label Content="GPS補正" />
             </GroupBox.Header>
 
-            <StackPanel Grid.Row="1"
+            <StackPanel 
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" />
+                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" IsEnabled="False" />
 
-                <CheckBox Margin="10,0,0,0" Content="デッドレコニング" IsChecked="{Binding IsCheckedDeadReckoning}" />
+                <CheckBox Margin="10,0,0,0" Content="デッドレコニング" IsChecked="{Binding IsCheckedDeadReckoning}" IsEnabled="False" />
 
             </StackPanel>
 
         </GroupBox>
 
-        <Grid Grid.Row="5" Height="50">
+        <GroupBox Grid.Row="5">
+
+            <GroupBox.Header>
+                <Label Content="挿入チェック" />
+            </GroupBox.Header>
+
+            <StackPanel Margin="10,0,0,0"
+                        Orientation="Horizontal">
+
+                <CheckBox Content="加速度" IsChecked="{Binding  IsCheckedInsertAcc}" />
+
+                <CheckBox Margin="10,0,0,0" Content="補正加速度" IsChecked="{Binding IsCheckedInsertCorrectedAcc}" IsEnabled="False"  />
+
+            </StackPanel>
+
+        </GroupBox>
+
+        <Grid Grid.Row="6" Height="50">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -171,7 +189,7 @@
 
         </Grid>
 
-        <ScrollViewer Grid.Row="6" Margin="5,0">
+        <ScrollViewer Grid.Row="7" Margin="5,0">
 
             <TextBox Text="{Binding LogText}"
                      TextWrapping="Wrap"
