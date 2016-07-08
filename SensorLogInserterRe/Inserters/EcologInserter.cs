@@ -22,6 +22,7 @@ namespace SensorLogInserterRe.Inserters
             foreach (DataRow row in tripsTable.Rows)
             {
                 updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum);
                 EcologDao.Insert(ecologTable);
 

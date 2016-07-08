@@ -31,7 +31,7 @@ namespace SensorLogInserterRe.Models
 
         public override string ToString()
         {
-            return $"START_TIME:{StartTime}, END_TIME:{EndTime}, DRIVER_ID:{DriverId}, CAR_ID:{CarId}, SENSOR_ID:{SensorId}, ESTIMATED_CAR_MODEL:{EstimatedCarModel}";
+            return $"START_TIME:{StartTime}, END_TIME:{EndTime}, DRIVER_ID:{DriverId}, CAR_ID:{CarId}, SENSOR_ID:{SensorId}";
         }
     }
 }

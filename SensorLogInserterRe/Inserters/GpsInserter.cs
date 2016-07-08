@@ -44,6 +44,8 @@ namespace SensorLogInserterRe.Inserters
 
                 InsertDatum.AddDatumToList(insertDatumList, datum);
 
+                LogWritter.WriteLog(LogWritter.LogMode.Gps, $"インサートデータ, FilePath: {filePath}, DriverId: {datum.DriverId}, CarId: {datum.CarId}, SensorId: {datum.SensorId}");
+
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
 
