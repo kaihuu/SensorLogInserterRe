@@ -21,10 +21,6 @@ namespace SensorLogInserterRe.Constant
         public const string At570_3 = "AT570-3";
         public const string At570_4 = "AT570-4";
         public const string At570_5 = "AT570-5";
-        public const string At570_MM_2_3 = "AT570_MM2-3";
-        public const string At570_MM_3 = "AT570_MM-3";
-        public const string At570_MM_3_3 = "AT570_MM3-3";
-        public const string At570_MM_4_3 = "AT570_MM4-3";
         public const string Nexus7_2012_1 = "Nexus7(2012)-1";
         public const string Nexus7_2013_3 = "Nexus7(2013)-3";
         public const string Nexus7_2013_4 = "Nexus7(2013)-4";
@@ -78,16 +74,8 @@ namespace SensorLogInserterRe.Constant
                     return 22;
                 case Nexus6:
                     return 23;
-                case At570_MM_3:
-                    return 24;
-                case At570_MM_2_3:
-                    return 26;
-                case At570_MM_3_3:
-                    return 27;
-                case At570_MM_4_3:
-                    return 28;
                 case Nexus7_2012_1:
-                    return 29;
+                    return 24;
                 default: 
                     return -1;
             }
