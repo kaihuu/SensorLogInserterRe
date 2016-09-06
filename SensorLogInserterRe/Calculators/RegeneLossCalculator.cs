@@ -19,7 +19,7 @@ namespace SensorLogInserterRe.Calculators
             }
 
             else {//回生時
-                regeneLoss = Math.Abs(drivingPower - regeneEnergy / efficiency * 100 / car.InverterEfficiency);
+                regeneLoss = -Math.Abs(drivingPower - regeneEnergy / efficiency * 100 / car.InverterEfficiency);
             }
             return regeneLoss;
         }
