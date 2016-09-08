@@ -13,7 +13,7 @@ namespace SensorLogInserterRe.Calculators
         {
             double regeneEnergy = RegeneEnergyCalculator.CalcEnergy(drivingPower, vehicleSpeed, car, efficiency);
             return Math.Abs(ConvertLossCaluculator.CalcEnergy(drivingPower ,car, vehicleSpeed, efficiency))
-                + RegeneLossCalculator.CalcEnergy(drivingPower,regeneEnergy,car,vehicleSpeed, efficiency)
+                + Math.Abs(RegeneLossCalculator.CalcEnergy(drivingPower,regeneEnergy,car,vehicleSpeed, efficiency))
                 + AirResistanceCalculator.CalcPower(rho, car.CdValue, car.FrontalProjectedArea, windspeed, vehicleSpeed)
                 + RollingResistanceCalculator.CalcPower(myu, car.Weight, theta, vehicleSpeed);
         }
