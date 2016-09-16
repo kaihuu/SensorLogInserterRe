@@ -473,6 +473,7 @@ namespace SensorLogInserterRe.ViewModels
 
                 #endregion
             }
+            this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
         }
 
         private InsertConfig GenerateInsertConfig()
