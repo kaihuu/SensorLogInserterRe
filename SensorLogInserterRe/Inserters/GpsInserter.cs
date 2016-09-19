@@ -13,6 +13,7 @@ using SensorLogInserterRe.Handlers.FileHandlers;
 using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
 using SensorLogInserterRe.ViewModels;
+using SensorLogInserterRe.Cleansers.Components;
 
 namespace SensorLogInserterRe.Inserters
 {
@@ -51,7 +52,7 @@ namespace SensorLogInserterRe.Inserters
 
                 if (gpsRawTable.Rows.Count != 0)
                 {
-                    InsertConrrectedGps(gpsRawTable);
+                    InsertConrrectedGps(gpsRawTable, config);
                     TripInserter.InsertTripRaw(gpsRawTable);
                 }
                 else
@@ -81,7 +82,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
 
-        private static void InsertConrrectedGps(DataTable gpsRawTable)
+        private static void InsertConrrectedGps(DataTable gpsRawTable, InsertConfig config)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
@@ -148,7 +149,15 @@ namespace SensorLogInserterRe.Inserters
             #endregion
 
             // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
-            CorrectedGpsDao.Insert(correctedGpsTable);
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
+            {
+                DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
+                CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
+            }
+            else
+            {
+                CorrectedGpsDao.Insert(correctedGpsTable);
+            }
         }
     }
 }

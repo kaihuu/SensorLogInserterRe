@@ -123,7 +123,7 @@
     <Compile Include="Cleansers\Components\LowPassFilter.cs" />
     <Compile Include="Daos\Altitude10MMeshDao.cs" />
     <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
-    <Compile Include="Daos\CorrectedGpsSpeedLPFMMDao.cs" />
+    <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Inserters\Components\AccCorrector.cs" />
     <Compile Include="Constant\CarNames.cs" />
