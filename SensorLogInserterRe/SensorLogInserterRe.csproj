@@ -121,6 +121,7 @@
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
     <Compile Include="Calculators\SpeedCalculator.cs" />
     <Compile Include="Cleansers\Components\LowPassFilter.cs" />
+    <Compile Include="Cleansers\Components\MapMatching.cs" />
     <Compile Include="Daos\Altitude10MMeshDao.cs" />
     <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
     <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
@@ -162,11 +163,13 @@
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Ecolog.cs" />
+    <Compile Include="Models\GPSData.cs" />
     <Compile Include="Models\InsertConfig.cs" />
     <Compile Include="Models\Quaternion.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\ThreeDimensionalVector.cs" />
     <Compile Include="Models\InsertDatum.cs" />
+    <Compile Include="Models\TwoDimensionalVector.cs" />
     <Compile Include="Utils\DataTableUtil.cs" />
     <Compile Include="Utils\DateTimeUtil.cs" />
     <Compile Include="Utils\JobScheduler.cs" />

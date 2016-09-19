@@ -61,5 +61,30 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+        public static DataTable GetLinkTableforMM(int[] id)
+        {
+            string query = "select l1.LINK_ID as LINK_ID , l1.NUM, l1.LATITUDE as START_LAT, l1.LONGITUDE as START_LONG,l2.LATITUDE as END_LAT, l2.LONGITUDE as END_LONG ";
+            query += ",SQRT((l1.LATITUDE - l2.LATITUDE) * (l1.LATITUDE - l2.LATITUDE) + (l1.LONGITUDE - l2.LONGITUDE) * (l1.LONGITUDE - l2.LONGITUDE)) as DISTANCE  ";
+            query += "from LINKS as l1,LINKS as l2,( ";
+            query += "select l1.NUM,MIN(l2.NUM - l1.NUM) as diff ";
+            query += "from LINKS as l1,LINKS as l2,SEMANTIC_LINKS  ";
+            query += "where l1.NUM < l2.NUM  ";
+            query += "and l1.LINK_ID = l2.LINK_ID  ";
+            query += "and l1.LINK_ID = SEMANTIC_LINKS.LINK_ID  ";
+            query += "and SEMANTIC_LINK_ID in ( " + id[0];
+
+            for (int i = 1; i < id.Length; i++)
+            {
+                query += ", " + id;
+            }
+
+            query += ") ";
+            query += "group by l1.NUM) as Corres ";
+            query += "where l1.NUM = Corres.NUM ";
+            query += "and l2.NUM = l1.NUM + Corres.diff ";
+            query += "order by NUM ";
+
+            return DatabaseAccesser.GetResult(query);
+        }
     }
 }
