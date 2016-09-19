@@ -15,14 +15,14 @@ namespace SensorLogInserterRe.Cleansers.Components
     {
         private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
         {
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnDriverId, rawRow.Field<int>(CorrectedGpsDao.ColumnDriverId));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnCarId, rawRow.Field<int>(CorrectedGpsDao.ColumnCarId));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnSensorId, rawRow.Field<int>(CorrectedGpsDao.ColumnSensorId));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnJst, rawRow.Field<DateTime>(CorrectedGpsDao.ColumnJst));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnLatitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnLongitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnDistanceDifference, rawRow.Field<double>(CorrectedGpsDao.ColumnDistanceDifference));
-            correctedRow.SetField(CorrectedGpsSpeedLPFMMDao.ColumnHeading, rawRow.Field<double>(CorrectedGpsDao.ColumnHeading));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDriverId, rawRow.Field<int>(CorrectedGpsDao.ColumnDriverId));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnCarId, rawRow.Field<int>(CorrectedGpsDao.ColumnCarId));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnSensorId, rawRow.Field<int>(CorrectedGpsDao.ColumnSensorId));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnJst, rawRow.Field<DateTime>(CorrectedGpsDao.ColumnJst));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLatitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLongitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDistanceDifference, rawRow.Field<double>(CorrectedGpsDao.ColumnDistanceDifference));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnHeading, rawRow.Field<double>(CorrectedGpsDao.ColumnHeading));
         }
         public static DataTable speedLowPassFilter(DataTable correctedGpsTable, double cutOffFrequency)
         {
@@ -72,7 +72,7 @@ namespace SensorLogInserterRe.Cleansers.Components
 
                 CopyRawDataToCorrectedRow(row, correctedGpsSpeedLPFTable.Rows[i]);
 
-                row.SetField(CorrectedGpsSpeedLPFMMDao.ColumnSpeed, filteredData[i].Real);
+                row.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnSpeed, filteredData[i].Real);
 
 
                 correctedGpsSpeedLPFTable.Rows.Add(row);
