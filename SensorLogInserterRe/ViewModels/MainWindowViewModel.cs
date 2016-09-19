@@ -485,7 +485,13 @@ namespace SensorLogInserterRe.ViewModels
 
                 await Task.Run(() =>
                 {
-                    EcologInserter.InsertEcolog(datum, this.UpdateText);
+                    if (IsCheckedSpeedLPFMapMatching)
+                    {
+                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
+                    }
+                    else {
+                        EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
+                    }
                 });
 
                 #endregion
