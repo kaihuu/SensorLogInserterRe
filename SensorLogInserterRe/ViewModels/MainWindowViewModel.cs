@@ -227,6 +227,22 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsCheckedSpeedLPFMapMatching変更通知プロパティ
+        private bool _IsCheckedSpeedLPFMapMatching;
+        public bool IsCheckedSpeedLPFMapMatching
+        {
+            get
+            { return _IsCheckedSpeedLPFMapMatching; }
+            set
+            {
+                if (_IsCheckedSpeedLPFMapMatching == value)
+                    return;
+                _IsCheckedSpeedLPFMapMatching = value;
+                RaisePropertyChanged();
+            }
+        }
+#endregion
+
         #region IsCheckedInsertAcc変更通知プロパティ
         private bool _IsCheckedInsertAcc;
 
@@ -370,6 +386,7 @@ namespace SensorLogInserterRe.ViewModels
         {
             this.IsCheckedMapMatching = false;
             this.IsCheckedDeadReckoning = false;
+            this.IsCheckedSpeedLPFMapMatching = false;
         }
 
         private void InitInsertionTarget()
@@ -520,6 +537,8 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.Correction = InsertConfig.GpsCorrection.MapMatching;
             else if (this.IsCheckedDeadReckoning)
                 insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
+            else if (this.IsCheckedSpeedLPFMapMatching)
+                insertConfig.Correction = InsertConfig.GpsCorrection.SpeedLPFMapMatching;
 
             #endregion
 
