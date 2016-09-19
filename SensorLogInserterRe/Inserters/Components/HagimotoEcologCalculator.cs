@@ -17,10 +17,19 @@ namespace SensorLogInserterRe.Inserters.Components
         private static readonly double Rho = 1.22;
         private static readonly double Myu = 0.015;
 
-        public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum)
+        public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum, InsertConfig config)
         {
-            var correctedGpsTable = CorrectedGpsDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
-                    tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
+            var correctedGpsTable = new DataTable();
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching) //補正GPS取得元変更
+            {
+                correctedGpsTable = CorrectedGpsSpeedLPF005MMDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
+                tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
+            }
+            else
+            {
+                correctedGpsTable = CorrectedGpsDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
+                        tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
+            }
 
             var ecologTable = DataTableUtil.GetEcologTable();
 
