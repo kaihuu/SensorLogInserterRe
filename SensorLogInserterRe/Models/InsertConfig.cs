@@ -22,7 +22,8 @@ namespace SensorLogInserterRe.Models
         public enum GpsCorrection
         {
             MapMatching,
-            DeadReckoning
+            DeadReckoning,
+            SpeedLPFMapMatching
         }
 
         public List<string> CheckeDrivers { get; set; }
