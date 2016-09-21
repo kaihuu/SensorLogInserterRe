@@ -52,7 +52,7 @@ namespace SensorLogInserterRe.Inserters
 
                 if (gpsRawTable.Rows.Count != 0)
                 {
-                    InsertConrrectedGps(gpsRawTable, config);
+                    InsertCorrectedGps(gpsRawTable, config);
                     TripInserter.InsertTripRaw(gpsRawTable);
                 }
                 else
@@ -82,7 +82,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
 
-        private static void InsertConrrectedGps(DataTable gpsRawTable, InsertConfig config)
+        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig config)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
