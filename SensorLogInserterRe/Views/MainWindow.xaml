@@ -6,7 +6,7 @@
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:v="clr-namespace:SensorLogInserterRe.Views"
         xmlns:vm="clr-namespace:SensorLogInserterRe.ViewModels"
-        Title="SensorLogInserter Re ver 1.0"
+        Title="SensorLogInserter Re ver 1.2"
         Width="525"
         Height="525">
 
