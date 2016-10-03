@@ -12,9 +12,9 @@ namespace SensorLogInserterRe.Calculators
         public static double CalcEnergy(double drivingPower, double vehicleSpeed, Car car, int efficiency)
         {
             //制動力[N]
-            double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed / 3.6;
-            //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[km/h] 
-            double speedC = car.MaxDrivingPower * 1000 / car.MaxDrivingForce / 3.6;
+            double drivingForce = drivingPower * 1000 * 3600 / vehicleSpeed;
+            //限界回生力と限界回生エネルギーの時の回生力の低い方が変わるときの車速[m/s] 
+            double speedC = car.MaxDrivingPower * 1000 / car.MaxDrivingForce;
             double regeneEnergy = 0;
 
             //力行時
@@ -26,20 +26,20 @@ namespace SensorLogInserterRe.Calculators
             else
             {
                 //車速が7km/hより小さいとき
-                if (vehicleSpeed < 7)
+                if (vehicleSpeed < 7 / 3.6)
                 {
                     regeneEnergy = 0;
                 }
-                else if(vehicleSpeed >= 7 && drivingPower * 3600 >= car.MaxDrivingPower &&
+                else if(vehicleSpeed >= 7 / 3.6 && drivingPower * 3600 >= car.MaxDrivingPower &&
                     drivingForce >= car.MaxDrivingForce)//車速が7km/hより大きく，回生エネルギー限界[kW]を制動エネルギー[kW]が超えず，
                    //回生による制動力[N]の限界を制動力[N]が超えない場合（負のため不等号逆転）
                 {
                     regeneEnergy = drivingPower * efficiency;
                 }
                 //限界回生力[N]を超えている場合
-                else if (vehicleSpeed >=7 && vehicleSpeed <= speedC && drivingForce < car.MaxDrivingForce)
+                else if (vehicleSpeed >= 7 / 3.6 && vehicleSpeed <= speedC && drivingForce < car.MaxDrivingForce)
                 {
-                    regeneEnergy = car.MaxDrivingForce * vehicleSpeed * 3.6 * efficiency; 
+                    regeneEnergy = car.MaxDrivingForce * vehicleSpeed * efficiency / 3600 / 1000; 
                 }
                 //回生エネルギー限界を超えている場合
                 else if (vehicleSpeed > speedC && drivingPower * 3600 < car.MaxDrivingPower)
