@@ -49,46 +49,48 @@ namespace SensorLogInserterRe.Inserters
         {
             var accRawTable = AccFileHandler.ConvertCsvToDataTable(filePath, datum.DriverId, datum.CarId, datum.SensorId);
             accRawTable = SortTableByDateTime(accRawTable);
-
-            var normalizedAccTable = DataTableUtil.GetAndroidAccRawTable();
-
-            #region インデックス 0 の場合
-
-            var firstRow = normalizedAccTable.NewRow();
-
-            firstRow.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[0].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
-            firstRow.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnDriverId));
-            firstRow.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnCarId));
-            firstRow.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnSensorId));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccX));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccY));
-            firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccZ));
-
-            normalizedAccTable.Rows.Add(firstRow);
-
-            #endregion
-
-            for (int i = 1; i < accRawTable.Rows.Count; i++)
+            if (accRawTable.Rows.Count != 0)
             {
-                //SQLSERVERのDATETIME型のミリ秒は0,3,7しか取らないため、5ミリ秒よりも短いデータが存在する場合は挿入時にエラーを出す可能性がある
-                if ( (accRawTable.Rows[i].Field<DateTime>(AndroidAccRawDao.ColumnDateTime) - 
-                    accRawTable.Rows[i - 1].Field<DateTime>(AndroidAccRawDao.ColumnDateTime)).TotalMilliseconds >= 4)
+                var normalizedAccTable = DataTableUtil.GetAndroidAccRawTable();
+
+                #region インデックス 0 の場合
+
+                var firstRow = normalizedAccTable.NewRow();
+
+                firstRow.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[0].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
+                firstRow.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnDriverId));
+                firstRow.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnCarId));
+                firstRow.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[0].Field<int>(AndroidAccRawDao.ColumnSensorId));
+                firstRow.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccX));
+                firstRow.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccY));
+                firstRow.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[0].Field<Single>(AndroidAccRawDao.ColumnAccZ));
+
+                normalizedAccTable.Rows.Add(firstRow);
+
+                #endregion
+
+                for (int i = 1; i < accRawTable.Rows.Count; i++)
                 {
-                    var row = normalizedAccTable.NewRow();
-                    row.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[i].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
-                    row.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDriverId));
-                    row.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnCarId));
-                    row.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnSensorId));
-                    row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccX));
-                    row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccY));
-                    row.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccZ));
+                    //SQLSERVERのDATETIME型のミリ秒は0,3,7しか取らないため、5ミリ秒よりも短いデータが存在する場合は挿入時にエラーを出す可能性がある
+                    if ((accRawTable.Rows[i].Field<DateTime>(AndroidAccRawDao.ColumnDateTime) -
+                        accRawTable.Rows[i - 1].Field<DateTime>(AndroidAccRawDao.ColumnDateTime)).TotalMilliseconds >= 4)
+                    {
+                        var row = normalizedAccTable.NewRow();
+                        row.SetField(AndroidAccRawDao.ColumnDateTime, accRawTable.Rows[i].Field<DateTime>(AndroidAccRawDao.ColumnDateTime));
+                        row.SetField(AndroidAccRawDao.ColumnDriverId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnDriverId));
+                        row.SetField(AndroidAccRawDao.ColumnCarId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnCarId));
+                        row.SetField(AndroidAccRawDao.ColumnSensorId, accRawTable.Rows[i].Field<int>(AndroidAccRawDao.ColumnSensorId));
+                        row.SetField(AndroidAccRawDao.ColumnAccX, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccX));
+                        row.SetField(AndroidAccRawDao.ColumnAccY, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccY));
+                        row.SetField(AndroidAccRawDao.ColumnAccZ, accRawTable.Rows[i].Field<Single>(AndroidAccRawDao.ColumnAccZ));
 
-                    normalizedAccTable.Rows.Add(row);
+                        normalizedAccTable.Rows.Add(row);
+                    }
                 }
-            }
 
-            // ファイルごとの処理なので主キー違反があっても挿入されないだけ
-            AndroidAccRawDao.Insert(normalizedAccTable);
+                // ファイルごとの処理なので主キー違反があっても挿入されないだけ
+                AndroidAccRawDao.Insert(normalizedAccTable);
+            }
         }
 
         private static DataTable SortTableByDateTime(DataTable table)
