@@ -33,7 +33,7 @@ namespace SensorLogInserterRe.Inserters
         }
         public static void InsertEcologSpeedLPF005MM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate,InsertConfig config)
         {
-            var tripsTable = TripsDao.Get(datum);
+            var tripsTable = TripsSpeedLPF005MMDao.Get(datum);
             int i = 1;
 
             foreach (DataRow row in tripsTable.Rows)
@@ -46,7 +46,7 @@ namespace SensorLogInserterRe.Inserters
                 i++;
             }
 
-            TripsDao.UpdateConsumedEnergy();
+            TripsSpeedLPF005MMDao.UpdateConsumedEnergy();
         }
     }
 }

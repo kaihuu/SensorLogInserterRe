@@ -98,11 +98,19 @@ namespace SensorLogInserterRe.Inserters
             return view.ToTable();
         }
 
-        public static void InsertCorrectedAcc(InsertDatum datum)
+        public static void InsertCorrectedAcc(InsertDatum datum, InsertConfig config)
         {
             Console.WriteLine("CALLED: InsertCorrectedAcc, " + datum);
 
-            var tripsTable = TripsDao.Get(datum);
+            var tripsTable = new DataTable();
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            {
+                tripsTable = TripsSpeedLPF005MMDao.Get(datum);
+            }
+            else
+            {
+                tripsTable = TripsDao.Get(datum);
+            }
 
             foreach (DataRow row in tripsTable.Rows)
             {

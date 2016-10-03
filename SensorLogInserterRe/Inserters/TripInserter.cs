@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Inserters
 {
     class TripInserter
     {
-        public static void InsertTripRaw(DataTable gpsRawTable)
+        public static void InsertTripRaw(DataTable gpsRawTable, InsertConfig config)
         {
             var tripsTable = DataTableUtil.GetTripsRawTable();
             DataRow row = tripsTable.NewRow();
@@ -36,14 +36,28 @@ namespace SensorLogInserterRe.Inserters
             tripsTable.Rows.Add(row);
 
             // GPSファイルごとの処理なので主キー違反があっても挿入されないだけ
-            TripsRawDao.Insert(tripsTable);
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            {
+                TripsRawSpeedLPF005MMDao.Insert(tripsTable);
+            }
+            else {
+                TripsRawDao.Insert(tripsTable);
+            }
         }
 
-        public static void InsertTrip(InsertDatum datum)
+        public static void InsertTrip(InsertDatum datum, InsertConfig config)
         {
             LogWritter.WriteLog(LogWritter.LogMode.Trip, $"TRIP挿入開始, DRIVER_ID: {datum.DriverId}, CAR_ID: {datum.CarId}, SENSOR_ID: {datum.SensorId}");
-
-            var tripsRawTable = TripsRawDao.Get(datum);
+            var tripsRawTable = new DataTable();
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            {
+                tripsRawTable = TripsRawSpeedLPF005MMDao.Get(datum);
+            }
+            else
+            {
+                tripsRawTable = TripsRawDao.Get(datum);
+            }
+               
 
             LogWritter.WriteLog(LogWritter.LogMode.Trip, $"挿入対象のRAWデータ: {tripsRawTable.Rows.Count}");
 
@@ -67,7 +81,13 @@ namespace SensorLogInserterRe.Inserters
                 }
 
                 // 1トリップごとなので主キー違反があっても挿入されないだけ
-                TripsDao.Insert(tripsTable);
+                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                {
+                    TripsSpeedLPF005MMDao.Insert(tripsTable);
+                }
+                else {
+                    TripsDao.Insert(tripsTable);
+                }
             }
         }
 

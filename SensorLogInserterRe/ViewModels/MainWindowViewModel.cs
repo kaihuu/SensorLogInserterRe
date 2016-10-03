@@ -464,7 +464,7 @@ namespace SensorLogInserterRe.ViewModels
 
                 await Task.Run(() =>
                 {
-                    TripInserter.InsertTrip(datum);
+                    TripInserter.InsertTrip(datum, InsertConfig);
                 });
 
                 #endregion
@@ -475,7 +475,7 @@ namespace SensorLogInserterRe.ViewModels
                 {
                     await Task.Run(() =>
                     {
-                        AccInserter.InsertCorrectedAcc(datum);
+                        AccInserter.InsertCorrectedAcc(datum, InsertConfig);
                     });
                 }
 
