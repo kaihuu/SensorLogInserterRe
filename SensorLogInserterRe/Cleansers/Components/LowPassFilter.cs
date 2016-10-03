@@ -21,8 +21,8 @@ namespace SensorLogInserterRe.Cleansers.Components
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnJst, rawRow.Field<DateTime>(CorrectedGpsDao.ColumnJst));
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLatitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLongitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDistanceDifference, rawRow.Field<double>(CorrectedGpsDao.ColumnDistanceDifference));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnHeading, rawRow.Field<double>(CorrectedGpsDao.ColumnHeading));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDistanceDifference, rawRow.Field<float>(CorrectedGpsDao.ColumnDistanceDifference));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnHeading, rawRow.Field<float>(CorrectedGpsDao.ColumnHeading));
         }
         public static DataTable speedLowPassFilter(DataTable correctedGpsTable, double cutOffFrequency)
         {
@@ -70,7 +70,7 @@ namespace SensorLogInserterRe.Cleansers.Components
             {
                 DataRow row = correctedGpsSpeedLPFTable.NewRow();
 
-                CopyRawDataToCorrectedRow(row, correctedGpsSpeedLPFTable.Rows[i]);
+                CopyRawDataToCorrectedRow(row, correctedGpsTable.Rows[i]);
 
                 row.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnSpeed, filteredData[i].Real);
 
@@ -81,9 +81,9 @@ namespace SensorLogInserterRe.Cleansers.Components
             #region インデックスが最後の場合
             DataRow lastRow = correctedGpsSpeedLPFTable.NewRow();
             CopyRawDataToCorrectedRow(lastRow, correctedGpsTable.Rows[correctedGpsTable.Rows.Count - 1]);
-            lastRow.SetField(CorrectedGpsDao.ColumnSpeed, filteredData[correctedGpsTable.Rows.Count - 1]);
+            lastRow.SetField(CorrectedGpsDao.ColumnSpeed, filteredData[correctedGpsTable.Rows.Count - 1].Real);
 
-            correctedGpsTable.Rows.Add(lastRow);
+            correctedGpsSpeedLPFTable.Rows.Add(lastRow);
 
             #endregion
             return correctedGpsSpeedLPFTable;
