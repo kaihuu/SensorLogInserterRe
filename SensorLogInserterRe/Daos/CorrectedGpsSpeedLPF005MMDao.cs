@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class CorrectedGpsSpeedLPF005MMDao
     {
-        private static readonly string TableName = "corrected_gps_speedlpf0.05_mm";
+        private static readonly string TableName = "[corrected_gps_speedlpf0.05_mm]";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";
