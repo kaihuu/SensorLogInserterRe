@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Cleansers.Components
     {
         public static DataTable getResultMapMatching(DataTable gpsRawTable, InsertDatum datum)
         {
-            DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
+
 
             List<DataTable> dt = new List<DataTable>();
             if(datum.DriverId == 1)//富井先生用のマップマッチング道路リンクを取得
@@ -40,27 +40,59 @@ namespace SensorLogInserterRe.Cleansers.Components
                 dt.Add(tempTable);
             }
             //TODO マップマッチング処理
+            double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
+            double[] maxDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の最大値
+            DataTable[] mapMatchedGpsTable = DataTableUtil.GetAndroidGpsRawTableArray(dt.Count);
+                for (int i = 0; i < gpsRawTable.Rows.Count; i++)
+                {
+
+                    for (int n = 0; n < dt.Count; n++)
+                    {
+                        double tempDist = searchNearestLink(dt[n], gpsRawTable.Rows[i], ref mapMatchedGpsTable[n]);
+                        sumDist[n] += tempDist;
+
+                        if (tempDist > maxDist[n]) maxDist[n] = tempDist;
+                    }
+                }
+                int element = getMinElement(sumDist);
+
+                if (sumDist[element] > 0.5 || maxDist[element] > 0.003)
+                {
+                    return new DataTable();
+                }
 
 
-            return correctedGpsTable;
+            return mapMatchedGpsTable[element];
 
         }
         private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
         {
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDriverId, rawRow.Field<int>(CorrectedGpsDao.ColumnDriverId));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnCarId, rawRow.Field<int>(CorrectedGpsDao.ColumnCarId));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnSensorId, rawRow.Field<int>(CorrectedGpsDao.ColumnSensorId));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnJst, rawRow.Field<DateTime>(CorrectedGpsDao.ColumnJst));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnDriverId, rawRow.Field<int>(AndroidGpsRawDao.ColumnDriverId));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnCarId, rawRow.Field<int>(AndroidGpsRawDao.ColumnCarId));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnSensorId, rawRow.Field<int>(AndroidGpsRawDao.ColumnSensorId));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnJst, rawRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnAltitude));
+            correctedRow.SetField(AndroidGpsRawDao.ColumnAndroidTime, rawRow.Field<DateTime>(AndroidGpsRawDao.ColumnAndroidTime));
         }
 
+        private static int getMinElement(double[] colle)
+        {
+            int temp = 0;
 
-        private static double searchNearestLink(DataTable dt, GPSData gps, List<GPSData> GPSArray)
+            for (int i = 1; i < colle.Length; i++)
+            {
+                if (colle[temp] > colle[i])
+                    temp = i;
+            }
+            return temp;
+        }
+        private static double searchNearestLink(DataTable dt, DataRow gps, ref DataTable result)
         {
             //近傍リンクの絞込
-            string query = "START_LAT > " + (gps.latitude - 0.05);
-            query += " AND START_LAT < " + (gps.latitude + 0.05);
-            query += " AND START_LONG > " + (gps.longitude - 0.05);
-            query += " AND START_LONG < " + (gps.longitude + 0.05);
+            string query = "START_LAT > " + (gps.Field<double>(AndroidGpsRawDao.ColumnLatitude) - 0.05);
+            query += " AND START_LAT < " + (gps.Field<double>(AndroidGpsRawDao.ColumnLatitude) + 0.05);
+            query += " AND START_LONG > " + (gps.Field<double>(AndroidGpsRawDao.ColumnLongitude) - 0.05);
+            query += " AND START_LONG < " + (gps.Field<double>(AndroidGpsRawDao.ColumnLongitude) + 0.05);
             DataRow[] dataRows = dt.Select(query);
 
 
@@ -74,7 +106,7 @@ namespace SensorLogInserterRe.Cleansers.Components
             {
                 TwoDimensionalVector linkStartEdge = new TwoDimensionalVector((double)dataRows[j]["START_LAT"], (double)dataRows[j]["START_LONG"]);
                 TwoDimensionalVector linkEndEdge = new TwoDimensionalVector((double)dataRows[j]["END_LAT"], (double)dataRows[j]["END_LONG"]);
-                TwoDimensionalVector GPSPoint = new TwoDimensionalVector(gps.latitude, gps.longitude);
+                TwoDimensionalVector GPSPoint = new TwoDimensionalVector(gps.Field<double>(AndroidGpsRawDao.ColumnLatitude), gps.Field<double>(AndroidGpsRawDao.ColumnLongitude));
 
                 //線分内の最近傍点を探す
                 TwoDimensionalVector matchedPoint = TwoDimensionalVector.nearest(linkStartEdge, linkEndEdge, GPSPoint);
@@ -91,8 +123,14 @@ namespace SensorLogInserterRe.Cleansers.Components
                 }
             }
 
-            GPSData resultGPS = new GPSData(gps.GPSTime, gps.androidTime, tempLat, tempLong, gps.altitude, gps.accuracy);
-            GPSArray.Add(resultGPS);
+            DataRow row = result.NewRow();
+
+            CopyRawDataToCorrectedRow(row, gps);
+
+            row.SetField(AndroidGpsRawDao.ColumnLatitude, tempLat);
+            row.SetField(AndroidGpsRawDao.ColumnLongitude, tempLong);
+
+            result.Rows.Add(row);
 
             return minDist;
         }
