@@ -71,13 +71,13 @@ namespace SensorLogInserterRe.Inserters
                     tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime),
                     datum))
                 {
-                    InsertOutwardTrip(tripsRawTable, tripsTable, datum, i);
+                    InsertOutwardTrip(tripsRawTable, tripsTable, datum, i, config);
                 }
                 // YNU出発
                 else if (IsYnu(tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude),
                     tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude)))
                 {
-                    InsertHomewardTrip(tripsRawTable, tripsTable, datum, i);
+                    InsertHomewardTrip(tripsRawTable, tripsTable, datum, i, config);
                 }
 
                 // 1トリップごとなので主キー違反があっても挿入されないだけ
@@ -136,7 +136,7 @@ namespace SensorLogInserterRe.Inserters
             return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
         }
 
-        private static void InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
+        private static void InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i, InsertConfig config)
         {
             int j = i;
             bool tripChangeFlag = false;
@@ -149,7 +149,13 @@ namespace SensorLogInserterRe.Inserters
                 {
                     var row = tripsTable.NewRow();
 
-                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
+                    }
+                    else {
+                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    }
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
@@ -172,12 +178,19 @@ namespace SensorLogInserterRe.Inserters
                               + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                         break;
                     }
-
-                    if( !TripsDao.IsExsistsTrip(row))
+                    if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
                         tripsTable.Rows.Add(row);
+                    }
+                    else if (!TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
                     else
+                    {
                         LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
                               + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                    }
 
                     tripChangeFlag = true;
                 }
@@ -214,7 +227,7 @@ namespace SensorLogInserterRe.Inserters
             }
         }
 
-        private static void InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i)
+        private static void InsertHomewardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i, InsertConfig config)
         {
             int j = i;
             bool tripChangeFlag = false;
@@ -229,8 +242,13 @@ namespace SensorLogInserterRe.Inserters
                     datum))
                 {
                     var row = tripsTable.NewRow();
-
-                    row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
+                    }
+                    else {
+                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    }
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
@@ -252,11 +270,19 @@ namespace SensorLogInserterRe.Inserters
                         break;
                     }
 
-                    if (!TripsDao.IsExsistsTrip(row))
+                    if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
                         tripsTable.Rows.Add(row);
+                    }
+                    else if (!TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
                     else
+                    {
                         LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
                               + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                    }
 
                     tripChangeFlag = true;
                 }
