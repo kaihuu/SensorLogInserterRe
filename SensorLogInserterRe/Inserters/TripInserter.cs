@@ -182,7 +182,7 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
-                    else if (!TripsDao.IsExsistsTrip(row))
+                    else if (config.Correction != InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }
@@ -274,7 +274,7 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
-                    else if (!TripsDao.IsExsistsTrip(row))
+                    else if (config.Correction != InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }
