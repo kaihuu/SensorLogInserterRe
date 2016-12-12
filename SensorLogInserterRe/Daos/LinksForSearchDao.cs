@@ -18,8 +18,17 @@ namespace SensorLogInserterRe.Daos
 
                 return DatabaseAccesser.GetResult(query);
             }
+        public static DataTable GetLinkId(int Latitude, int Longitude)
+        {
+            string query = "SELECT * ";
+            query += $"FROM '{TableName}' ";
+            query += $"WHERE key_latitude = '{Latitude}' AND key_longitude = '{Longitude}'";
 
-            public static DataTable Get(string linkId)
+            return DatabaseAccesser.GetResult(query);
+        }
+
+
+        public static DataTable Get(string linkId)
             {
                 string query = "SELECT * ";
                 query += $"FROM '{TableName}' ";

@@ -18,6 +18,7 @@ namespace SensorLogInserterRe.Daos
             return DatabaseAccesser.GetResult(query);
         }
 
+
         public static DataTable Get(string linkId)
         {
             string query = "SELECT * ";
