@@ -20,9 +20,10 @@ namespace SensorLogInserterRe.Daos
             }
         public static DataTable GetLinkId(int Latitude, int Longitude)
         {
-            string query = "SELECT * ";
-            query += $"FROM '{TableName}' ";
-            query += $"WHERE key_latitude = '{Latitude}' AND key_longitude = '{Longitude}'";
+            string query = "SELECT LINKS.* ";
+            query += $"FROM '{TableName}' ,LINKS";
+            query += $"WHERE key_latitude = '{Latitude}' AND key_longitude = '{Longitude}' AND '{TableName}'.NUM = LINKS.NUM"; 
+            query += $"AND '{TableName}'.LINK_ID = LINKS.LINK_ID";
 
             return DatabaseAccesser.GetResult(query);
         }
