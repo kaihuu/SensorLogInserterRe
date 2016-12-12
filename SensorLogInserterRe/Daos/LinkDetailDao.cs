@@ -21,7 +21,7 @@ namespace SensorLogInserterRe.Daos
         public static DataTable Get(string linkId)
         {
             string query = "SELECT * ";
-            query += "FROM links_detail ";
+            query += "FROM '{TableName}' ";
             query += $"WHERE link_id = '{linkId}' ";
 
             return DatabaseAccesser.GetResult(query);
