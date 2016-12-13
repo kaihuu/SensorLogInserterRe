@@ -408,7 +408,7 @@ namespace SensorLogInserterRe.ViewModels
 
         public async void Insert()
         {
-            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch();
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             
             this.InsertConfig = this.GenerateInsertConfig();
 
