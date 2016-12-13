@@ -47,6 +47,8 @@ namespace SensorLogInserterRe.Calculators
         public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
             InsertDatum datum)
         {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
             int multiple = 100; //緯度経度整数に変換用
             string linkId = null;
@@ -56,7 +58,6 @@ namespace SensorLogInserterRe.Calculators
             int intlongitude = Convert.ToInt32(longitude * multiple);
 
             #region リンクマッチング
-
             // TODO 以下のアルゴリズムを見直すとけっこうな高速化が計れそう
             // TODO 今すごくいい案思いついた、しかもデータベース屋っぽい案
             // TODO latitude, longitudeを引数とするテーブル関数定義して、
@@ -136,7 +137,8 @@ namespace SensorLogInserterRe.Calculators
                     }
                 }
             }
-
+            sw.Stop();
+            LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "One Link Match Calculaton Time:" + sw.Elapsed);
             return new Tuple<string, double?>(linkId, roadTheta);
         }
 
