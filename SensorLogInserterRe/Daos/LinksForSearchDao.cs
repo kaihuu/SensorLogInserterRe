@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
     class LinksForSearchDao
     {
 
-            private static readonly string TableName = "links_for_search";
+            private static readonly string TableName = "links_lookup";
 
             public static DataTable Get()
             {
@@ -20,10 +20,14 @@ namespace SensorLogInserterRe.Daos
             }
         public static DataTable GetLinkId(int Latitude, int Longitude)
         {
+            int maxLatitude = Latitude + 20;
+            int minLatitude = Latitude - 20;
+            int maxLongitude = Longitude + 20;
+            int minLongitude = Longitude - 20;
             string query = "SELECT LINKS.* ";
             query += $"FROM '{TableName}' ,LINKS";
-            query += $"WHERE key_latitude = '{Latitude}' AND key_longitude = '{Longitude}' AND '{TableName}'.NUM = LINKS.NUM"; 
-            query += $"AND '{TableName}'.LINK_ID = LINKS.LINK_ID";
+            query += $"WHERE key_latitude >= '{minLatitude}' AND key_longitude >= '{minLongitude}' AND key_latitude <= '{maxLatitude}' AND key_longitude <= '{maxLongitude}' AND";
+            query += $"'{TableName}'.NUM = LINKS.NUM AND '{TableName}'.LINK_ID = LINKS.LINK_ID";
 
             return DatabaseAccesser.GetResult(query);
         }
