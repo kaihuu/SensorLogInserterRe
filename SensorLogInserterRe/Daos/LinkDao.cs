@@ -22,6 +22,19 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+        public static DataTable GetLinkId(int Latitude, int Longitude)
+        {
+            double maxLatitude = System.Convert.ToDouble(Latitude + 20) / 10000.0;
+            double minLatitude = System.Convert.ToDouble(Latitude - 20) / 10000.0;
+            double maxLongitude = System.Convert.ToDouble(Longitude + 20) / 10000.0;
+            double minLongitude = System.Convert.ToDouble(Longitude - 20) / 10000.0;
+            string query = "SELECT LINKS.* ";
+            query += $"FROM LINKS";
+            query += $"WHERE latitude >= '{minLatitude}' AND longitude >= '{minLongitude}' AND latitude <= '{maxLatitude}' AND longitude <= '{maxLongitude}' AND";
+            query += $"'{TableName}'.NUM = LINKS.NUM AND '{TableName}'.LINK_ID = LINKS.LINK_ID";
+
+            return DatabaseAccesser.GetResult(query);
+        }
 
         public static DataTable GetLinkTableWithHeadingAndLine()
         {
