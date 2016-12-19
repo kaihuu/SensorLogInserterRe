@@ -493,7 +493,7 @@ namespace SensorLogInserterRe.ViewModels
                     }
                     else if (IsCheckedMapMatching)
                     {
-                         EcologInserter.
+                        EcologInserter.InsertEcologMM(datum, this.UpdateText, InsertConfig);
                     }
 
                     else{

@@ -38,8 +38,8 @@ namespace SensorLogInserterRe.Inserters
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGSpeddLPF005MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+                updateTextDelegate($"Insetring ECOLOGECOLOGSpeedLPF005MM ... , {i} / {tripsTable.Rows.Count}");
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGSpeedLPF005MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
                 EcologSpeedLPF005MMDao.Insert(ecologTable);
 
@@ -55,7 +55,7 @@ namespace SensorLogInserterRe.Inserters
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+                updateTextDelegate($"Insetring ECOLOGMM ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGMM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
                 var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
                 EcologMMDao.Insert(ecologTable);
