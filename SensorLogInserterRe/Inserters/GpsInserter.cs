@@ -50,7 +50,7 @@ namespace SensorLogInserterRe.Inserters
 
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
-                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction == InsertConfig.GpsCorrection.MapMatching)
                 {
                     gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
                 }
@@ -160,6 +160,10 @@ namespace SensorLogInserterRe.Inserters
                 
                 DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
                 CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
+            }
+            else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                CorrectedGPSMMDao.Insert(correctedGpsTable);
             }
             else
             {

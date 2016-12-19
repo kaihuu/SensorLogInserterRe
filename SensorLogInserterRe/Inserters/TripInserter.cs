@@ -40,6 +40,10 @@ namespace SensorLogInserterRe.Inserters
             {
                 TripsRawSpeedLPF005MMDao.Insert(tripsTable);
             }
+            else if(config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                TripsRawMMDao.Insert(tripsTable);
+            }
             else {
                 TripsRawDao.Insert(tripsTable);
             }
@@ -52,6 +56,10 @@ namespace SensorLogInserterRe.Inserters
             if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
                 tripsRawTable = TripsRawSpeedLPF005MMDao.Get(datum);
+            }
+            else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                tripsRawTable = TripsRawMMDao.Get(datum);
             }
             else
             {
@@ -85,9 +93,14 @@ namespace SensorLogInserterRe.Inserters
                 {
                     TripsSpeedLPF005MMDao.Insert(tripsTable);
                 }
+                else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+                {
+                    TripsMMDao.Insert(tripsTable);
+                }
                 else {
                     TripsDao.Insert(tripsTable);
                 }
+                
             }
         }
 
