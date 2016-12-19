@@ -129,7 +129,6 @@
     <Compile Include="Daos\EcologSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
-    <Compile Include="Daos\TripsMMDao.cs" />
     <Compile Include="Daos\TripsRawSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\TripsSpeedLPF005MMDao.cs" />
     <Compile Include="Inserters\Components\AccCorrector.cs" />
