@@ -130,7 +130,7 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" IsEnabled="False" />
+                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" />
 
                 <CheckBox Margin="10,0,0,0" Content="デッドレコニング" IsChecked="{Binding IsCheckedDeadReckoning}" IsEnabled="False" />
 

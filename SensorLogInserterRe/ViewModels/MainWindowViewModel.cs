@@ -491,9 +491,15 @@ namespace SensorLogInserterRe.ViewModels
                     {
                         EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
                     }
-                    else {
+                    else if (IsCheckedMapMatching)
+                    {
+                         EcologInserter.
+                    }
+
+                    else{
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
                     }
+
                 });
                 sw.Stop();
                 LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);

@@ -10,7 +10,8 @@ namespace SensorLogInserterRe.Daos
 {
     class TripsSpeedLPF005MMDao
     {
-        private static readonly string TableName = "[trips_speedlpf0.05_MM]";
+        private static readonly string TableName = "[trips_speedlpf0.05_MM_linkf_lookup]";
+        private static readonly string EcologTableName = "[ecolog_speedlpf0.05_MM_linkf_lookup]";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
@@ -79,7 +80,7 @@ namespace SensorLogInserterRe.Daos
         {
             var selectQuery = new StringBuilder();
             selectQuery.AppendLine("SELECT trip.trip_id, SUM(consumed_electric_energy) AS consumed_energy");
-            selectQuery.AppendLine("FROM [trips_speedlpf0.05_mm] AS trip, [ecolog_speedlpf0.05_mm] AS ecolog");
+            selectQuery.AppendLine($"FROM {TableName} AS trip, {EcologTableName} AS ecolog");
             selectQuery.AppendLine("WHERE consumed_energy IS NULL");
             selectQuery.AppendLine("  AND trip.trip_id = ecolog.trip_id");
             selectQuery.AppendLine("GROUP BY trip.trip_id");
@@ -89,7 +90,7 @@ namespace SensorLogInserterRe.Daos
             foreach (DataRow row in resultTable.Rows)
             {
                 var updateQuery = new StringBuilder();
-                updateQuery.AppendLine($"UPDATE [trips_speedlpf0.05_mm]");
+                updateQuery.AppendLine($"UPDATE {TableName} ");
                 updateQuery.AppendLine($"SET consumed_energy = '{row.Field<double>(1)}'");
                 updateQuery.AppendLine($"WHERE trip_id = {row.Field<int>(0)}");
 
