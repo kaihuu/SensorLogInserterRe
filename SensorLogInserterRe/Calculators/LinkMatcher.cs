@@ -34,7 +34,7 @@ namespace SensorLogInserterRe.Calculators
                 };
             }
 
-            _instance._linkTable.DefaultView.Sort = "latitude, longitude";
+          //  _instance._linkTable.DefaultView.Sort = "latitude, longitude";
 
             return _instance;
         }
