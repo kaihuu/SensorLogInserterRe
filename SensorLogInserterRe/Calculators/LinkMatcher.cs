@@ -50,7 +50,7 @@ namespace SensorLogInserterRe.Calculators
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
-            int multiple = 100; //緯度経度整数に変換用
+            int multiple = 10000; //緯度経度整数に変換用
             string linkId = null;
             double? roadTheta = null;
             DataRow[] selectedRows = null;
