@@ -25,9 +25,9 @@ namespace SensorLogInserterRe.Daos
             int maxLongitude = Longitude + 20;
             int minLongitude = Longitude - 20;
             string query = "SELECT LINKS.* ";
-            query += $"FROM '{TableName}' ,LINKS";
-            query += $"WHERE key_latitude >= '{minLatitude}' AND key_longitude >= '{minLongitude}' AND key_latitude <= '{maxLatitude}' AND key_longitude <= '{maxLongitude}' AND";
-            query += $"'{TableName}'.NUM = LINKS.NUM AND '{TableName}'.LINK_ID = LINKS.LINK_ID";
+            query += $" FROM {TableName} ,LINKS";
+            query += $" WHERE key_latitude >= {minLatitude} AND key_longitude >= {minLongitude} AND key_latitude <= {maxLatitude} AND key_longitude <= {maxLongitude} AND";
+            query += $" {TableName}.NUM = LINKS.NUM AND {TableName}.LINK_ID = LINKS.LINK_ID";
 
             return DatabaseAccesser.GetResult(query);
         }
@@ -36,7 +36,7 @@ namespace SensorLogInserterRe.Daos
         public static DataTable Get(string linkId)
             {
                 string query = "SELECT * ";
-                query += $"FROM '{TableName}' ";
+                query += $"FROM {TableName} ";
                 query += $"WHERE link_id = '{linkId}' ";
 
                 return DatabaseAccesser.GetResult(query);
