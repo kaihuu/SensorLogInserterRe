@@ -21,6 +21,7 @@ namespace SensorLogInserterRe.Models
 
         public enum GpsCorrection
         {
+            Normal,
             MapMatching,
             DeadReckoning,
             SpeedLPFMapMatching

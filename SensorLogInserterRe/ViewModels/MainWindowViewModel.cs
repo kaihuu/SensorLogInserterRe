@@ -547,7 +547,7 @@ namespace SensorLogInserterRe.ViewModels
             #endregion
 
             #region GPS補正の設定
-
+            insertConfig.Correction = InsertConfig.GpsCorrection.Normal;
             if (this.IsCheckedMapMatching)
                 insertConfig.Correction = InsertConfig.GpsCorrection.MapMatching;
             else if (this.IsCheckedDeadReckoning)

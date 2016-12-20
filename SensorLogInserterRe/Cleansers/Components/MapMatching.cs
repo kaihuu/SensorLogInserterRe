@@ -55,7 +55,6 @@ namespace SensorLogInserterRe.Cleansers.Components
                     }
                 }
                 int element = getMinElement(sumDist);
-
                 if (sumDist[element] > 0.5 || maxDist[element] > 0.003)
                 {
                     return new DataTable();
