@@ -14,7 +14,10 @@ namespace SensorLogInserterRe.Cleansers.Components
     {
         public static DataTable getResultMapMatching(DataTable gpsRawTable, InsertDatum datum)
         {
-
+            if(gpsRawTable.Rows.Count == 0)
+            {
+                return new DataTable();
+            }
 
             List<DataTable> dt = new List<DataTable>();
             if(datum.DriverId == 1)//富井先生用のマップマッチング道路リンクを取得
