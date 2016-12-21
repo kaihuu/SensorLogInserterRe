@@ -112,12 +112,18 @@ namespace SensorLogInserterRe.Calculators
             //}
 
             selectedRows = LinksForSearchDao.GetLinkId(intlatitude,intlongitude).Select();
-            linkId = SelectLink(latitude, longitude, heading, selectedRows);
+            if (selectedRows.Length != 0)
+            {
+                linkId = SelectLink(latitude, longitude, heading, selectedRows);
+            }
 
             if(selectedRows.Length == 0)
             {
                 selectedRows = LinkDao.GetLinkId(intlatitude, intlongitude).Select();
-                linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                if (selectedRows.Length != 0)
+                {
+                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                }
             }
 
             #endregion
