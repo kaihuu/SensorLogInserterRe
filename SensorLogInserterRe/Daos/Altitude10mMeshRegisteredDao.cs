@@ -37,6 +37,15 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+        public static DataTable GetAltitude(double latitude, double longitude)
+        {
+            string query = "SELECT * FROM " + TableName;
+            query += " WHERE lower_latitude <= " + latitude + " AND upper_latitude > " + latitude + " AND lower_longitude <= " + longitude;
+            query += " AND upper_longitude > " + longitude;
+
+
+            return DatabaseAccesser.GetResult(query);
+        }
 
         public static int GetMaxMeshId()
         {
