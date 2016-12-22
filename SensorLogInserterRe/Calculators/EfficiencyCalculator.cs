@@ -61,21 +61,18 @@ namespace SensorLogInserterRe.Calculators
         {
             double rpm = MathUtil.ConvertSpeedToRev(car, speed);
 
-            DataTable table;
+            int efficiency = -1;
 
-            if(rpm > _maxRev || torque > _maxTorque || torque < _minTorque)
+            if (rpm > _maxRev || torque > _maxTorque || torque < _minTorque)
             {
-                table = this._efficiencyMaxTable;
+                efficiency = EfficiencyMaxDao.GetEfficiency((int)Math.Round(torque), (int)Math.Round(rpm / 10) * 10);
             }
             else
             {
-                table = this._efficiencyTable;
+                efficiency = EfficiencyDao.GetEfficiency((int)Math.Round(torque), (int)Math.Round(rpm / 10) * 10);
             }
 
-            return table.AsEnumerable()
-                .Where(v => v.Field<int>(0) == (int)Math.Round(torque))
-                .Where(v => v.Field<int>(1) == (int) (Math.Round(rpm / 10)) * 10 )
-                .Select(v => v.Field<int?>(2)).FirstOrDefault() ?? 70;
+            return efficiency;
         }
     }
 }

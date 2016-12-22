@@ -26,5 +26,17 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
+        public static int GetEfficiency(int torque, int rev)
+        {
+            var query = new StringBuilder();
+            query.AppendLine("SELECT * ");
+            query.AppendLine($"FROM {TableName}");
+            query.AppendLine($"WHERE torque = {torque}");
+            query.AppendLine($"AND rev = {rev}");
+
+            return DatabaseAccesser.GetResult(query.ToString())
+                .AsEnumerable()
+                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? -1;
+        }
     }
 }
