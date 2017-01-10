@@ -24,23 +24,27 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                 {
                     string[] fields = parser.ReadFields();
 
+
+
+
                     DataRow row = accRawTable.NewRow();
 
                     row.SetField(AndroidAccRawDao.ColumnDriverId, driverId);
                     row.SetField(AndroidAccRawDao.ColumnCarId, carId);
                     row.SetField(AndroidAccRawDao.ColumnSensorId, sensorId);
+                    
 
                     if (fields != null)
                     {
                         DateTime androidTime = DateTime.Parse(fields[0]);
 
                         #region AndroidTimeの設定
+
                         if (androidTime.Year == 1970)
                         {
                             androidTime = androidTime.AddYears(42);
                             androidTime = androidTime.AddMonths(6);
                         }
-
                         row.SetField(AndroidAccRawDao.ColumnDateTime, androidTime);
                         #endregion
 

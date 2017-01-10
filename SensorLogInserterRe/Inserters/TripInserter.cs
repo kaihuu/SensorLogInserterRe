@@ -166,6 +166,10 @@ namespace SensorLogInserterRe.Inserters
                     {
                         row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
                     }
+                    else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
+                    }
                     else {
                         row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
                     }
@@ -195,7 +199,11 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
-                    else if (config.Correction != InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsDao.IsExsistsTrip(row))
+                    else if (config.Correction == InsertConfig.GpsCorrection.MapMatching && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (config.Correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }
@@ -259,6 +267,10 @@ namespace SensorLogInserterRe.Inserters
                     {
                         row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
                     }
+                    else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
+                    }
                     else {
                         row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
                     }
@@ -287,7 +299,11 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
-                    else if (config.Correction != InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsDao.IsExsistsTrip(row))
+                    else if (config.Correction == InsertConfig.GpsCorrection.MapMatching && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (config.Correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }

@@ -40,15 +40,19 @@ namespace SensorLogInserterRe.Daos
             query += $"AND {ColumnUpperLongitude} > " + longitude + " ";
 
             var result = DatabaseAccesser.GetResult(query);
-
-            return new AltitudeDatum
+            AltitudeDatum resultDatum = new AltitudeDatum();
+            if (result.Rows.Count > 0)
             {
-                LowerLatitude = result.Rows[0].Field<double?>(ColumnLowerLatitude),
-                LowerLongitude = result.Rows[0].Field<double?>(ColumnLowerLongitude),
-                UpperLatitude = result.Rows[0].Field<double?>(ColumnUpperLatitude),
-                UpperLongitude = result.Rows[0].Field<double?>(ColumnUpperLongitude),
-                Altitude = result.Rows[0].Field<float?>(ColumnAltitude)
-            };
+                resultDatum = new AltitudeDatum
+                {
+                    LowerLatitude = result.Rows[0].Field<double?>(ColumnLowerLatitude),
+                    LowerLongitude = result.Rows[0].Field<double?>(ColumnLowerLongitude),
+                    UpperLatitude = result.Rows[0].Field<double?>(ColumnUpperLatitude),
+                    UpperLongitude = result.Rows[0].Field<double?>(ColumnUpperLongitude),
+                    Altitude = result.Rows[0].Field<float?>(ColumnAltitude)
+                };
+            }
+            return resultDatum;
         }
     }
 }
