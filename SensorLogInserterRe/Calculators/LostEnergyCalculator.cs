@@ -21,7 +21,7 @@ namespace SensorLogInserterRe.Calculators
         public static double CalcEnergy(double convertLoss, double regeneLoss, double airResistance,
             double rollingResistance)
         {
-            return Math.Abs(convertLoss) + regeneLoss + airResistance + rollingResistance;
+            return Math.Abs(convertLoss) - regeneLoss + airResistance + rollingResistance;
         }
     }
 }
