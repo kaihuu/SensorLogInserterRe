@@ -81,6 +81,8 @@ namespace SensorLogInserterRe.Cleansers.Components
         {
             int temp = 0;
 
+
+
             for (int i = 1; i < colle.Length; i++)
             {
                 if (colle[temp] > colle[i])

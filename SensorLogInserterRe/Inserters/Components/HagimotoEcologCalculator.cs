@@ -35,10 +35,13 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsTable = CorrectedGpsDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                         tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
             }
-        
+
 
             var ecologTable = DataTableUtil.GetEcologTable();
-
+            if (correctedGpsTable.Rows.Count == 0)
+            {
+                return ecologTable;
+            }
             var firstRow = GenerateFirstEcologRow(
                 ecologTable.NewRow(), tripRow, correctedGpsTable.Rows[0], datum);
 
