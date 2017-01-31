@@ -16,12 +16,12 @@ namespace SensorLogInserterRe.Calculators
             if(drivingPower >= 0)
             {
                 convertLoss = ConsumedEnergyCaluculator.CalcEnergy(drivingPower, car, vehicleSpeed, efficiency)
-                    * ( (1 - (efficiency + 0.0f) / 100) * car.InverterEfficiency);
+                    * ( (1 - (efficiency + 0.0f) / 100 * car.InverterEfficiency) );
             }
             else
             {
                 convertLoss = ConsumedEnergyCaluculator.CalcEnergy(drivingPower, car, vehicleSpeed, efficiency)
-                    * ( (1 / (efficiency + 0.0f) * 100 - 1) / car.InverterEfficiency);
+                    * ( (1 / (efficiency + 0.0f) * 100 / car.InverterEfficiency - 1) );
             }
             return convertLoss;
         }
