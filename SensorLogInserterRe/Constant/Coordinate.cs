@@ -56,9 +56,9 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LatitudeEnd = 35.445;
             public static readonly double LongitudeStart = 139.42;
             public static readonly double LongitudeEnd = 139.435;
-            public static readonly DateTime StartDate = DateTime.Parse("2013-11-22");
-            public static readonly DateTime EndDate = DateTime.Parse("2013-11-23");
-            public static readonly int SensorId = 14;
+            //public static readonly DateTime StartDate = DateTime.Parse("2013-11-22");
+            //public static readonly DateTime EndDate = DateTime.Parse("2013-11-23");
+            //public static readonly int SensorId = 14;
         }
 
     }

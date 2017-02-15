@@ -135,10 +135,7 @@ namespace SensorLogInserterRe.Inserters
             if (latitude > Coordinate.AyaseCityHall.LatitudeStart
                 && latitude < Coordinate.AyaseCityHall.LatitudeEnd
                 && longitude > Coordinate.AyaseCityHall.LongitudeStart
-                && longitude < Coordinate.AyaseCityHall.LongitudeEnd
-                && date > Coordinate.AyaseCityHall.StartDate
-                && date < Coordinate.AyaseCityHall.EndDate
-                && datum.SensorId == Coordinate.AyaseCityHall.SensorId)
+                && longitude < Coordinate.AyaseCityHall.LongitudeEnd)
                 return true;
 
             return false;
