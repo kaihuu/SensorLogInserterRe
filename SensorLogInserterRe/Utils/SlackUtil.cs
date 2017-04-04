@@ -39,7 +39,7 @@ namespace SensorLogInserterRe.Utils
 
             var data = DynamicJson.Serialize(new
             {
-                text = startTime.ToShortDateString() + " ～ " + endTime.ToShortDateString() + " 補正方法： " 
+                text = "Finished Insert : " + startTime.ToShortDateString() + " ～ " + endTime.ToShortDateString() + " 補正方法： " 
                 + Enum.GetName(typeof(InsertConfig.GpsCorrection), correction),
                 icon_emoji = ":finish:", //アイコンを動的に変更する
                 username = "SensorLogInserter"  //名前を動的に変更する
