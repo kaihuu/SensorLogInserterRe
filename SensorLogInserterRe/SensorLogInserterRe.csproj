@@ -72,6 +72,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Device" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\System.Windows.Interactivity.dll</HintPath>
@@ -134,6 +135,7 @@
     <Compile Include="Daos\TripsRawMMDao.cs" />
     <Compile Include="Daos\TripsRawSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\TripsSpeedLPF005MMDao.cs" />
+    <Compile Include="DynamicJson.cs" />
     <Compile Include="Inserters\Components\AccCorrector.cs" />
     <Compile Include="Constant\CarNames.cs" />
     <Compile Include="Constant\DirectoryNames.cs" />
