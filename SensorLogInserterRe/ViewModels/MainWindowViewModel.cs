@@ -411,7 +411,6 @@ namespace SensorLogInserterRe.ViewModels
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             
             this.InsertConfig = this.GenerateInsertConfig();
-
             #region ファイル検索
 
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
@@ -506,7 +505,7 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
             }
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-
+            SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
         }
 
         private InsertConfig GenerateInsertConfig()
