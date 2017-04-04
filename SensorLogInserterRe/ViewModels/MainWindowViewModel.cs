@@ -484,7 +484,7 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
 
                 #region ECOLOG挿入
-                sw.Start();
+           //     sw.Start();
                 await Task.Run(() =>
                 {
                     if (IsCheckedSpeedLPFMapMatching)
@@ -501,11 +501,12 @@ namespace SensorLogInserterRe.ViewModels
                     }
 
                 });
-                sw.Stop();
-                LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
+         //       sw.Stop();
+          //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
                 #endregion
             }
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
+
         }
 
         private InsertConfig GenerateInsertConfig()
