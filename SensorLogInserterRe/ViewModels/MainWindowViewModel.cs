@@ -326,7 +326,44 @@ namespace SensorLogInserterRe.ViewModels
                 RaisePropertyChanged();
             }
         }
+        #endregion)
+
+
+        #region IsCheckedNormal変更通知プロパティ
+        private string _IsCheckedNormal;
+
+        public string IsCheckedNormal
+        {
+            get
+            { return _IsCheckedNormal; }
+            set
+            { 
+                if (_IsCheckedNormal == value)
+                    return;
+                _IsCheckedNormal = value;
+                RaisePropertyChanged("IsCheckedNormal");
+            }
+        }
         #endregion
+
+
+        #region IsCheckedLPFEx変更通知プロパティ
+        private string _IsCheckedLPFEx;
+
+        public string IsCheckedLPFEx
+        {
+            get
+            { return _IsCheckedLPFEx; }
+            set
+            { 
+                if (_IsCheckedLPFEx == value)
+                    return;
+                _IsCheckedLPFEx = value;
+                RaisePropertyChanged("IsCheckedLPFEx");
+            }
+        }
+        #endregion
+
 
         private InsertConfig InsertConfig { get; set; }
 
@@ -423,7 +460,10 @@ namespace SensorLogInserterRe.ViewModels
 
             this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
             LogWritter.WriteLog(LogWritter.LogMode.Search, $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n");
-
+            if(InsertDatumList.Count == 0)
+            {
+                return;
+            }
             #endregion
 
             #region GPS挿入

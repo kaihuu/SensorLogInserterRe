@@ -130,11 +130,13 @@
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
-                <CheckBox Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" />
+                <RadioButton Content="マップマッチング" IsChecked="{Binding  IsCheckedMapMatching}" />
 
-                <CheckBox Margin="10,0,0,0" Content="デッドレコニング" IsChecked="{Binding IsCheckedDeadReckoning}" IsEnabled="False" />
+                <RadioButton Margin="10,0,0,0" Content="ノーマル" IsChecked="{Binding IsCheckedNormal}" />
 
-                <CheckBox Margin="10,0,0,0" Content="速度ローパスフィルタ+マップマッチング" IsChecked="{Binding IsCheckedSpeedLPFMapMatching}"  />
+                <RadioButton Margin="10,0,0,0" Content="速度ローパスフィルタ+マップマッチング" IsChecked="{Binding IsCheckedSpeedLPFMapMatching}"  />
+
+                <RadioButton Margin="10,0,0,0" Content="LPFEX" IsChecked="{Binding IsCheckedLPFEx}"  />
 
             </StackPanel>
 
