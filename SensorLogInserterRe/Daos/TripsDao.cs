@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Daos
     class TripsDao
     {
         private static readonly string TableName = "trips_links_lookup";
-        private static readonly string EcologTableName = "ecolog_links_lookup";
+      //  private static readonly string EcologTableName = "ecolog_links_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
@@ -36,6 +36,20 @@ namespace SensorLogInserterRe.Daos
             string query = "SELECT * FROM " + TableName;
 
             return DatabaseAccesser.GetResult(query);
+        }
+
+        public static void DeleteTrips()
+        {
+            var query = new StringBuilder();
+
+            query.AppendLine("DELETE");
+            query.AppendLine($"FROM {TripsDao.TableName}");
+            query.AppendLine("WHERE NOT EXISTS");
+            query.AppendLine("(SELECT *");
+            query.AppendLine($"FROM {EcologDao.TableName}");
+            query.AppendLine($"WHERE {EcologDao.ColumnTripId} = {TripsDao.ColumnTripId}");
+
+            DatabaseAccesser.Delete(query.ToString());
         }
 
         public static DataTable Get(InsertDatum datum)
@@ -97,5 +111,7 @@ namespace SensorLogInserterRe.Daos
                 DatabaseAccesser.Update(updateQuery.ToString());
             }
         }
+
+        public static 
     }
 }
