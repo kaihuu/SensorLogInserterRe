@@ -56,19 +56,23 @@ namespace SensorLogInserterRe.Inserters
             if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
                 tripsRawTable = TripsRawSpeedLPF005MMDao.Get(datum);
+                TripsSpeedLPF005MMDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
             else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
             {
                 tripsRawTable = TripsRawMMDao.Get(datum);
+                TripsMMDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
             else
             {
                 tripsRawTable = TripsRawDao.Get(datum);
+                TripsDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
                
 
             LogWritter.WriteLog(LogWritter.LogMode.Trip, $"挿入対象のRAWデータ: {tripsRawTable.Rows.Count}");
 
+            
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)
             {
                 DataTable tripsTable = DataTableUtil.GetTripsTable();
