@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Daos
     class TripsMMDao
     {
         private static readonly string TableName = "trips_mm_links_lookup";
-        private static readonly string EcologTableName = "ecolog_mm_links_lookup";
+ //       private static readonly string EcologTableName = "ecolog_mm_links_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
@@ -53,7 +53,19 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query.ToString());
         }
+        public static void DeleteTrips()
+        {
+            var query = new StringBuilder();
 
+            query.AppendLine("DELETE");
+            query.AppendLine($"FROM {TripsMMDao.TableName}");
+            query.AppendLine("WHERE NOT EXISTS");
+            query.AppendLine("(SELECT *");
+            query.AppendLine($"FROM {EcologMMDao.TableName}");
+            query.AppendLine($"WHERE {EcologMMDao.ColumnTripId} = {TripsMMDao.ColumnTripId}");
+
+            DatabaseAccesser.Delete(query.ToString());
+        }
         public static int GetMaxTripId()
         {
             string query = $"SELECT MAX({ColumnTripId}) AS max_id FROM {TableName}";
@@ -80,7 +92,7 @@ namespace SensorLogInserterRe.Daos
         {
             var selectQuery = new StringBuilder();
             selectQuery.AppendLine("SELECT trip.trip_id, SUM(consumed_electric_energy) AS consumed_energy");
-            selectQuery.AppendLine($"FROM {TableName} AS trip, {EcologTableName} AS ecolog");
+            selectQuery.AppendLine($"FROM {TableName} AS trip, {EcologMMDao.TableName} AS ecolog");
             selectQuery.AppendLine("WHERE consumed_energy IS NULL");
             selectQuery.AppendLine("  AND trip.trip_id = ecolog.trip_id");
             selectQuery.AppendLine("GROUP BY trip.trip_id");
