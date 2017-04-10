@@ -365,6 +365,24 @@ namespace SensorLogInserterRe.ViewModels
         #endregion
 
 
+        #region IsEnabledStartUpLoopButton変更通知プロパティ
+        private bool _IsEnabledStartUpLoopButton;
+
+        public bool IsEnabledStartUpLoopButton
+        {
+            get
+            { return _IsEnabledStartUpLoopButton; }
+            set
+            { 
+                if (_IsEnabledStartUpLoopButton == value)
+                    return;
+                _IsEnabledStartUpLoopButton = value;
+                RaisePropertyChanged("IsEnabledStartUpLoopButton");
+            }
+        }
+        #endregion
+
+
         private InsertConfig InsertConfig { get; set; }
 
         private List<string> InsertFileList { get; set; }
@@ -446,6 +464,8 @@ namespace SensorLogInserterRe.ViewModels
 
         public async void Insert()
         {
+            IsEnabledInsertButton = false;
+            IsEnabledStartUpLoopButton = false;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             
             this.InsertConfig = this.GenerateInsertConfig();
@@ -554,6 +574,8 @@ namespace SensorLogInserterRe.ViewModels
             }
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
             SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+            IsEnabledInsertButton = true;
+            IsEnabledStartUpLoopButton = true;
         }
 
         private InsertConfig GenerateInsertConfig()
