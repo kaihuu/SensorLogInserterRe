@@ -35,7 +35,7 @@ namespace SensorLogInserterRe.Models
 
         public EstimationModel EstModel { get; set; }
 
-        public GpsCorrection Correction { get; set; }
+        public List<GpsCorrection> Correction { get; set; }
 
         public EstimatedCarModel CarModel { get; set; }
 

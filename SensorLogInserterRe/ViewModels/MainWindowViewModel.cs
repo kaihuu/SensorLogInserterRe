@@ -330,9 +330,9 @@ namespace SensorLogInserterRe.ViewModels
 
 
         #region IsCheckedNormal変更通知プロパティ
-        private string _IsCheckedNormal;
+        private bool _IsCheckedNormal;
 
-        public string IsCheckedNormal
+        public bool IsCheckedNormal
         {
             get
             { return _IsCheckedNormal; }
@@ -348,9 +348,9 @@ namespace SensorLogInserterRe.ViewModels
 
 
         #region IsCheckedLPFEx変更通知プロパティ
-        private string _IsCheckedLPFEx;
+        private bool _IsCheckedLPFEx;
 
-        public string IsCheckedLPFEx
+        public bool IsCheckedLPFEx
         {
             get
             { return _IsCheckedLPFEx; }
@@ -473,7 +473,10 @@ namespace SensorLogInserterRe.ViewModels
 
             await Task.Run(() =>
             {
-                GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+                for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
+                {
+                    GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
+                }
             });
 
             this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
@@ -505,20 +508,23 @@ namespace SensorLogInserterRe.ViewModels
 
                 await Task.Run(() =>
                 {
-                    TripInserter.InsertTrip(datum, InsertConfig);
+                    for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
+                    {
+                        TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
+                    }
                 });
 
                 #endregion
 
                 #region 補正加速度挿入
 
-                if (IsCheckedInsertCorrectedAcc)
-                {
-                    await Task.Run(() =>
-                    {
-                        AccInserter.InsertCorrectedAcc(datum, InsertConfig);
-                    });
-                }
+                //if (IsCheckedInsertCorrectedAcc)
+                //{
+                //    await Task.Run(() =>
+                //    {
+                //        AccInserter.InsertCorrectedAcc(datum, InsertConfig);
+                //    });
+                //}
 
                 #endregion
 
@@ -530,12 +536,13 @@ namespace SensorLogInserterRe.ViewModels
                     {
                         EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
                     }
-                    else if (IsCheckedMapMatching)
+                    if (IsCheckedMapMatching)
                     {
                         EcologInserter.InsertEcologMM(datum, this.UpdateText, InsertConfig);
                     }
 
-                    else{
+                    if(IsCheckedNormal)
+                    {
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
                     }
 
@@ -587,13 +594,14 @@ namespace SensorLogInserterRe.ViewModels
             #endregion
 
             #region GPS補正の設定
-            insertConfig.Correction = InsertConfig.GpsCorrection.Normal;
-            if (this.IsCheckedMapMatching)
-                insertConfig.Correction = InsertConfig.GpsCorrection.MapMatching;
-            else if (this.IsCheckedDeadReckoning)
-                insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
+            if(this.IsCheckedNormal)
+            insertConfig.Correction.Add(InsertConfig.GpsCorrection.Normal);
+            else if (this.IsCheckedMapMatching)
+                insertConfig.Correction.Add(InsertConfig.GpsCorrection.MapMatching);
+            //else if (this.IsCheckedDeadReckoning)
+            //    insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
             else if (this.IsCheckedSpeedLPFMapMatching)
-                insertConfig.Correction = InsertConfig.GpsCorrection.SpeedLPFMapMatching;
+                insertConfig.Correction.Add(InsertConfig.GpsCorrection.SpeedLPFMapMatching);
 
             #endregion
 

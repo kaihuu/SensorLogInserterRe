@@ -23,7 +23,7 @@ namespace SensorLogInserterRe.Inserters
         private static readonly int CarIndex = 5;
         private static readonly int SensorIndex = 6;
 
-        public static void InsertGps(List<string> insertFileList, InsertConfig config, List<InsertDatum> insertDatumList)
+        public static void InsertGps(List<string> insertFileList, InsertConfig config, int correctionIndex, List<InsertDatum> insertDatumList)
         {
             foreach (var filePath in insertFileList)
             {
@@ -50,15 +50,15 @@ namespace SensorLogInserterRe.Inserters
 
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
-                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction == InsertConfig.GpsCorrection.MapMatching)
+                if (config.Correction[correctionIndex] == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction[correctionIndex] == InsertConfig.GpsCorrection.MapMatching)
                 {
                     gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
 
-                    InsertCorrectedGps(gpsRawTable, config);
-                    TripInserter.InsertTripRaw(gpsRawTable, config);
+                    InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
+                    TripInserter.InsertTripRaw(gpsRawTable, config.Correction[correctionIndex]);
                     
                 }
                 else
@@ -88,7 +88,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
 
-        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig config)
+        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig.GpsCorrection correction)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
@@ -155,13 +155,13 @@ namespace SensorLogInserterRe.Inserters
             #endregion
 
             // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
-            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
+            if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
             {
                 
                 DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
                 CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
             }
-            else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            else if (correction == InsertConfig.GpsCorrection.MapMatching)
             {
                 CorrectedGPSMMDao.Insert(correctedGpsTable);
             }
