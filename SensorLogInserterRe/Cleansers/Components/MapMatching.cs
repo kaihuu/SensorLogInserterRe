@@ -26,21 +26,25 @@ namespace SensorLogInserterRe.Cleansers.Components
                 DataTable tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(富井先生：代官山下ルート)
                 tempTable.TableName = "富井先生,復路,代官山下ルート";
                 dt.Add(tempTable);
+                dt[0].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 224 };
                 tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(富井先生：代官山上ルート)
                 tempTable.TableName = "富井先生,復路,代官山上ルート";
                 dt.Add(tempTable);
+                dt[1].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 221 };
                 tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(富井先生：小学校上ルート)
                 tempTable.TableName = "富井先生,往路,小学校上ルート";
                 dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 225 };
                 tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(富井先生：小学校下ルート)
                 tempTable.TableName = "富井先生,往路,小学校下ルート";
                 dt.Add(tempTable);
+                dt[3].DefaultView.Sort = "START_LAT, START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和

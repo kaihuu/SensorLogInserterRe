@@ -17,15 +17,15 @@ namespace SensorLogInserterRe.Inserters.Components
         private static readonly double Rho = 1.22;
         private static readonly double Myu = 0.015;
 
-        public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum, InsertConfig config)
+        public static DataTable CalcEcolog(DataRow tripRow, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
             var correctedGpsTable = new DataTable();
-            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching) //補正GPS取得元変更
+            if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching) //補正GPS取得元変更
             {
                 correctedGpsTable = CorrectedGpsSpeedLPF005MMDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                 tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
             }
-            else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            else if (correction == InsertConfig.GpsCorrection.MapMatching)
             {
                 correctedGpsTable = CorrectedGPSMMDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                 tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);

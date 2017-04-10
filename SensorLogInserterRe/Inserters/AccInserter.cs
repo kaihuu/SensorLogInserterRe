@@ -105,14 +105,14 @@ namespace SensorLogInserterRe.Inserters
             Console.WriteLine("CALLED: InsertCorrectedAcc, " + datum);
 
             var tripsTable = new DataTable();
-            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
-            {
-                tripsTable = TripsSpeedLPF005MMDao.Get(datum);
-            }
-            else
-            {
-                tripsTable = TripsDao.Get(datum);
-            }
+            //if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            //{
+            //    tripsTable = TripsSpeedLPF005MMDao.Get(datum);
+            //}
+            //else
+            //{
+            //    tripsTable = TripsDao.Get(datum);
+            //}
 
             foreach (DataRow row in tripsTable.Rows)
             {

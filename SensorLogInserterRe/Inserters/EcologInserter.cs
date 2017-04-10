@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Inserters
 {
     class EcologInserter
     {
-        public static void InsertEcolog(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig config)
+        public static void InsertEcolog(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsDao.Get(datum);
             int i = 1;
@@ -23,7 +23,7 @@ namespace SensorLogInserterRe.Inserters
             {
                 updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
                 EcologDao.Insert(ecologTable);
 
                 i++;
@@ -31,7 +31,7 @@ namespace SensorLogInserterRe.Inserters
 
             TripsDao.UpdateConsumedEnergy();
         }
-        public static void InsertEcologSpeedLPF005MM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate,InsertConfig config)
+        public static void InsertEcologSpeedLPF005MM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsSpeedLPF005MMDao.Get(datum);
             int i = 1;
@@ -40,7 +40,7 @@ namespace SensorLogInserterRe.Inserters
             {
                 updateTextDelegate($"Insetring ECOLOGECOLOGSpeedLPF005MM ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGSpeedLPF005MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
                 EcologSpeedLPF005MMDao.Insert(ecologTable);
 
                 i++;
@@ -48,7 +48,7 @@ namespace SensorLogInserterRe.Inserters
 
             TripsSpeedLPF005MMDao.UpdateConsumedEnergy();
         }
-        public static void InsertEcologMM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig config)
+        public static void InsertEcologMM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsMMDao.Get(datum);
             int i = 1;
@@ -57,7 +57,7 @@ namespace SensorLogInserterRe.Inserters
             {
                 updateTextDelegate($"Insetring ECOLOGMM ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGMM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
                 EcologMMDao.Insert(ecologTable);
 
                 i++;

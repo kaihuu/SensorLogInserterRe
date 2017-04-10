@@ -42,6 +42,7 @@ namespace SensorLogInserterRe.Models
         private InsertConfig()
         {
             this.CheckeDrivers = new List<string>();
+            this.Correction = new List<GpsCorrection>();
         }
 
         public static InsertConfig GetInstance()
