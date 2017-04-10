@@ -460,7 +460,7 @@ namespace SensorLogInserterRe.ViewModels
 
             this.LogText += $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n";
             LogWritter.WriteLog(LogWritter.LogMode.Search, $"{LogTexts.NumberOfTheInsertedFile}: {this.InsertFileList.Count}\n");
-            if(InsertDatumList.Count == 0)
+            if(InsertFileList.Count == 0)
             {
                 return;
             }
