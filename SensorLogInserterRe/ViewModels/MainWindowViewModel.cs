@@ -393,6 +393,8 @@ namespace SensorLogInserterRe.ViewModels
 
         private UpdateTextDelegate UpdateText { get; set; }
 
+        private bool Loop;
+
         public void Initialize()
         {
             InitDriversChecked();
@@ -455,18 +457,21 @@ namespace SensorLogInserterRe.ViewModels
         {
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
+            Loop = false;
             LoopButtonText = "ループ起動";
         }
 
         public void StartUpLoop()
         {
             MessageBox.Show("StartUpLoop");
+            
         }
 
         public async void Insert()
         {
             IsEnabledInsertButton = false;
-            IsEnabledStartUpLoopButton = false;
+
+                IsEnabledStartUpLoopButton = false;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             
             this.InsertConfig = this.GenerateInsertConfig();
@@ -596,10 +601,16 @@ namespace SensorLogInserterRe.ViewModels
             #endregion
 
             #region 期間の設定
-
-            insertConfig.StartDate = this.StartDate;
-            insertConfig.EndDate = this.EndDate;
-
+            if (IsCheckedPeriod)
+            {
+                insertConfig.StartDate = this.StartDate;
+                insertConfig.EndDate = this.EndDate;
+            }
+            else
+            {
+                insertConfig.StartDate = DateTime.Now.AddDays(-7);
+                insertConfig.EndDate = DateTime.Now;
+            }
             #endregion
 
             #region 推定対象車両の設定

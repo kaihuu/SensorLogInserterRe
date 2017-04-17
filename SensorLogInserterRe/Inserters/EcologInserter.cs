@@ -36,6 +36,7 @@ namespace SensorLogInserterRe.Inserters
             var tripsTable = TripsSpeedLPF005MMDao.Get(datum);
             int i = 1;
 
+
             foreach (DataRow row in tripsTable.Rows)
             {
                 updateTextDelegate($"Insetring ECOLOGECOLOGSpeedLPF005MM ... , {i} / {tripsTable.Rows.Count}");
