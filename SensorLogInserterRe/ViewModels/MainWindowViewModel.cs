@@ -454,6 +454,7 @@ namespace SensorLogInserterRe.ViewModels
         private void InitButton()
         {
             IsEnabledInsertButton = true;
+            IsEnabledStartUpLoopButton = true;
             LoopButtonText = "ループ起動";
         }
 
