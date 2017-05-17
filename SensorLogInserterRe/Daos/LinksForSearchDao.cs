@@ -20,10 +20,10 @@ namespace SensorLogInserterRe.Daos
             }
         public static DataTable GetLinkId(int Latitude, int Longitude)
         {
-            int maxLatitude = Latitude + 20;
-            int minLatitude = Latitude - 20;
-            int maxLongitude = Longitude + 20;
-            int minLongitude = Longitude - 20;
+            int maxLatitude = Latitude + 50;
+            int minLatitude = Latitude - 50;
+            int maxLongitude = Longitude + 50;
+            int minLongitude = Longitude - 50;
             string query = "with LINKS_TABLE as (SELECT LINKS.* ";
             query += $"FROM {TableName} ,LINKS";
             query += $" WHERE key_latitude >= '{minLatitude}' AND key_longitude >= '{minLongitude}' AND key_latitude <= '{maxLatitude}' AND key_longitude <= '{maxLongitude}' AND";
@@ -41,12 +41,12 @@ namespace SensorLogInserterRe.Daos
             query += " select node1.LINK_ID, node1.LATITUDE as LAT1, node1. LONGITUDE as LON1, node2.LATITUDE as LAT2, node2.LONGITUDE as LON2, node1.LATITUDE * PI() / 180 as RAD_LAT1, node1.LONGITUDE * PI() / 180 as RAD_LON1, node2.LATITUDE * PI() / 180 as RAD_LAT2, node2.LONGITUDE * PI() / 180 as RAD_LON2 ";
             query += " from ( ";
             query += " select * ";
-            query += " from LINKS ";
+            query += " from LINKS_TABLE ";
             query += " where NODE_ID is not null ";
             query += " and DIRECTION = 1 ";
             query += " ) as node1,( ";
             query += " select * ";
-            query += " from LINKS ";
+            query += " from LINKS_TABLE ";
             query += " where NODE_ID is not null ";
             query += " and DIRECTION = 2 ";
             query += " ) as node2 ";

@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class TripsMMDao
     {
-        private static readonly string TableName = "trips_mm_links_lookup";
+        private static readonly string TableName = "trips_mm_links_lookup2";
  //       private static readonly string EcologTableName = "ecolog_mm_links_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";

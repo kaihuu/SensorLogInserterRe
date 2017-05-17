@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Daos
 {
     class EcologSpeedLPF005MMDao
     {
-        public static readonly string TableName = "[ecolog_speedlpf0.05_mm_links_lookup]";
+        public static readonly string TableName = "[ecolog_speedlpf0.05_mm_links_lookup2]";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
