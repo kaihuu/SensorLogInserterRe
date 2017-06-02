@@ -17,51 +17,80 @@ namespace SensorLogInserterRe.Inserters
         public static void InsertEcolog(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsDao.Get(datum);
-            int i = 1;
+            //int i = 1;
 
-            foreach (DataRow row in tripsTable.Rows)
-            {
-                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
-                EcologDao.Insert(ecologTable);
+            //foreach (DataRow row in tripsTable.Rows)
+            //{
+            //    updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+            //    LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+            //    var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+            //    EcologDao.Insert(ecologTable);
 
-                i++;
-            }
+            //    i++;
+            //}
+
+            Parallel.For(0, tripsTable.Rows.Count, i =>
+           {
+               updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+               LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+               var ecologTable = HagimotoEcologCalculator.CalcEcolog(tripsTable.Rows[i], datum, correction);
+               EcologDao.Insert(ecologTable);
+
+               
+           });
 
             TripsDao.UpdateConsumedEnergy();
         }
         public static void InsertEcologSpeedLPF005MM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsSpeedLPF005MMDao.Get(datum);
-            int i = 1;
+            //int i = 1;
 
-            foreach (DataRow row in tripsTable.Rows)
+            //foreach (DataRow row in tripsTable.Rows)
+            //{
+            //    updateTextDelegate($"Insetring ECOLOGECOLOGSpeedLPF005MM ... , {i} / {tripsTable.Rows.Count}");
+            //    LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGSpeedLPF005MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+            //    var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+            //    EcologSpeedLPF005MMDao.Insert(ecologTable);
+
+            //    i++;
+            //}
+
+            Parallel.For(0, tripsTable.Rows.Count, i =>
             {
                 updateTextDelegate($"Insetring ECOLOGECOLOGSpeedLPF005MM ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGSpeedLPF005MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(tripsTable.Rows[i], datum, correction);
                 EcologSpeedLPF005MMDao.Insert(ecologTable);
 
-                i++;
-            }
+
+            });
 
             TripsSpeedLPF005MMDao.UpdateConsumedEnergy();
         }
         public static void InsertEcologMM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsMMDao.Get(datum);
-            int i = 1;
+            //int i = 1;
 
-            foreach (DataRow row in tripsTable.Rows)
+            //foreach (DataRow row in tripsTable.Rows)
+            //{
+            //    updateTextDelegate($"Insetring ECOLOGMM ... , {i} / {tripsTable.Rows.Count}");
+            //    LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGMM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+            //    var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+            //    EcologMMDao.Insert(ecologTable);
+
+            //    i++;
+            //}
+            Parallel.For(0, tripsTable.Rows.Count, i =>
             {
                 updateTextDelegate($"Insetring ECOLOGMM ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOGMM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(tripsTable.Rows[i], datum, correction);
                 EcologMMDao.Insert(ecologTable);
 
-                i++;
-            }
+
+            });
 
             TripsMMDao.UpdateConsumedEnergy();
         }

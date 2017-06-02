@@ -492,13 +492,18 @@ namespace SensorLogInserterRe.ViewModels
             this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
             LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheSrartOfTheInsertingGps + "\n");
 
-            await Task.Run(() =>
-            {
-                for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
-                {
-                    GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
-                }
-            });
+            //await Task.Run(() =>
+            //{
+            //    for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
+            //    {
+            //        GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
+            //    }
+            //});
+
+            Parallel.For(0, this.InsertConfig.Correction.Count, i =>
+           {
+               GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
+           });
 
             this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
             LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
