@@ -553,30 +553,32 @@ namespace SensorLogInserterRe.ViewModels
                 //}
 
                 #endregion
+            }
 
+            Parallel.For(0, InsertDatumList.Count, i =>
+            {
                 #region ECOLOG挿入
-           //     sw.Start();
-                await Task.Run(() =>
-                {
+                //     sw.Start();
+
                     if (IsCheckedSpeedLPFMapMatching)
                     {
-                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
+                        EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
                     }
                     if (IsCheckedMapMatching)
                     {
-                        EcologInserter.InsertEcologMM(datum, this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
+                        EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
                     }
 
-                    if(IsCheckedNormal)
+                    if (IsCheckedNormal)
                     {
-                        EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig.GpsCorrection.Normal);
+                        EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal);
                     }
 
-                });
-         //       sw.Stop();
-          //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
+                
+                //       sw.Stop();
+                //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
                 #endregion
-            }
+            });
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
             SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
             IsEnabledInsertButton = true;
