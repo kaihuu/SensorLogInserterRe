@@ -46,7 +46,7 @@ namespace SensorLogInserterRe.Calculators
                 {
                     regeneEnergy = car.MaxDrivingPower / 1000 * efficiency;
                 }
-                regeneEnergy = regeneEnergy / 100 * car.InverterEfficiency;
+                regeneEnergy = regeneEnergy / 100 * car.InverterEfficiency;//変換効率，インバータ効率乗算済み
             }
             return regeneEnergy;
         }
