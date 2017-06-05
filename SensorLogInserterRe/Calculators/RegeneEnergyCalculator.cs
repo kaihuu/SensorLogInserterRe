@@ -44,7 +44,7 @@ namespace SensorLogInserterRe.Calculators
                 //回生エネルギー限界を超えている場合
                 else if (vehicleSpeed > speedC && drivingPower * 3600 < car.MaxDrivingPower)
                 {
-                    regeneEnergy = car.MaxDrivingPower / 1000 * efficiency;
+                    regeneEnergy = car.MaxDrivingPower / 3600 * efficiency;
                 }
                 regeneEnergy = regeneEnergy / 100 * car.InverterEfficiency;//変換効率，インバータ効率乗算済み
             }
