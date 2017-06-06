@@ -29,6 +29,8 @@ namespace SensorLogInserterRe.Constant
         public const string XperiaGX_SO_04D = "XperiaGX_SO-04D";
         public const string SO_02_F = "SO-02F";
         public const string Nexus6 = "nexus6";
+        public const string Nexus7_2013_2 = "Nexus7(2013)-2";
+        public const string Zenfone2_1 = "Zenfone2-1";
 
         public static int GetSensorId(string sensorName)
         {
@@ -76,6 +78,10 @@ namespace SensorLogInserterRe.Constant
                     return 23;
                 case Nexus7_2012_1:
                     return 24;
+                case Nexus7_2013_2:
+                    return 25;
+                case Zenfone2_1:
+                    return 26;
                 default: 
                     return -1;
             }
