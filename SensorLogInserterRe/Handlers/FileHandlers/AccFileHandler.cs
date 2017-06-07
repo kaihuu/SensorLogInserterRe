@@ -64,6 +64,10 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                 {
                     // TODO エラー処理
                 }
+                catch (ArgumentException)
+                {
+
+                }
             }
 
             parser.Close();
