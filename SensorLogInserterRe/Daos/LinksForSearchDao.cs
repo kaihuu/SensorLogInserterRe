@@ -60,7 +60,7 @@ namespace SensorLogInserterRe.Daos
             query += "from LINKS_TABLE AS LINKS ";
             query += "left join DIRECTION on LINKS.LINK_ID = DIRECTION.LINK_ID ";
 
-            return DatabaseAccesser.GetResult(query);
+             return DatabaseAccesser.GetResult(query);
         }
 
 

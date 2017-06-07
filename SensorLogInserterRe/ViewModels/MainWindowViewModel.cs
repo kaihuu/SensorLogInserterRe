@@ -560,7 +560,7 @@ namespace SensorLogInserterRe.ViewModels
                 #region ECOLOG挿入
                 //     sw.Start();
 
-                    if (IsCheckedSpeedLPFMapMatching)
+                     if (IsCheckedSpeedLPFMapMatching)
                     {
                         EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
                     }

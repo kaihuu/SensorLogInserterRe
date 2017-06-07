@@ -29,8 +29,8 @@ namespace SensorLogInserterRe.Calculators
                 {
                     _semanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(),
                //     _linkTable = LinkDao.GetLinkTableWithHeadingAndLine(),
-               //     _outwardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(OutwardHighwaySemanticLinkId),
-               //     _homewardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(HomewardHighwaySemanticLinkId)
+                    _outwardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(OutwardHighwaySemanticLinkId),
+                    _homewardHighwaySemanticLinkTable = SemanticLinkDao.GetSemanticLinkTableWithHeadingAndLine(HomewardHighwaySemanticLinkId)
                 };
             }
 
@@ -64,68 +64,70 @@ namespace SensorLogInserterRe.Calculators
             // TODO 中身はじつは緯度、経度からリンクを返すルックアップテーブル
             // TODO これはけっこうクール
 
-            //if (datum.DriverId != 4 && datum.DriverId != 9)
-            //{
-            //    if (direction == "outward")
-            //    {
-            //        //selectedRows = _outwardHighwaySemanticLinkTable
-            //        //    .AsEnumerable()
-            //        //    .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
-            //        //    .ToArray();
-
-            //        //if (selectedRows.Length != 0)
-            //            linkId = SelectLink(latitude, longitude, heading, selectedRows);
-
-            //    }
-            //    else if (direction == "homeward")
-            //    {
-            //            selectedRows = _homewardHighwaySemanticLinkTable
-            //            .AsEnumerable()
-            //            .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
-            //            .ToArray();
-
-            //        if (selectedRows.Length != 0)
-            //            linkId = SelectLink(latitude, longitude, heading, selectedRows);
-            //    }
-            //}
-
-            //if (selectedRows == null || selectedRows.Length == 0)
-            //{
-            //    selectedRows = _semanticLinkTable
-            //        .AsEnumerable()
-            //        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.0001 && Math.Abs(row.Field<double>(3) - longitude) < 0.0001)
-            //        .ToArray();
-
-            //    if (selectedRows.Length != 0)
-            //        linkId = SelectLink(latitude, longitude, heading, selectedRows);
-            //}
-
-            //if (selectedRows.Length == 0)
-            //{
-            //    selectedRows = _linkTable
-            //        .AsEnumerable()
-            //        .Where(row => Math.Abs(row.Field<double>(1) - latitude) < 0.002 && Math.Abs(row.Field<double>(2) - longitude) < 0.002)
-            //        .ToArray();
-
-            //    if (selectedRows.Length != 0)
-            //        linkId = SelectLink(latitude, longitude, heading, selectedRows);
-            //}
-
-            selectedRows = LinksForSearchDao.GetLinkId(intlatitude,intlongitude).Select();
-            if (selectedRows.Length != 0)
+            if (datum.DriverId != 4 && datum.DriverId != 9)
             {
-                linkId = SelectLink(latitude, longitude, heading, selectedRows);
-            }
-
-            if(selectedRows.Length == 0)
-            {
-                selectedRows = LinkDao.GetLinkId(intlatitude, intlongitude).Select();
-                if (selectedRows.Length != 0)
+                if (direction == "outward")
                 {
-                    linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                    selectedRows = _outwardHighwaySemanticLinkTable
+                        .AsEnumerable()
+                        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
+                        .ToArray();
+
+                    if (selectedRows.Length != 0)
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+
+                }
+                else if (direction == "homeward")
+                {
+                    selectedRows = _homewardHighwaySemanticLinkTable
+                    .AsEnumerable()
+                    .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
+                    .ToArray();
+
+                    if (selectedRows.Length != 0)
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                }
+
+
+                if (selectedRows == null || selectedRows.Length == 0)
+                {
+                    selectedRows = _semanticLinkTable
+                        .AsEnumerable()
+                        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.0001 && Math.Abs(row.Field<double>(3) - longitude) < 0.0001)
+                        .ToArray();
+
+                    if (selectedRows.Length != 0)
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                }
+
+                //if (selectedRows.Length == 0)
+                //{
+                //    selectedRows = _linkTable
+                //        .AsEnumerable()
+                //        .Where(row => Math.Abs(row.Field<double>(1) - latitude) < 0.002 && Math.Abs(row.Field<double>(2) - longitude) < 0.002)
+                //        .ToArray();
+
+                //    if (selectedRows.Length != 0)
+                //        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                //}
+                if(selectedRows.Length == 0)
+                {
+                    selectedRows = LinksForSearchDao.GetLinkId(intlatitude, intlongitude).Select();
+                    if (selectedRows.Length != 0)
+                    {
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                    }
+
+                    if (selectedRows.Length == 0)
+                    {
+                        selectedRows = LinkDao.GetLinkId(intlatitude, intlongitude).Select();
+                        if (selectedRows.Length != 0)
+                        {
+                            linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                        }
+                    }
                 }
             }
-
             #endregion
 
             if (linkId != null)
