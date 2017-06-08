@@ -20,10 +20,10 @@ namespace SensorLogInserterRe.Daos
             }
         public static DataTable GetLinkId(int Latitude, int Longitude)
         {
-            int maxLatitude = Latitude + 5;
-            int minLatitude = Latitude - 5;
-            int maxLongitude = Longitude + 5;
-            int minLongitude = Longitude - 5;
+            int maxLatitude = Latitude + 20;
+            int minLatitude = Latitude - 20;
+            int maxLongitude = Longitude + 20;
+            int minLongitude = Longitude - 20;
             string query = "with LINKS_TABLE as (SELECT LINKS.* ";
             query += $"FROM {TableName} ,LINKS";
             query += $" WHERE key_latitude >= '{minLatitude}' AND key_longitude >= '{minLongitude}' AND key_latitude <= '{maxLatitude}' AND key_longitude <= '{maxLongitude}' AND";
