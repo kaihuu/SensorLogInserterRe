@@ -118,14 +118,6 @@ namespace SensorLogInserterRe.Calculators
                         linkId = SelectLink(latitude, longitude, heading, selectedRows);
                     }
 
-                    if (selectedRows.Length == 0)
-                    {
-                        selectedRows = LinkDao.GetLinkId(intlatitude, intlongitude).Select();
-                        if (selectedRows.Length != 0)
-                        {
-                            linkId = SelectLink(latitude, longitude, heading, selectedRows);
-                        }
-                    }
                 }
             }
             #endregion
@@ -180,7 +172,7 @@ namespace SensorLogInserterRe.Calculators
                 CalculateMinimumDistancePointOfLink(latitude, longitude, row, out pointY, out pointX);
 
                 //リンクとの最短距離
-                double distance = DistanceCalculator.CalcDistance(latitude, longitude, pointX, pointY);
+                double distance = DistanceCalculator.CalcDistance(latitude, longitude, pointY, pointX);
 
                 if (row.Field<double?>("heading") != null)
                 {
