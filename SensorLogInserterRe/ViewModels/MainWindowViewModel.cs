@@ -421,7 +421,7 @@ namespace SensorLogInserterRe.ViewModels
 
         private void InitPeriod()
         {
-            this.IsCheckedPeriod = true;
+            this.IsCheckedPeriod = false;
             this.StartDate = DateTime.Now.AddDays(-7);
             this.EndDate = DateTime.Now;
         }
@@ -454,12 +454,18 @@ namespace SensorLogInserterRe.ViewModels
         private void InitButton()
         {
             IsEnabledInsertButton = true;
+            IsEnabledStartUpLoopButton = true;
             LoopButtonText = "ループ起動";
         }
 
         public void StartUpLoop()
         {
             MessageBox.Show("StartUpLoop");
+            
+            Insert();
+            Task.Delay(1000 * 3600);
+            IsEnabledInsertButton = false;
+            IsEnabledStartUpLoopButton = false;
         }
 
         public async void Insert()
@@ -554,7 +560,7 @@ namespace SensorLogInserterRe.ViewModels
 
                 #endregion
             }
-
+            int count = 0;
             Parallel.For(0, InsertDatumList.Count, i =>
             {
                 #region ECOLOG挿入
@@ -571,7 +577,7 @@ namespace SensorLogInserterRe.ViewModels
 
                     if (IsCheckedNormal)
                     {
-                        EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal);
+                        EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
                     }
 
                 
@@ -580,7 +586,10 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
             });
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-            SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+            if (count > 0)
+            {
+                SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+            }
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
         }
@@ -602,10 +611,16 @@ namespace SensorLogInserterRe.ViewModels
             #endregion
 
             #region 期間の設定
-
-            insertConfig.StartDate = this.StartDate;
-            insertConfig.EndDate = this.EndDate;
-
+            if (IsCheckedPeriod)
+            {
+                insertConfig.StartDate = this.StartDate;
+                insertConfig.EndDate = this.EndDate;
+            }
+            else
+            {
+                insertConfig.StartDate = DateTime.Now.AddDays(-7);
+                insertConfig.EndDate = DateTime.Now;
+            }
             #endregion
 
             #region 推定対象車両の設定
