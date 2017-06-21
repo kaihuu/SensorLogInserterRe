@@ -44,7 +44,16 @@ namespace SensorLogInserterRe.Cleansers.Components
                 tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(富井先生：小学校下ルート)
                 tempTable.TableName = "富井先生,往路,小学校下ルート";
                 dt.Add(tempTable);
-                dt[3].DefaultView.Sort = "START_LAT, START_LONG";
+                dt[3].DefaultView.Sort = "START_LAT, " +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
