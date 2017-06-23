@@ -72,6 +72,10 @@ namespace SensorLogInserterRe.Calculators
                 efficiency = EfficiencyDao.GetEfficiency((int)Math.Round(torque), (int)Math.Round(rpm / 10) * 10);
             }
 
+            if(efficiency == -1)
+            {
+                efficiency = 80;
+            }
             return efficiency;
         }
     }
