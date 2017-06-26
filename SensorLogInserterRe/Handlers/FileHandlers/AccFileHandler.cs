@@ -50,8 +50,13 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                         row.SetField(AndroidAccRawDao.ColumnAccX, fields[1]);
                         row.SetField(AndroidAccRawDao.ColumnAccY, fields[2]);
-                        row.SetField(AndroidAccRawDao.ColumnAccZ, fields[3]);
-
+                        if (fields[3] == "")
+                        {
+                            row.SetField(AndroidAccRawDao.ColumnAccZ, 0);
+                        }
+                        else {
+                            row.SetField(AndroidAccRawDao.ColumnAccZ, fields[3]);
+                        }
                         accRawTable.Rows.Add(row);
                     }
                 }
