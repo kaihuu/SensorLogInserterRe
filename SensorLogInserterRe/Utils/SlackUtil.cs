@@ -56,5 +56,31 @@ namespace SensorLogInserterRe.Utils
 
             wc.UploadString(WEBHOOK_URL, data);
         }
+
+        public static void commentToSlackNotInsert(DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
+        {
+
+            String correctionMethod = Enum.GetName(typeof(InsertConfig.GpsCorrection), correction[0]);
+
+            for (int i = 1; i < correction.Count; i++)
+            {
+                correctionMethod += ", " + Enum.GetName(typeof(InsertConfig.GpsCorrection), correction[i]);
+            }
+            var wc = new WebClient();
+
+            var data = DynamicJson.Serialize(new
+            {
+                text = "No Insert File: " + startTime.ToShortDateString() + " ～ " + endTime.ToShortDateString() + " 補正方法： "
+                + correctionMethod,
+                icon_emoji = ":finish:", //アイコンを動的に変更する
+                username = "SensorLogInserter"  //名前を動的に変更する
+            });
+
+            wc.Headers.Add(HttpRequestHeader.ContentType, "application/json;charset=UTF-8");
+            wc.Encoding = Encoding.UTF8;
+
+
+            wc.UploadString(WEBHOOK_URL, data);
+        }
     }
 }

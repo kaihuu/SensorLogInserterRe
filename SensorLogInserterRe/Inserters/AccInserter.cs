@@ -21,28 +21,30 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertAcc(List<string> insertFileList, InsertConfig config, List<InsertDatum> insertDatumList)
         {
-            foreach (var filePath in insertFileList)
+            // foreach (var filePath in insertFileList)
+            Parallel.For(0, insertFileList.Count, i =>
             {
-                string[] word = filePath.Split('\\');
+                string[] word = insertFileList[i].Split('\\');
 
                 // ACCファイルでない場合はcontinue
-                if (!System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}Unsent16HzAccel.csv"))
-                    continue;
-
-                var datum = new InsertDatum()
+                if (System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}Unsent16HzAccel.csv"))
                 {
-                    DriverId = DriverNames.GetDriverId(word[DriverIndex]),
-                    CarId = CarNames.GetCarId(word[CarIndex]),
-                    SensorId = SensorNames.GetSensorId(word[SensorIndex]),
-                    StartTime = config.StartDate,
-                    EndTime = config.EndDate,
-                    EstimatedCarModel = EstimatedCarModel.GetModel(config.CarModel)
-                };
 
-                InsertDatum.AddDatumToList(insertDatumList, datum);
+                    var datum = new InsertDatum()
+                    {
+                        DriverId = DriverNames.GetDriverId(word[DriverIndex]),
+                        CarId = CarNames.GetCarId(word[CarIndex]),
+                        SensorId = SensorNames.GetSensorId(word[SensorIndex]),
+                        StartTime = config.StartDate,
+                        EndTime = config.EndDate,
+                        EstimatedCarModel = EstimatedCarModel.GetModel(config.CarModel)
+                    };
 
-                InsertAccRaw(filePath, datum);
-            }
+                    InsertDatum.AddDatumToList(insertDatumList, datum);
+
+                    InsertAccRaw(insertFileList[i], datum);
+                }
+            });
         }
 
         private static void InsertAccRaw(string filePath, InsertDatum datum)

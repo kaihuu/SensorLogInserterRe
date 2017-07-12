@@ -403,7 +403,7 @@ namespace SensorLogInserterRe.ViewModels
             InitInsertionTarget();
             InitButton();
 
-            this.InsertDatumList = new List<InsertDatum>();
+            
 
             UpdateText += (s) =>
             {
@@ -470,6 +470,8 @@ namespace SensorLogInserterRe.ViewModels
 
         public async void Insert()
         {
+            this.InsertDatumList = new List<InsertDatum>();
+            this.InsertFileList = new List<string>();
             IsEnabledInsertButton = false;
             IsEnabledStartUpLoopButton = false;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -538,13 +540,13 @@ namespace SensorLogInserterRe.ViewModels
             {
                 #region トリップ挿入
 
-                await Task.Run(() =>
-                {
+                //await Task.Run(() =>
+                //{
                     for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
                     {
                         TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
                     }
-                });
+                //});
 
                 #endregion
 
@@ -590,6 +592,9 @@ namespace SensorLogInserterRe.ViewModels
             {
                 SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
             }
+            else {
+                SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+            }
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
         }
@@ -619,7 +624,7 @@ namespace SensorLogInserterRe.ViewModels
             else
             {
                 insertConfig.StartDate = DateTime.Now.AddDays(-7);
-                insertConfig.EndDate = DateTime.Now;
+                insertConfig.EndDate = DateTime.Now.AddDays(1);
             }
             #endregion
 
