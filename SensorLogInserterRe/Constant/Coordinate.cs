@@ -61,5 +61,13 @@ namespace SensorLogInserterRe.Constant
             //public static readonly int SensorId = 14;
         }
 
+        public class UemuraHome
+        {
+            public static readonly double LatitudeStart = 35.517;
+            public static readonly double LatitudeEnd = 35.522;
+            public static readonly double LongitudeStart = 139.68;
+            public static readonly double LongitudeEnd = 139.685;
+        }
+
     }
 }

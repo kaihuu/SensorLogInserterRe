@@ -23,6 +23,8 @@ namespace SensorLogInserterRe.Handlers
                     CheckFiles(DirectoryNames.DirectoryMori, config.StartDate, config.EndDate, insertFileList);
                 if (driver.Equals(DriverNames.Tamura))
                     CheckFiles(DirectoryNames.DirectoryTamura, config.StartDate, config.EndDate, insertFileList);
+                if (driver.Equals(DriverNames.Uemura))
+                    CheckFiles(DirectoryNames.DirectoryUemura, config.StartDate, config.EndDate, insertFileList);
                 // TODO 研究室メンバー
             }
 

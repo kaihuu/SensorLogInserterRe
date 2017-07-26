@@ -142,6 +142,12 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.AyaseCityHall.LongitudeEnd)
                 return true;
 
+            if (latitude > Coordinate.UemuraHome.LatitudeStart
+                && latitude < Coordinate.UemuraHome.LatitudeEnd
+                && longitude > Coordinate.UemuraHome.LongitudeStart
+                && longitude < Coordinate.UemuraHome.LongitudeEnd)
+                return true;
+
             return false;
         }
 
