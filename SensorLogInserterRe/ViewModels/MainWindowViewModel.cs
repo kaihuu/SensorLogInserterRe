@@ -416,7 +416,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedTommy = true;
             this.IsCheckedMori = true;
             this.IsCheckedTamura = true;
-            this.IsCheckedLabMember = false;
+            this.IsCheckedLabMember = true;
         }
 
         private void InitPeriod()
