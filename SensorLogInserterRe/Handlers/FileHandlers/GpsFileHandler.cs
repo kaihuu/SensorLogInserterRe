@@ -60,7 +60,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　VALID
                     row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LATITUDE
                     row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　LONGITUDE
-
+                     
                     if (beforeJst != jst.ToString(StringUtil.JstFormat))
                     {
                         gpsRawTable.Rows.Add(row);
