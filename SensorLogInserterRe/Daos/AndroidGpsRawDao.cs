@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class AndroidGpsRawDao
     {
-        private static readonly string TableName = "android_gps_raw";
+        private static readonly string TableName = "android_gps_raw_addcolumn";
         public static readonly string ColumnJst = "jst";
         public static readonly string ColumnAndroidTime = "android_time";
         public static readonly string ColumnDriverId = "driver_id";
