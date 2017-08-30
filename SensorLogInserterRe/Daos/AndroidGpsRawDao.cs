@@ -19,6 +19,7 @@ namespace SensorLogInserterRe.Daos
         public static readonly string ColumnLatitude = "latitude";
         public static readonly string ColumnLongitude = "longitude";
         public static readonly string ColumnAltitude = "altitude";
+        public static readonly string ColumnAccuracy = "accuracy";
         public static readonly string ColumnSpeed = "speed";
         public static readonly string ColumnBearing = "bearing";
 
