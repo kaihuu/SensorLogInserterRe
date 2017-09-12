@@ -44,7 +44,8 @@ namespace SensorLogInserterRe.Calculators
             // for singleton
         }
 
-        public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
+        public Tuple<string, double?> MatchLink(double latitude, double longitude, Single
+            heading, string direction,
             InsertDatum datum)
         {
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -183,7 +184,7 @@ namespace SensorLogInserterRe.Calculators
 
             if (selectedRows.Length != 0)
                 linkId = SelectLink(latitude, longitude, heading, selectedRows);
-        }
+            }
 
 
                 if (selectedRows == null || selectedRows.Length == 0)
@@ -216,7 +217,7 @@ namespace SensorLogInserterRe.Calculators
                     }
 
                 }
-            }
+            
             #endregion
 
             if (linkId != null)

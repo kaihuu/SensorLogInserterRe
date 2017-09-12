@@ -559,31 +559,31 @@ namespace SensorLogInserterRe.ViewModels
 
             //    #endregion
             //}
-            int count = 0;
+            //int count = 0;
             //Parallel.For(0, InsertDatumList.Count, i =>
             //{
             //    #region ECOLOG挿入
-            //    //     sw.Start();
+            ////    //     sw.Start();
 
-            //         if (IsCheckedSpeedLPFMapMatching)
-            //        {
-            //            EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
-            //        }
-            //        if (IsCheckedMapMatching)
-            //        {
-            //            EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
-            //        }
+            ////         if (IsCheckedSpeedLPFMapMatching)
+            ////        {
+            ////            EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
+            ////        }
+            ////        if (IsCheckedMapMatching)
+            ////        {
+            ////            EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
+            ////        }
 
-            //        if (IsCheckedNormal)
-            //        {
-            //            EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
-            //        }
+            ////        if (IsCheckedNormal)
+            ////        {
+            ////            EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
+            ////        }
 
                 
-                //       sw.Stop();
-                //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
-                #endregion
-            });
+            //    //       sw.Stop();
+            //    //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
+            //    #endregion
+            //});
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
             //if (count > 0)
             //{

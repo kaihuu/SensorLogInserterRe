@@ -87,9 +87,9 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLatitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnAltitude));
-            correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<Single>(AndroidGpsRawDao.ColumnSpeed));
-            correctedRow.SetField(CorrectedGpsDao.ColumnHeading, rawRow.Field<Single>(AndroidGpsRawDao.ColumnBearing));
-            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<int>(AndroidGpsRawDao.ColumnAccuracy));
+            correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<double>(AndroidGpsRawDao.ColumnSpeed));
+            correctedRow.SetField(CorrectedGpsDao.ColumnHeading, rawRow.Field<double>(AndroidGpsRawDao.ColumnBearing));
+            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<Single>(AndroidGpsRawDao.ColumnAccuracy));
 
         }
 
@@ -110,15 +110,14 @@ namespace SensorLogInserterRe.Inserters
             firstRow.SetField(CorrectedGpsDao.ColumnTerrainAltitude, meshAndAltitude.Item2);
             
 
-            firstRow.SetField(EcologDao.ColumnTerrainAltitudeDiffarencce, 0);
 
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
             firstRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
             firstRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
             0f);
 
-            firstRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
-            firstRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
+            firstRow.SetField(CorrectedGpsDao.ColumnLinkId, linkAndTheta.Item1);
+            firstRow.SetField(CorrectedGpsDao.ColumnRoadTheta, linkAndTheta.Item2);
 
             correctedGpsTable.Rows.Add(firstRow);
             #endregion
@@ -135,6 +134,16 @@ namespace SensorLogInserterRe.Inserters
                     gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
                     gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
                     gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
+
+                meshAndAltitude = AltitudeCalculator.GetInstance().CalcAltitude(
+                gpsRawTable.Rows[0].Field<double>(CorrectedGpsDao.ColumnLatitude),
+                gpsRawTable.Rows[0].Field<double>(CorrectedGpsDao.ColumnLongitude));
+
+                row.SetField(CorrectedGpsDao.ColumnTerrainAltitude, meshAndAltitude.Item2);
+
+
+
+
 
                 // 速度の算出
                 //row.SetField(CorrectedGpsDao.ColumnSpeed, SpeedCalculator.CalcSpeed(
@@ -158,9 +167,17 @@ namespace SensorLogInserterRe.Inserters
                 }
                 else
                 {
-                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<Single>(CorrectedGpsDao.ColumnHeading));
+                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<double>(CorrectedGpsDao.ColumnHeading));
                 }
 
+                linkAndTheta = LinkMatcher.GetInstance().MatchLink(
+                row.Field<double>(CorrectedGpsDao.ColumnLatitude),
+                row.Field<double>(CorrectedGpsDao.ColumnLongitude),
+                Convert.ToSingle(row.Field<double>(CorrectedGpsDao.ColumnHeading))
+                );
+
+                row.SetField(CorrectedGpsDao.ColumnLinkId, linkAndTheta.Item1);
+                row.SetField(CorrectedGpsDao.ColumnRoadTheta, linkAndTheta.Item2);
                 correctedGpsTable.Rows.Add(row);
             }
 

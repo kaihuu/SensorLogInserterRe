@@ -63,7 +63,7 @@ namespace SensorLogInserterRe.Utils
             gpsRawTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("ALTITUDE", typeof(double)));
-            gpsRawTable.Columns.Add(new DataColumn("ACCURACY", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("ACCURACY", typeof(Single)));
             gpsRawTable.Columns.Add(new DataColumn("SPEED", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("BEARING", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));
@@ -125,7 +125,6 @@ namespace SensorLogInserterRe.Utils
             correctedGpsTable.Columns.Add(new DataColumn("DISTANCE_DIFFERENCE", typeof(Single)));
             correctedGpsTable.Columns.Add(new DataColumn("ACCURACY", typeof(int)));
             correctedGpsTable.Columns.Add(new DataColumn("LINK_ID", typeof(string)));
-            correctedGpsTable.Columns.Add(new DataColumn("TERRAIN_ALTITUDE", typeof(Single)));
             correctedGpsTable.Columns.Add(new DataColumn("TERRAIN_ALTITUDE", typeof(Single)));
             correctedGpsTable.Columns.Add(new DataColumn("ROAD_THETA", typeof(Single)));
 

@@ -25,7 +25,6 @@ namespace SensorLogInserterRe.Daos
         public static readonly string ColumnAccuracy = "accuracy";
         public static readonly string ColumnLinkId = "link_id";
         public static readonly string ColumnTerrainAltitude = "terrain_altitude";
-        public static readonly string ColumnTerrainAltitudeDifference = "terrain_altitude_difference";
         public static readonly string ColumnRoadTheta = "road_theta";
 
         public static void Insert(DataTable dataTable)
