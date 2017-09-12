@@ -10,16 +10,23 @@ namespace SensorLogInserterRe.Daos
 {
     class CorrectedGpsDao
     {
-        private static readonly string TableName = "corrected_gps";
+        private static readonly string TableName = "CORRECTED_GPS_modified";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";
         public static readonly string ColumnJst = "jst";
         public static readonly string ColumnLatitude = "latitude";
         public static readonly string ColumnLongitude = "longitude";
-        public static readonly string ColumnSpeed = "speed";
+        public static readonly string ColumnAltitude = "altitude";
         public static readonly string ColumnHeading = "heading";
+        public static readonly string ColumnSpeed = "speed";
+        public static readonly string ColumnBearing = "bearing";
         public static readonly string ColumnDistanceDifference = "distance_difference";
+        public static readonly string ColumnAccuracy = "accuracy";
+        public static readonly string ColumnLinkId = "link_id";
+        public static readonly string ColumnTerrainAltitude = "terrain_altitude";
+        public static readonly string ColumnTerrainAltitudeDifference = "terrain_altitude_difference";
+        public static readonly string ColumnRoadTheta = "road_theta";
 
         public static void Insert(DataTable dataTable)
         {

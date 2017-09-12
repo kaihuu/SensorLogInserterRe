@@ -147,7 +147,103 @@ namespace SensorLogInserterRe.Calculators
             //LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "One Link Match Calculaton Time:" + sw.Elapsed);
             return new Tuple<string, double?>(linkId, roadTheta);
         }
+        public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading)
+        {
+            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            //sw.Start();
+            // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
+            int multiple = 10000; //緯度経度整数に変換用
+            string linkId = null;
+            double? roadTheta = null;
+            DataRow[] selectedRows = null;
+            int intlatitude = Convert.ToInt32(latitude * multiple);
+            int intlongitude = Convert.ToInt32(longitude * multiple);
 
+            #region リンクマッチング
+            // TODO 以下のアルゴリズムを見直すとけっこうな高速化が計れそう
+            // TODO 今すごくいい案思いついた、しかもデータベース屋っぽい案
+            // TODO latitude, longitudeを引数とするテーブル関数定義して、
+            // TODO 中身はじつは緯度、経度からリンクを返すルックアップテーブル
+            // TODO これはけっこうクール
+
+
+            selectedRows = _outwardHighwaySemanticLinkTable
+                .AsEnumerable()
+                .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
+                .ToArray();
+
+            if (selectedRows.Length != 0)
+                linkId = SelectLink(latitude, longitude, heading, selectedRows);
+
+            if (selectedRows == null || selectedRows.Length == 0) { 
+            selectedRows = _homewardHighwaySemanticLinkTable
+                .AsEnumerable()
+                .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.002 && Math.Abs(row.Field<double>(3) - longitude) < 0.002)
+                .ToArray();
+
+            if (selectedRows.Length != 0)
+                linkId = SelectLink(latitude, longitude, heading, selectedRows);
+        }
+
+
+                if (selectedRows == null || selectedRows.Length == 0)
+                {
+                    selectedRows = _semanticLinkTable
+                        .AsEnumerable()
+                        .Where(row => Math.Abs(row.Field<double>(2) - latitude) < 0.0001 && Math.Abs(row.Field<double>(3) - longitude) < 0.0001)
+                        .ToArray();
+
+                    if (selectedRows.Length != 0)
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                }
+
+                //if (selectedRows.Length == 0)
+                //{
+                //    selectedRows = _linkTable
+                //        .AsEnumerable()
+                //        .Where(row => Math.Abs(row.Field<double>(1) - latitude) < 0.002 && Math.Abs(row.Field<double>(2) - longitude) < 0.002)
+                //        .ToArray();
+
+                //    if (selectedRows.Length != 0)
+                //        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                //}
+                if (selectedRows.Length == 0)
+                {
+                    selectedRows = LinksForSearchDao.GetLinkId(intlatitude, intlongitude).Select();
+                    if (selectedRows.Length != 0)
+                    {
+                        linkId = SelectLink(latitude, longitude, heading, selectedRows);
+                    }
+
+                }
+            }
+            #endregion
+
+            if (linkId != null)
+            {
+                var linkDetail = LinkDetailDao.Get(linkId);
+
+                if (linkDetail.Rows.Count == 1)
+                {
+                    Single linkHeading = linkDetail.Rows[0].Field<Single>("road_heading");
+                    Single carHeading = heading;
+
+                    double angle = Math.Abs(linkHeading - carHeading);
+
+                    if (angle < 90 || angle > 270)
+                    {
+                        roadTheta = linkDetail.Rows[0].Field<Single>("road_theta");
+                    }
+                    else
+                    {
+                        roadTheta = -linkDetail.Rows[0].Field<Single>("road_theta");
+                    }
+                }
+            }
+            //sw.Stop();
+            //LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "One Link Match Calculaton Time:" + sw.Elapsed);
+            return new Tuple<string, double?>(linkId, roadTheta);
+        }
         private string SelectLink(double latitude, double longitude, double heading, DataRow[] selectedRows)
         {
             string matchedLink = "";
