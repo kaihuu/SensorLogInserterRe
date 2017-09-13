@@ -92,7 +92,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnAltitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<double?>(AndroidGpsRawDao.ColumnSpeed));
             correctedRow.SetField(CorrectedGpsDao.ColumnBearing, rawRow.Field<double?>(AndroidGpsRawDao.ColumnBearing));
-            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<>(AndroidGpsRawDao.ColumnAccuracy));
+            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<Single>(AndroidGpsRawDao.ColumnAccuracy));
 
         }
         public static void InsertCorrectedGps(InsertDatum datum, InsertConfig.GpsCorrection correction)
