@@ -47,20 +47,5 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query.ToString()).Rows[0].Field<int?>("time_diff") ?? 0;
         }
-
-        public static DataTable Get(DateTime startTime, DateTime endTime, InsertDatum datum)
-        {
-            var query = new StringBuilder();
-            query.AppendLine("SELECT *");
-            query.AppendLine($"FROM {TableName}");
-            query.AppendLine($"WHERE {ColumnJst} >= '{startTime}'");
-            query.AppendLine($"   AND {ColumnJst} <= '{endTime}'");
-            query.AppendLine($"   AND {ColumnDriverId} = {datum.DriverId}");
-            query.AppendLine($"   AND {ColumnSensorId} = {datum.SensorId}");
-            query.AppendLine($"ORDER BY {ColumnJst}");
-
-            return DatabaseAccesser.GetResult(query.ToString());
-        }
-
     }
 }
