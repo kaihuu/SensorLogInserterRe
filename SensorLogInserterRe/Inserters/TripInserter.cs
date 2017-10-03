@@ -92,6 +92,13 @@ namespace SensorLogInserterRe.Inserters
                     InsertHomewardTrip(tripsRawTable, tripsTable, datum, i, correction);
                 }
 
+                //自宅・YNU以外出発
+                else if(IsOther(tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude),
+                     tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude)))
+                {
+                    InsertOtherTrip(tripsRawTable, tripsTable, datum, i, correction);
+                }
+
                 // 1トリップごとなので主キー違反があっても挿入されないだけ
                 if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
                 {
@@ -154,6 +161,48 @@ namespace SensorLogInserterRe.Inserters
         private static bool IsYnu(double latitude, double longitude)
         {
             return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
+        }
+
+        private static bool IsOther(double latitude, double longitude)
+        {
+            //その他登録地点
+            if (latitude > Coordinate.OaraiTerminal.LatitudeStart       //大洗フェリーターミナル
+                && latitude < Coordinate.OaraiTerminal.LatitudeEnd
+                && longitude > Coordinate.OaraiTerminal.LongitudeStart
+                && longitude < Coordinate.OaraiTerminal.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.TomakomaiTerminal.LatitudeStart   //苫小牧フェリーターミナル
+                && latitude < Coordinate.TomakomaiTerminal.LatitudeEnd
+                && longitude > Coordinate.TomakomaiTerminal.LongitudeStart
+                && longitude < Coordinate.TomakomaiTerminal.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.RoytonSapporo.LatitudeStart       //ロイトン札幌
+                && latitude < Coordinate.RoytonSapporo.LatitudeEnd
+                && longitude > Coordinate.RoytonSapporo.LongitudeStart
+                && longitude < Coordinate.RoytonSapporo.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.HotelTaisetsu.LatitudeStart       //ホテル大雪（たいせつ）
+                && latitude < Coordinate.HotelTaisetsu.LatitudeEnd
+                && longitude > Coordinate.HotelTaisetsu.LongitudeStart
+                && longitude < Coordinate.HotelTaisetsu.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.Oehonke.LatitudeStart             //大江本家
+                && latitude < Coordinate.Oehonke.LatitudeEnd
+                && longitude > Coordinate.Oehonke.LongitudeStart
+                && longitude < Coordinate.Oehonke.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.KKRKawayu.LatitudeStart           //KKRかわゆ
+                && latitude < Coordinate.KKRKawayu.LatitudeEnd
+                && longitude > Coordinate.KKRKawayu.LongitudeStart
+                && longitude < Coordinate.KKRKawayu.LongitudeEnd)
+                return true;
+
+            return false;
         }
 
         private static void InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i, InsertConfig.GpsCorrection correction)
@@ -354,6 +403,77 @@ namespace SensorLogInserterRe.Inserters
             }
         }
 
+        private static void InsertOtherTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i, InsertConfig.GpsCorrection correction)
+        {
+            int j = i;
+            bool tripChangeFlag = false;
+
+            // TripsRaw を結合して Trips を生成するループ
+            while (j < tripsRawTable.Rows.Count && tripChangeFlag == false)
+            {
+                // その他登録地点　⇒　その他登録地点
+                if(IsOther(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude)))
+                {
+                    var row = tripsTable.NewRow();
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
+                    }
+                    else
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    }
+                    row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
+                    row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
+                    row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
+                    row.SetField(TripsDao.ColumnStartTime, tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime));
+                    row.SetField(TripsDao.ColumnEndTime, tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime));
+                    row.SetField(TripsDao.ColumnStartLatitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude));
+                    row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude));
+                    row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude));
+                    row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnTripDirection, "other");
+
+                    TimeSpan span = tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime)
+                        - tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime);
+
+                    if (span.TotalHours > 12)
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                            + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                        break;
+                    }
+
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                    }
+
+                    tripChangeFlag = true;
+                }
+
+
+                j++;
+                
+            }
+        }
         private static string ConvertRowToString(DataRow firstRow, DataRow lastRow)
         {
             return $"DRIVER_ID: {firstRow.Field<int>(TripsDao.ColumnDriverId)}, " +

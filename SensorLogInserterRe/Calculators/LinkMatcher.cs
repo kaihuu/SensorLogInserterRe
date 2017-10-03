@@ -120,7 +120,7 @@ namespace SensorLogInserterRe.Calculators
 
                 }
             }
-            #endregion
+            #endregion          
 
             if (linkId != null)
             {
