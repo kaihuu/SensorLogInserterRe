@@ -104,7 +104,10 @@ namespace SensorLogInserterRe.Inserters
                 DataTable gpsRawTable = 
                     AndroidGpsRawDao.Get(tripsRow.Field<DateTime>(TripsDao.ColumnStartTime),
                     tripsRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
-
+                if(gpsRawTable.Rows.Count == 0)
+                {
+                    return;
+                }
                 DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
                 #region インデックスが 0 の場合
