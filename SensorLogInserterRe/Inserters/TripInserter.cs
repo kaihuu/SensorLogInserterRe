@@ -202,6 +202,12 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.KKRKawayu.LongitudeEnd)
                 return true;
 
+            if (latitude > Coordinate.MichinoEkiMashu.LatitudeStart      //道の駅摩周温泉
+                && latitude < Coordinate.MichinoEkiMashu.LatitudeEnd
+                && longitude > Coordinate.MichinoEkiMashu.LongitudeStart
+                && longitude < Coordinate.MichinoEkiMashu.LongitudeEnd)
+                return true;
+
             return false;
         }
 
@@ -251,6 +257,64 @@ namespace SensorLogInserterRe.Inserters
                               + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
                         break;
                     }
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                    }
+
+                    tripChangeFlag = true;
+                }
+
+                //自宅　⇒　その他登録地点
+                else if(IsOther(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude)))
+                {
+                    var row = tripsTable.NewRow();
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
+                    }
+                    else
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    }
+                    row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
+                    row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
+                    row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
+                    row.SetField(TripsDao.ColumnStartTime, tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime));
+                    row.SetField(TripsDao.ColumnEndTime, tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime));
+                    row.SetField(TripsDao.ColumnStartLatitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude));
+                    row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude));
+                    row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude));
+                    row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnTripDirection, "other");
+
+                    TimeSpan span = tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime)
+                        - tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime);
+
+                    if (span.TotalHours > 12)
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                            + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                        break;
+                    }
+
                     if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
@@ -413,6 +477,67 @@ namespace SensorLogInserterRe.Inserters
             {
                 // その他登録地点　⇒　その他登録地点
                 if(IsOther(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude), tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude)))
+                {
+                    var row = tripsTable.NewRow();
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching)
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
+                    }
+                    else
+                    {
+                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
+                    }
+                    row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
+                    row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
+                    row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
+                    row.SetField(TripsDao.ColumnStartTime, tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime));
+                    row.SetField(TripsDao.ColumnEndTime, tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime));
+                    row.SetField(TripsDao.ColumnStartLatitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude));
+                    row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude));
+                    row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude));
+                    row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnTripDirection, "other");
+
+                    TimeSpan span = tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime)
+                        - tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime);
+
+                    if (span.TotalHours > 12)
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                            + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                        break;
+                    }
+
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[i], tripsRawTable.Rows[j]));
+                    }
+
+                    tripChangeFlag = true;
+                }
+
+                //その他登録地点　⇒　自宅
+                else if (IsHome(tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLatitude),
+                    tripsRawTable.Rows[j].Field<double>(TripsRawDao.ColumnEndLongitude),
+                    tripsRawTable.Rows[j].Field<DateTime>(TripsRawDao.ColumnEndTime),
+                    datum))
                 {
                     var row = tripsTable.NewRow();
                     if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)

@@ -15,6 +15,7 @@ namespace SensorLogInserterRe.Constant
         public const string E350 = "E350";
         public const string Leaf000143 = "LEAF_000143";
         public const string YZFR15 = "YZF-R15";
+        public const string GrassTracker = "GrassTracker";
 
         public static int GetCarId(string carName)
         {

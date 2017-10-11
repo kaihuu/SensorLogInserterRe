@@ -114,9 +114,17 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude),
                 0f, tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
+            if (linkAndTheta.Item1 == null)
+            {
+                newRow.SetField(EcologDao.ColumnLinkId, DBNull.Value);
+                newRow.SetField(EcologDao.ColumnRoadTheta, DBNull.Value);
+            }
 
-            newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
-            newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
+            else
+            {
+                newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
+                newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
+            }
 
             return newRow;
         }
@@ -266,8 +274,17 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsRow.Field<Single>(CorrectedGpsDao.ColumnHeading),
                 tripRow.Field<string>(TripsDao.ColumnTripDirection), datum);
 
-            newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
-            newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
+            if (linkAndTheta.Item1 == null)
+            {
+                newRow.SetField(EcologDao.ColumnLinkId, DBNull.Value);
+                newRow.SetField(EcologDao.ColumnRoadTheta, DBNull.Value);
+            }
+
+            else
+            {
+                newRow.SetField(EcologDao.ColumnLinkId, linkAndTheta.Item1);
+                newRow.SetField(EcologDao.ColumnRoadTheta, linkAndTheta.Item2);
+            }
 
             return newRow;
         }

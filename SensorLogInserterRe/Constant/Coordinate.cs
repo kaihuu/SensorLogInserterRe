@@ -87,42 +87,42 @@ namespace SensorLogInserterRe.Constant
 
         public class RoytonSapporo
         {
-            public static readonly double LatitudeStart = 43.061;
-            public static readonly double LatitudeEnd = 43.071;
+            public static readonly double LatitudeStart = 43.06;
+            public static readonly double LatitudeEnd = 43.07;
             public static readonly double LongitudeStart = 141.339;
             public static readonly double LongitudeEnd = 141.349;
         }
 
         public class HotelTaisetsu
         {
-            public static readonly double LatitudeStart = 42.725;
-            public static readonly double LatitudeEnd = 42.735;
-            public static readonly double LongitudeStart = 142.951;
-            public static readonly double LongitudeEnd = 142.961;
+            public static readonly double LatitudeStart = 43.715;
+            public static readonly double LatitudeEnd = 43.725;
+            public static readonly double LongitudeStart = 142.945;
+            public static readonly double LongitudeEnd = 142.955;
         }
 
         public class Oehonke
         {
-            public static readonly double LatitudeStart = 43.759;
-            public static readonly double LatitudeEnd = 43.769;
-            public static readonly double LongitudeStart = 143.509;
-            public static readonly double LongitudeEnd = 143.519;
+            public static readonly double LatitudeStart = 43.755;
+            public static readonly double LatitudeEnd = 43.765;
+            public static readonly double LongitudeStart = 143.508;
+            public static readonly double LongitudeEnd = 143.518;
         }
 
         public class KKRKawayu
         {
-            public static readonly double LatitudeStart = 43.637;
-            public static readonly double LatitudeEnd = 42.647;
-            public static readonly double LongitudeStart = 144.439;
-            public static readonly double LongitudeEnd = 144.449;
+            public static readonly double LatitudeStart = 43.635;
+            public static readonly double LatitudeEnd = 43.645;
+            public static readonly double LongitudeStart = 144.435;
+            public static readonly double LongitudeEnd = 144.445;
         }
 
         public class MichinoEkiMashu
         {
             public static readonly double LatitudeStart = 43.492;
             public static readonly double LatitudeEnd = 43.502;
-            public static readonly double LongitudeStart = 144.446;
-            public static readonly double LongitudeEnd = 144.456;
+            public static readonly double LongitudeStart = 144.445;
+            public static readonly double LongitudeEnd = 144.455;
         }
     }
 }

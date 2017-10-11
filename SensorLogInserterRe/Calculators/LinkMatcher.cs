@@ -65,7 +65,7 @@ namespace SensorLogInserterRe.Calculators
             // TODO これはけっこうクール
 
             if (datum.DriverId != 4 && datum.DriverId != 9)
-            {
+           {
                 if (direction == "outward")
                 {
                     selectedRows = _outwardHighwaySemanticLinkTable
@@ -88,6 +88,13 @@ namespace SensorLogInserterRe.Calculators
                         linkId = SelectLink(latitude, longitude, heading, selectedRows);
                 }
 
+                else if (direction == "other")
+                {
+                    return new Tuple<string, double?>(null, null);
+                }
+
+
+                
 
                 if (selectedRows == null || selectedRows.Length == 0)
                 {
