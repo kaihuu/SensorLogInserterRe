@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Utils
 {
     static class SlackUtil
     {
-        static string WEBHOOK_URL = "https://hooks.slack.com/services/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";
+        static string WEBHOOK_URL = "https://hooks.slack.com/services/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";
 
         public static void commentToSlack(String text)
         {

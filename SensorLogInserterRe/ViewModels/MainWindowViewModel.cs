@@ -607,7 +607,7 @@ namespace SensorLogInserterRe.ViewModels
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
             //if (count > 0)
             //{
-            //    SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+            SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
             //}
             //else {
             //    SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
