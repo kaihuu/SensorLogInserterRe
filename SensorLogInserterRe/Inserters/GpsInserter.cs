@@ -50,9 +50,14 @@ namespace SensorLogInserterRe.Inserters
 
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
-                if (config.Correction[correctionIndex] == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction[correctionIndex] == InsertConfig.GpsCorrection.MapMatching)
+                if (config.Correction[correctionIndex] == InsertConfig.GpsCorrection.SpeedLPFMapMatching 
+                    || config.Correction[correctionIndex] == InsertConfig.GpsCorrection.MapMatching)
                 {
                     gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
+                }
+                else if(config.Correction[correctionIndex] == InsertConfig.GpsCorrection.DopplerSpeed)
+                {
+                    gpsRawTable = MapMatching.getResultMapMatchingDoppler(gpsRawTable, datum);
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
@@ -80,7 +85,6 @@ namespace SensorLogInserterRe.Inserters
 
             return gpsRawTable;
         }
-
         private static void CopyRawDataToCorrectedRow(DataRow correctedRow, DataRow rawRow)
         {
             correctedRow.SetField(CorrectedGpsDao.ColumnDriverId, rawRow.Field<int>(AndroidGpsRawDao.ColumnDriverId));
@@ -90,9 +94,20 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLatitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnAltitude));
-            correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<double?>(AndroidGpsRawDao.ColumnSpeed));
-            correctedRow.SetField(CorrectedGpsDao.ColumnBearing, rawRow.Field<double?>(AndroidGpsRawDao.ColumnBearing));
-            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<int>(AndroidGpsRawDao.ColumnAccuracy));
+
+        }
+        private static void CopyRawDataDopplerToCorrectedRow(DataRow correctedRow, DataRow rawRow)
+        {
+            correctedRow.SetField(CorrectedGpsDao.ColumnDriverId, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnDriverId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnCarId, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnCarId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnSensorId, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnSensorId));
+            correctedRow.SetField(CorrectedGpsDao.ColumnJst, rawRow.Field<DateTime>(AndroidGpsRawDopplerDao.ColumnJst));
+            correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnLatitude));
+            correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnLongitude));
+            correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnAltitude));
+            correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed));
+            correctedRow.SetField(CorrectedGpsDao.ColumnBearing, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnBearing));
+            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnAccuracy));
 
         }
         public static void InsertCorrectedGps(InsertDatum datum, InsertConfig.GpsCorrection correction)

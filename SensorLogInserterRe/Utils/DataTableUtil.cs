@@ -91,6 +91,29 @@ namespace SensorLogInserterRe.Utils
             return gpsRawTable;
         }
 
+        public static DataTable[] GetAndroidGpsRawDopplerTableArray(int n)
+        {
+            // TODO 並び順をデータベース通りに
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            DataTable[] gpsRawTable = new DataTable[n];
+            for (int i = 0; i < n; i++)
+            {
+                gpsRawTable[i] = new DataTable();
+                gpsRawTable[i].Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+                gpsRawTable[i].Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+                gpsRawTable[i].Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+                gpsRawTable[i].Columns.Add(new DataColumn("JST", typeof(DateTime)));
+                gpsRawTable[i].Columns.Add(new DataColumn("LATITUDE", typeof(double)));
+                gpsRawTable[i].Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
+                gpsRawTable[i].Columns.Add(new DataColumn("ALTITUDE", typeof(double)));
+                gpsRawTable[i].Columns.Add(new DataColumn("ACCURACY", typeof(int)));
+                gpsRawTable[i].Columns.Add(new DataColumn("SPEED", typeof(double)));
+                gpsRawTable[i].Columns.Add(new DataColumn("BEARING", typeof(double)));
+                gpsRawTable[i].Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));
+            }
+            return gpsRawTable;
+        }
+
         public static DataTable GetAndroidAccRawTable()
         {
             // TODO 並び順をデータベース通りに

@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class AndroidGpsRawDopplerDao
     {
-        private static readonly string TableName = "ANDROID_GPS_RAW_modified";
+        private static readonly string TableName = "ANDROID_GPS_RAW_Doppler";
         public static readonly string ColumnJst = "jst";
         public static readonly string ColumnAndroidTime = "android_time";
         public static readonly string ColumnDriverId = "driver_id";
