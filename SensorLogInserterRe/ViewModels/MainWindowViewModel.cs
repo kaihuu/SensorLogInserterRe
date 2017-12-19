@@ -373,7 +373,7 @@ namespace SensorLogInserterRe.ViewModels
             get
             { return _IsEnabledStartUpLoopButton; }
             set
-            { 
+            {
                 if (_IsEnabledStartUpLoopButton == value)
                     return;
                 _IsEnabledStartUpLoopButton = value;
@@ -381,6 +381,25 @@ namespace SensorLogInserterRe.ViewModels
             }
         }
         #endregion
+
+
+        #region IsCheckedDopplerSpeed変更通知プロパティ
+        private bool _IsCheckedDopplerSpeed;
+
+        public bool IsCheckedDopplerSpeed
+        {
+            get
+            { return _IsCheckedDopplerSpeed; }
+            set
+            { 
+                if (_IsCheckedDopplerSpeed == value)
+                    return;
+                _IsCheckedDopplerSpeed = value;
+                RaisePropertyChanged("IsCheckedDopplerSpeed");
+            }
+        }
+        #endregion
+
 
 
         private InsertConfig InsertConfig { get; set; }
@@ -443,6 +462,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedDeadReckoning = false;
             this.IsCheckedSpeedLPFMapMatching = true;
             this.IsCheckedNormal = true;
+            this.IsCheckedDopplerSpeed = true;
         }
 
         private void InitInsertionTarget()
@@ -518,7 +538,6 @@ namespace SensorLogInserterRe.ViewModels
                 {
                     for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
                     {
-                        TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
                         GpsInserter.InsertCorrectedGps(datum, InsertConfig.Correction[i]);
                     }
 
@@ -537,81 +556,82 @@ namespace SensorLogInserterRe.ViewModels
 
             #region 加速度挿入
 
-            //if (IsCheckedInsertAcc)
-            //{
-            //    this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
-            //    LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheSrartOfTheInsertingAcc + "\n");
+            if (IsCheckedInsertAcc)
+            {
+                this.LogText += LogTexts.TheSrartOfTheInsertingAcc + "\n";
+                LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheSrartOfTheInsertingAcc + "\n");
 
-            //    await Task.Run(() =>
-            //    {
-            //        AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
-            //    });
+                await Task.Run(() =>
+                {
+                    AccInserter.InsertAcc(this.InsertFileList, this.InsertConfig, this.InsertDatumList);
+                });
 
-            //    this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
-            //    LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheEndOfTheInsertingAcc + "\n");
-            //}
+                this.LogText += LogTexts.TheEndOfTheInsertingAcc + "\n";
+                LogWritter.WriteLog(LogWritter.LogMode.Acc, LogTexts.TheEndOfTheInsertingAcc + "\n");
+            }
 
             #endregion
 
-            //foreach (var datum in InsertDatumList)
-            //{
-            //    #region トリップ挿入
+            foreach (var datum in InsertDatumList)
+            {
+                #region トリップ挿入
 
-            //    //await Task.Run(() =>
-            //    //{
-            //        for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
-            //        {
-            //            TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
-            //        }
-            //    //});
+                //await Task.Run(() =>
+                //{
+                for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
+                {
+                    TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
+                }
+                //});
 
-            //    #endregion
+                #endregion
 
-            //    #region 補正加速度挿入
+                #region 補正加速度挿入
 
-            //    //if (IsCheckedInsertCorrectedAcc)
-            //    //{
-            //    //    await Task.Run(() =>
-            //    //    {
-            //    //        AccInserter.InsertCorrectedAcc(datum, InsertConfig);
-            //    //    });
-            //    //}
+                //if (IsCheckedInsertCorrectedAcc)
+                //{
+                //    await Task.Run(() =>
+                //    {
+                //        AccInserter.InsertCorrectedAcc(datum, InsertConfig);
+                //    });
+                //}
 
-            //    #endregion
-            //}
-            //int count = 0;
-            //Parallel.For(0, InsertDatumList.Count, i =>
-            //{
-            //    #region ECOLOG挿入
-            ////    //     sw.Start();
+                #endregion
+            }
+            int count = 0;
+            Parallel.For(0, InsertDatumList.Count, i =>
+            {
+                #region ECOLOG挿入
+                        sw.Start();
 
-            ////         if (IsCheckedSpeedLPFMapMatching)
-            ////        {
-            ////            EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
-            ////        }
-            ////        if (IsCheckedMapMatching)
-            ////        {
-            ////            EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
-            ////        }
+                         if (IsCheckedSpeedLPFMapMatching)
+                        {
+                            EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
+                        }
+                        if (IsCheckedMapMatching)
+                       {
+                            EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
+                        }
 
-            ////        if (IsCheckedNormal)
-            ////        {
-            ////            EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
-            ////        }
+                        if (IsCheckedNormal)
+                        {
+                            EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
+                      }
 
-                
-            //    //       sw.Stop();
-            //    //      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
-            //    #endregion
-            //});
-            this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-            //if (count > 0)
-            //{
-            SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-            //}
-            //else {
-            //    SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-            //}
+
+                       sw.Stop();
+                      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
+                #endregion
+               });
+
+                    this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
+                if (count > 0)
+                {
+                SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                }
+                else {
+                SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                }
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
         }

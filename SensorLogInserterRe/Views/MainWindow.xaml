@@ -126,7 +126,7 @@
                 <Label Content="GPS補正" />
             </GroupBox.Header>
 
-            <StackPanel 
+            <WrapPanel 
                         Margin="10,0,0,0"
                         Orientation="Horizontal">
 
@@ -138,7 +138,9 @@
 
                 <CheckBox Margin="10,0,0,0" Content="LPFEX" IsChecked="{Binding IsCheckedLPFEx}"  />
 
-            </StackPanel>
+                <CheckBox Margin="0,5,0,0" Content="Doppler Speed" IsChecked="{Binding IsCheckedDopplerSpeed}"  />
+                
+            </WrapPanel>
 
         </GroupBox>
 

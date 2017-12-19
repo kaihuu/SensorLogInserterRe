@@ -139,6 +139,7 @@
     <Compile Include="Cleansers\Components\MapMatching.cs" />
     <Compile Include="Daos\Altitude10MMeshDao.cs" />
     <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
+    <Compile Include="Daos\AndroidGpsRawDopplerDao.cs" />
     <Compile Include="Daos\CorrectedGPSMMDao.cs" />
     <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\EcologMMDao.cs" />
