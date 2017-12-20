@@ -165,6 +165,28 @@ namespace SensorLogInserterRe.Inserters
             return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
         }
 
+        private static int GetMaxTripId(InsertConfig.GpsCorrection correction)
+        {
+            int tripid = -1;
+            if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            {
+                tripid = TripsSpeedLPF005MMDao.GetMaxTripId() + 1;
+            }
+            else if (correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                tripid = TripsMMDao.GetMaxTripId() + 1;
+            }
+            else if(correction == InsertConfig.GpsCorrection.Normal)
+            {
+                tripid = TripsDao.GetMaxTripId() + 1;
+            }
+            else if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
+            {
+                tripid = TripsDopplerDao.GetMaxTripId() + 1;
+            }
+            return tripid;
+        }
+
         private static void InsertOutwardTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int i, InsertConfig.GpsCorrection correction)
         {
             int j = i;
@@ -178,17 +200,9 @@ namespace SensorLogInserterRe.Inserters
                 {
                     var row = tripsTable.NewRow();
 
-                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
-                    {
-                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
-                    }
-                    else if (correction == InsertConfig.GpsCorrection.MapMatching)
-                    {
-                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
-                    }
-                    else {
-                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
-                    }
+
+                    row.SetField(TripsDao.ColumnTripId, GetMaxTripId(correction));
+
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
@@ -220,6 +234,10 @@ namespace SensorLogInserterRe.Inserters
                         tripsTable.Rows.Add(row);
                     }
                     else if (correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.DopplerSpeed && !TripsDopplerDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }
@@ -279,17 +297,7 @@ namespace SensorLogInserterRe.Inserters
                     datum))
                 {
                     var row = tripsTable.NewRow();
-                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
-                    {
-                        row.SetField(TripsDao.ColumnTripId, TripsSpeedLPF005MMDao.GetMaxTripId() + 1);
-                    }
-                    else if (correction == InsertConfig.GpsCorrection.MapMatching)
-                    {
-                        row.SetField(TripsDao.ColumnTripId, TripsMMDao.GetMaxTripId() + 1);
-                    }
-                    else {
-                        row.SetField(TripsDao.ColumnTripId, TripsDao.GetMaxTripId() + 1);
-                    }
+                    row.SetField(TripsDao.ColumnTripId, GetMaxTripId(correction));
                     row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnDriverId));
                     row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnCarId));
                     row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[i].Field<int>(TripsRawDao.ColumnSensorId));
@@ -320,6 +328,10 @@ namespace SensorLogInserterRe.Inserters
                         tripsTable.Rows.Add(row);
                     }
                     else if (correction == InsertConfig.GpsCorrection.Normal && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.DopplerSpeed && !TripsDopplerDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }
