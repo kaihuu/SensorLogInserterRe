@@ -470,7 +470,7 @@ namespace SensorLogInserterRe.Inserters
         {
             if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
             {
-                MakeCorrectedGps(gpsRawTable, correction);
+                MakeCorrectedGpsForDoppler(gpsRawTable, correction);
             }
             else if(correction == InsertConfig.GpsCorrection.Normal ||
                 correction == InsertConfig.GpsCorrection.MapMatching ||

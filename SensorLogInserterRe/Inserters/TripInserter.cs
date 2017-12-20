@@ -67,10 +67,15 @@ namespace SensorLogInserterRe.Inserters
                 tripsRawTable = TripsRawMMDao.Get(datum);
                 TripsMMDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
-            else
+            else if (correction == InsertConfig.GpsCorrection.Normal)
             {
                 tripsRawTable = TripsRawDao.Get(datum);
                 TripsDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
+            }
+            else if (correction == InsertConfig.GpsCorrection.DopplerSpeed)
+            {
+                tripsRawTable = TripsRawDopplerDao.Get(datum);
+                TripsDopplerDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
                
 
