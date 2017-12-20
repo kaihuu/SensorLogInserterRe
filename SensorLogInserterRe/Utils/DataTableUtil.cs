@@ -141,6 +141,25 @@ namespace SensorLogInserterRe.Utils
             correctedGpsTable.Columns.Add(new DataColumn("JST", typeof(DateTime)));
             correctedGpsTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
             correctedGpsTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn(CorrectedGpsDao.ColumnHeading, typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("SPEED", typeof(Single)));
+            correctedGpsTable.Columns.Add(new DataColumn("DISTANCE_DIFFERENCE", typeof(Single)));
+            correctedGpsTable.Columns.Add(new DataColumn("ACCURACY", typeof(int)));
+
+
+            return correctedGpsTable;
+        }
+
+        public static DataTable GetCorrectedGpsDopplerTable()
+        {
+            DataTable correctedGpsTable = new DataTable();
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            correctedGpsTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            correctedGpsTable.Columns.Add(new DataColumn("JST", typeof(DateTime)));
+            correctedGpsTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
+            correctedGpsTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
             correctedGpsTable.Columns.Add(new DataColumn(CorrectedGpsDao.ColumnAltitude, typeof(double)));
             correctedGpsTable.Columns.Add(new DataColumn(CorrectedGpsDao.ColumnHeading, typeof(double)));
             correctedGpsTable.Columns.Add(new DataColumn("SPEED", typeof(Single)));

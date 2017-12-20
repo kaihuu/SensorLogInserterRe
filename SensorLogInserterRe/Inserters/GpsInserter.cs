@@ -61,9 +61,10 @@ namespace SensorLogInserterRe.Inserters
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
+                    InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
                     TripInserter.InsertTripRaw(gpsRawTable, config.Correction[correctionIndex]);
                     //TripInserter.InsertTrip(datum, config.Correction[correctionIndex]);
-                    InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
+                    
                     
                     
                 }
@@ -93,7 +94,6 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnJst, rawRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst));
             correctedRow.SetField(CorrectedGpsDao.ColumnLatitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLatitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
-            correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnAltitude));
 
         }
         private static void CopyRawDataDopplerToCorrectedRow(DataRow correctedRow, DataRow rawRow)
@@ -254,13 +254,102 @@ namespace SensorLogInserterRe.Inserters
                 }
             }
         }
-        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig.GpsCorrection correction)
+
+        private static void MakeCorrectedGps(DataTable gpsRawTable, InsertConfig.GpsCorrection correction)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
             #region インデックスが 0 の場合
             DataRow firstRow = correctedGpsTable.NewRow();
             CopyRawDataToCorrectedRow(firstRow, gpsRawTable.Rows[0]);
+            firstRow.SetField(CorrectedGpsDao.ColumnDistanceDifference, 0);
+            firstRow.SetField(CorrectedGpsDao.ColumnSpeed, 0);
+            firstRow.SetField(CorrectedGpsDao.ColumnHeading, 0);
+
+
+
+            correctedGpsTable.Rows.Add(firstRow);
+            #endregion
+
+            #region インデックスがiの場合
+            for (int i = 1; i < gpsRawTable.Rows.Count - 1; i++)
+            {
+                DataRow row = correctedGpsTable.NewRow();
+
+                CopyRawDataToCorrectedRow(row, gpsRawTable.Rows[i]);
+
+                // 距離の算出
+                row.SetField(CorrectedGpsDao.ColumnDistanceDifference, DistanceCalculator.CalcDistance(
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
+
+                // 速度の算出
+                row.SetField(CorrectedGpsDao.ColumnSpeed, SpeedCalculator.CalcSpeed(
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
+                    gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i + 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                    gpsRawTable.Rows[i + 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                    gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
+
+                //速度が1km以上になったらHEADINGを更新する(停止時に1つ1つ計算するとHEADINDが暴れるため)
+                if (row.Field<Single?>(CorrectedGpsDao.ColumnSpeed) > 1.0)
+                {
+                    row.SetField(CorrectedGpsDao.ColumnHeading, HeadingCalculator.CalcHeading(
+                        gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                        gpsRawTable.Rows[i - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude),
+                        gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLatitude),
+                        gpsRawTable.Rows[i].Field<double>(AndroidGpsRawDao.ColumnLongitude)));
+                }
+                else
+                {
+                    row.SetField(CorrectedGpsDao.ColumnHeading, correctedGpsTable.Rows[i - 1].Field<double>(CorrectedGpsDao.ColumnHeading));
+                }
+
+                correctedGpsTable.Rows.Add(row);
+            }
+            #endregion
+
+            #region インデックスが最後の場合
+            DataRow lastRow = correctedGpsTable.NewRow();
+            CopyRawDataToCorrectedRow(lastRow, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1]);
+            lastRow.SetField(CorrectedGpsDao.ColumnDistanceDifference, 0);
+            lastRow.SetField(CorrectedGpsDao.ColumnSpeed, 0);
+            lastRow.SetField(CorrectedGpsDao.ColumnHeading, 0);
+
+            correctedGpsTable.Rows.Add(lastRow);
+
+            #endregion
+
+            #region データ挿入
+            // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
+            if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
+            {
+                DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
+                CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
+            }
+            else if (correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                CorrectedGPSMMDao.Insert(correctedGpsTable);
+            }
+            else if(correction == InsertConfig.GpsCorrection.Normal)
+            {
+                CorrectedGpsDao.Insert(correctedGpsTable);
+            }
+            #endregion
+        }
+
+        private static void MakeCorrectedGpsForDoppler(DataTable gpsRawTable, InsertConfig.GpsCorrection correction)
+        {
+            DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsDopplerTable();
+
+            #region インデックスが 0 の場合
+            DataRow firstRow = correctedGpsTable.NewRow();
+            CopyRawDataDopplerToCorrectedRow(firstRow, gpsRawTable.Rows[0]);
             firstRow.SetField(CorrectedGpsDao.ColumnDistanceDifference, 0);
             //firstRow.SetField(CorrectedGpsDao.ColumnSpeed, 0);
             firstRow.SetField(CorrectedGpsDao.ColumnHeading, 0);
@@ -269,7 +358,7 @@ namespace SensorLogInserterRe.Inserters
             gpsRawTable.Rows[0].Field<double>(CorrectedGpsDao.ColumnLongitude));
 
             firstRow.SetField(CorrectedGpsDao.ColumnTerrainAltitude, meshAndAltitude.Item2);
-            
+
 
 
             var linkAndTheta = LinkMatcher.GetInstance().MatchLink(
@@ -283,11 +372,12 @@ namespace SensorLogInserterRe.Inserters
             correctedGpsTable.Rows.Add(firstRow);
             #endregion
 
+            #region インデックスがiの場合
             for (int i = 1; i < gpsRawTable.Rows.Count - 1; i++)
             {
                 DataRow row = correctedGpsTable.NewRow();
 
-                CopyRawDataToCorrectedRow(row, gpsRawTable.Rows[i]);
+                CopyRawDataDopplerToCorrectedRow(row, gpsRawTable.Rows[i]);
 
                 // 距離の算出
                 row.SetField(CorrectedGpsDao.ColumnDistanceDifference, DistanceCalculator.CalcDistance(
@@ -341,10 +431,11 @@ namespace SensorLogInserterRe.Inserters
                 row.SetField(CorrectedGpsDao.ColumnRoadTheta, linkAndTheta.Item2);
                 correctedGpsTable.Rows.Add(row);
             }
+            #endregion
 
             #region インデックスが最後の場合
             DataRow lastRow = correctedGpsTable.NewRow();
-            CopyRawDataToCorrectedRow(lastRow, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1]);
+            CopyRawDataDopplerToCorrectedRow(lastRow, gpsRawTable.Rows[gpsRawTable.Rows.Count - 1]);
             lastRow.SetField(CorrectedGpsDao.ColumnDistanceDifference, 0);
             lastRow.SetField(CorrectedGpsDao.ColumnSpeed, 0);
             lastRow.SetField(CorrectedGpsDao.ColumnHeading, 0);
@@ -370,19 +461,22 @@ namespace SensorLogInserterRe.Inserters
             #endregion
 
             // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
-            if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
+            if (correction == InsertConfig.GpsCorrection.DopplerSpeed)
             {
-                
-                DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
-                CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
+                CorrectedGPSDopplerDao.Insert(correctedGpsTable);
             }
-            else if (correction == InsertConfig.GpsCorrection.MapMatching)
+        }
+        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig.GpsCorrection correction)
+        {
+            if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
             {
-                CorrectedGPSMMDao.Insert(correctedGpsTable);
+                MakeCorrectedGps(gpsRawTable, correction);
             }
-            else
+            else if(correction == InsertConfig.GpsCorrection.Normal ||
+                correction == InsertConfig.GpsCorrection.MapMatching ||
+                correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
-                CorrectedGpsDao.Insert(correctedGpsTable);
+                MakeCorrectedGps(gpsRawTable, correction);
             }
         }
     }
