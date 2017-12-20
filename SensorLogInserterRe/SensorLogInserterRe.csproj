@@ -147,6 +147,7 @@
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
     <Compile Include="Daos\TripsMMDao.cs" />
+    <Compile Include="Daos\TripsRawDopplerDao.cs" />
     <Compile Include="Daos\TripsRawMMDao.cs" />
     <Compile Include="Daos\TripsRawSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\TripsSpeedLPF005MMDao.cs" />

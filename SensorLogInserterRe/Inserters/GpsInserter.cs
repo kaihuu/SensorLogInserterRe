@@ -63,7 +63,7 @@ namespace SensorLogInserterRe.Inserters
                 {
                     TripInserter.InsertTripRaw(gpsRawTable, config.Correction[correctionIndex]);
                     //TripInserter.InsertTrip(datum, config.Correction[correctionIndex]);
-                    //InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
+                    InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
                     
                     
                 }

@@ -44,6 +44,10 @@ namespace SensorLogInserterRe.Inserters
             {
                 TripsRawMMDao.Insert(tripsTable);
             }
+            else if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
+            {
+                TripsRawDopplerDao.Insert(tripsTable);
+            }
             else {
                 TripsRawDao.Insert(tripsTable);
             }

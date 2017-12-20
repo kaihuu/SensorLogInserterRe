@@ -530,25 +530,6 @@ namespace SensorLogInserterRe.ViewModels
                GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
            });
 
-            foreach (var datum in InsertDatumList)
-            {
-                #region トリップ挿入
-
-                await Task.Run(() =>
-                {
-                    for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
-                    {
-                        GpsInserter.InsertCorrectedGps(datum, InsertConfig.Correction[i]);
-                    }
-
-                    
-                });
-
-                #endregion
-
-                
-            }
-
             this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
             LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
 
