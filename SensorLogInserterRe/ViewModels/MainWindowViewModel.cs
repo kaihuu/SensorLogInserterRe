@@ -676,7 +676,8 @@ namespace SensorLogInserterRe.ViewModels
             //    insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
             if (this.IsCheckedSpeedLPFMapMatching)
                 insertConfig.Correction.Add(InsertConfig.GpsCorrection.SpeedLPFMapMatching);
-
+            if (this.IsCheckedDopplerSpeed)
+                insertConfig.Correction.Add(InsertConfig.GpsCorrection.DopplerSpeed);
             #endregion
 
             LogWritter.WriteLog(LogWritter.LogMode.Search, insertConfig.ToString());

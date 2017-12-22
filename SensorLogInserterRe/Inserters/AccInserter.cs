@@ -21,10 +21,10 @@ namespace SensorLogInserterRe.Inserters
 
         public static void InsertAcc(List<string> insertFileList, InsertConfig config, List<InsertDatum> insertDatumList)
         {
-            // foreach (var filePath in insertFileList)
-            Parallel.For(0, insertFileList.Count, i =>
+            foreach (var filePath in insertFileList)
+            //Parallel.For(0, insertFileList.Count, i =>
             {
-                string[] word = insertFileList[i].Split('\\');
+                string[] word = filePath.Split('\\');
 
                 // ACCファイルでない場合はcontinue
                 if (System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}Unsent16HzAccel.csv"))
@@ -42,9 +42,10 @@ namespace SensorLogInserterRe.Inserters
 
                     InsertDatum.AddDatumToList(insertDatumList, datum);
 
-                    InsertAccRaw(insertFileList[i], datum);
+                    InsertAccRaw(filePath, datum);
                 }
-            });
+                //});
+            }
         }
 
         private static void InsertAccRaw(string filePath, InsertDatum datum)

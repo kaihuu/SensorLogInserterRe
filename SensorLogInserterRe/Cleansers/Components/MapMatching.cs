@@ -137,7 +137,7 @@ namespace SensorLogInserterRe.Cleansers.Components
 
                 for (int n = 0; n < dt.Count; n++)
                 {
-                    double tempDist = searchNearestLink(dt[n], gpsRawTable.Rows[i], ref mapMatchedGpsTable[n]);
+                    double tempDist = searchNearestLinkDoppler(dt[n], gpsRawTable.Rows[i], ref mapMatchedGpsTable[n]);
                     sumDist[n] += tempDist;
 
                     if (tempDist > maxDist[n]) maxDist[n] = tempDist;
@@ -176,8 +176,8 @@ namespace SensorLogInserterRe.Cleansers.Components
             correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnAltitude));
             correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnAndroidTime, rawRow.Field<DateTime>(AndroidGpsRawDopplerDao.ColumnAndroidTime));
             correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnAccuracy, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnAccuracy));
-            correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnSpeed));
-            correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnBearing, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnBearing));
+            correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed));
+            correctedRow.SetField(AndroidGpsRawDopplerDao.ColumnBearing, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnBearing));
 
         }
 

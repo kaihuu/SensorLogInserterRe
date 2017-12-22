@@ -63,7 +63,7 @@ namespace SensorLogInserterRe.Utils
             gpsRawTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("ALTITUDE", typeof(double)));
-            gpsRawTable.Columns.Add(new DataColumn("ACCURACY", typeof(Single)));
+            gpsRawTable.Columns.Add(new DataColumn("ACCURACY", typeof(int)));
             gpsRawTable.Columns.Add(new DataColumn("SPEED", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("BEARING", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));

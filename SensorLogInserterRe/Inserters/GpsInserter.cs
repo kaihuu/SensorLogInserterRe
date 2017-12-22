@@ -49,7 +49,7 @@ namespace SensorLogInserterRe.Inserters
                 LogWritter.WriteLog(LogWritter.LogMode.Gps, $"インサートデータ, FilePath: {filePath}, DriverId: {datum.DriverId}, CarId: {datum.CarId}, SensorId: {datum.SensorId}");
 
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
-                var gpsRawTable = InsertGpsRaw(filePath, datum);
+                var gpsRawTable = InsertGpsRaw(filePath, datum, config.Correction[correctionIndex]);
                 if (config.Correction[correctionIndex] == InsertConfig.GpsCorrection.SpeedLPFMapMatching 
                     || config.Correction[correctionIndex] == InsertConfig.GpsCorrection.MapMatching)
                 {
@@ -62,6 +62,7 @@ namespace SensorLogInserterRe.Inserters
                 if (gpsRawTable.Rows.Count != 0)
                 {
                     InsertCorrectedGps(gpsRawTable, config.Correction[correctionIndex]);
+
                     TripInserter.InsertTripRaw(gpsRawTable, config.Correction[correctionIndex]);
                     //TripInserter.InsertTrip(datum, config.Correction[correctionIndex]);
                     
@@ -77,12 +78,23 @@ namespace SensorLogInserterRe.Inserters
 
 
 
-        private static DataTable InsertGpsRaw(string filePath, InsertDatum datum)
+        private static DataTable InsertGpsRaw(string filePath, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
             var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
 
-            if(gpsRawTable.Rows.Count != 0)
-                AndroidGpsRawDao.Insert(gpsRawTable);
+            if (gpsRawTable.Rows.Count != 0)
+            {
+                if (correction == InsertConfig.GpsCorrection.Normal ||
+                    correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching ||
+                    correction == InsertConfig.GpsCorrection.MapMatching)
+                {
+                    AndroidGpsRawDao.Insert(gpsRawTable);
+                }
+                else if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
+                {
+                    AndroidGpsRawDopplerDao.Insert(gpsRawTable);
+                }
+            }
 
             return gpsRawTable;
         }
@@ -107,7 +119,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnAltitude, rawRow.Field<double>(AndroidGpsRawDopplerDao.ColumnAltitude));
             correctedRow.SetField(CorrectedGpsDao.ColumnSpeed, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed));
             correctedRow.SetField(CorrectedGpsDao.ColumnBearing, rawRow.Field<double?>(AndroidGpsRawDopplerDao.ColumnBearing));
-            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<int>(AndroidGpsRawDopplerDao.ColumnAccuracy));
+            correctedRow.SetField(CorrectedGpsDao.ColumnAccuracy, rawRow.Field<int?>(AndroidGpsRawDopplerDao.ColumnAccuracy));
 
         }
         public static void InsertCorrectedGps(InsertDatum datum, InsertConfig.GpsCorrection correction)

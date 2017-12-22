@@ -60,16 +60,16 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　VALID
                     row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LATITUDE
                     row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　LONGITUDE
-                    row.SetField(AndroidGpsRawDao.ColumnAccuracy, fields[5]);// ACCURACY
+                    row.SetField(AndroidGpsRawDopplerDao.ColumnAccuracy, (int)float.Parse(fields[5]));// ACCURACY
                     if (fields.Length > 6)
                     {
-                        row.SetField(AndroidGpsRawDao.ColumnSpeed, fields[6]); //SPEED
-                        row.SetField(AndroidGpsRawDao.ColumnBearing, fields[7]); //BEARING
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, fields[6]); //SPEED
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, fields[7]); //BEARING
                     }
                     else
                     {
-                        row.SetField(AndroidGpsRawDao.ColumnSpeed, DBNull.Value);
-                        row.SetField(AndroidGpsRawDao.ColumnBearing, DBNull.Value);
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, DBNull.Value);
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, DBNull.Value);
                     }
                      
                     if (beforeJst != jst.ToString(StringUtil.JstFormat))
@@ -89,9 +89,14 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     // TODO エラー処理
                     continue;
                 }
-                catch (FormatException)
+                catch (FormatException fe)
                 {
+                    Console.WriteLine(fe.Message);
                     // TODO エラー処理
+                }
+                catch (ArgumentException ae)
+                {
+                    Console.WriteLine(ae.Message);
                 }
             }
 
