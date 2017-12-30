@@ -73,6 +73,8 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"		,{ColumnSpeed}");
             query.AppendLine($"		,{ColumnHeading}");
             query.AppendLine($"		,{ColumnDistanceDifference}");
+            query.AppendLine($"		,{ColumnLinkId}");
+            query.AppendLine($"		,{ColumnRoadTheta}");
             query.AppendLine($"	FROM {TableName}");
             query.AppendLine($"	WHERE {ColumnDriverId} = {datum.DriverId}");
             query.AppendLine($"		AND {ColumnCarId} = {datum.CarId}");
@@ -89,6 +91,8 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"	,CAST(AVG({ColumnSpeed}) AS real) AS {ColumnSpeed}");
             query.AppendLine($"	,CAST(AVG({ColumnHeading}) AS real) AS {ColumnHeading}");
             query.AppendLine($"	,CAST(SUM({ColumnDistanceDifference}) AS real) AS {ColumnDistanceDifference}");
+            query.AppendLine($"	,MIN({ColumnLinkId}) AS {ColumnLinkId}");
+            query.AppendLine($"	,CAST(AVG({ColumnRoadTheta}) AS real) AS {ColumnRoadTheta}");
             query.AppendLine($"FROM convert_gps");
             query.AppendLine($"GROUP BY {ColumnDriverId}");
             query.AppendLine($"	,{ColumnCarId}");

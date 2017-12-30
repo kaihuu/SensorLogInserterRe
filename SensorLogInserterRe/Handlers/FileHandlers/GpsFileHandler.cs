@@ -63,7 +63,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     row.SetField(AndroidGpsRawDopplerDao.ColumnAccuracy, (int)float.Parse(fields[5]));// ACCURACY
                     if (fields.Length > 6)
                     {
-                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, fields[6]); //SPEED
+                        double speed = Convert.ToDouble(fields[6]);
+                        speed = speed * 3.6;
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, speed); //SPEED
                         row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, fields[7]); //BEARING
                     }
                     else

@@ -600,7 +600,7 @@ namespace SensorLogInserterRe.ViewModels
                         }
                         if (IsCheckedDopplerSpeed)
                         {
-                            EcologInserter.InsertEcologDoppler(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal, out count);
+                            EcologInserter.InsertEcologDoppler(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.DopplerSpeed, out count);
                         }
 
 

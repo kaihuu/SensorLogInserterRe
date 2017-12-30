@@ -19,8 +19,8 @@ namespace SensorLogInserterRe.Inserters
             var tripsTable = DataTableUtil.GetTripsRawTable();
             DataRow row = tripsTable.NewRow();
             Console.WriteLine("GPSSpeed:");
-            Console.WriteLine(gpsRawTable.Rows[0].Field<>(AndroidGpsRawDopplerDao.ColumnSpeed));
-            if (gpsRawTable.Rows[0].Field<int?>(AndroidGpsRawDopplerDao.ColumnSpeed) != null)
+             Console.WriteLine(gpsRawTable.Rows[0].Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed));
+            if (gpsRawTable.Rows[0].Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed) != null)
             {
                 row.SetField(TripsRawDao.ColumnDriverId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnDriverId));
                 row.SetField(TripsRawDao.ColumnCarId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnCarId));

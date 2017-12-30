@@ -174,7 +174,7 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                    correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
-            newRow.SetField(EcologDao.ColumnTerraubAltitude, correctedGpsRow.Field<double>(CorrectedGPSDopplerDao.ColumnTerrainAltitude));
+            newRow.SetField(EcologDao.ColumnTerraubAltitude, meshAndAltitude.Item2);
             newRow.SetField(EcologDao.ColumnMeshId, meshAndAltitude.Item1);
 
             newRow.SetField(EcologDao.ColumnTerrainAltitudeDiffarencce, 0);
@@ -206,7 +206,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
 
             newRow.SetField(EcologDao.ColumnLinkId, correctedGpsRow.Field<string>(CorrectedGPSDopplerDao.ColumnLinkId));
-            newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<string>(CorrectedGPSDopplerDao.ColumnRoadTheta));
+            newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<Single>(CorrectedGPSDopplerDao.ColumnRoadTheta));
 
             return newRow;
         }
@@ -391,7 +391,7 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLatitude),
                 correctedGpsRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
 
-            newRow.SetField(EcologDao.ColumnTerraubAltitude, correctedGpsRow.Field<double>(CorrectedGPSDopplerDao.ColumnTerrainAltitude));
+            newRow.SetField(EcologDao.ColumnTerraubAltitude, meshAndAltitude.Item2);
             newRow.SetField(EcologDao.ColumnMeshId, meshAndAltitude.Item1);
 
             double terrainAltitudeDiff = meshAndAltitude.Item2 -
@@ -502,7 +502,7 @@ namespace SensorLogInserterRe.Inserters.Components
             newRow.SetField(EcologDao.ColumnTripDirection, tripRow.Field<string>(TripsDao.ColumnTripDirection));
 
             newRow.SetField(EcologDao.ColumnLinkId, correctedGpsRow.Field<string>(CorrectedGPSDopplerDao.ColumnLinkId));
-            newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<string>(CorrectedGPSDopplerDao.ColumnRoadTheta));
+            newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<Single>(CorrectedGPSDopplerDao.ColumnRoadTheta));
 
 
             return newRow;
