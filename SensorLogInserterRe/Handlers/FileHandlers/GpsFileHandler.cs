@@ -13,7 +13,8 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class GpsFileHandler
     {
-        public static DataTable ConvertCsvToDataTable(string filePath, InsertDatum datum)
+        private static readonly DateTime NmeaStartDate = DateTime.Parse("2016-05-13 23:58:43.000");
+        public static DataTable ConvertCsvToDataTable(string filePath, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
             var parser = GetParser(filePath);
 
@@ -73,11 +74,15 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                         row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, DBNull.Value);
                         row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, DBNull.Value);
                     }
-                     
-                    if (beforeJst != jst.ToString(StringUtil.JstFormat))
+                    if (correction == InsertConfig.GpsCorrection.DopplerSpeed && jst < NmeaStartDate)
                     {
-                        gpsRawTable.Rows.Add(row);
+
                     }
+                    else if (beforeJst != jst.ToString(StringUtil.JstFormat))
+                    {
+                            gpsRawTable.Rows.Add(row);
+                     }
+                    
 
                     beforeJst = jst.ToString(StringUtil.JstFormat);
                 }

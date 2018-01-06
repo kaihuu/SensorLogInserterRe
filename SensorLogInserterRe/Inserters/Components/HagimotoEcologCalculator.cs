@@ -159,6 +159,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
         private static DataRow GenerateFirstEcologDopplerRow(DataRow newRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum)
         {
+            
             newRow.SetField(EcologDao.ColumnTripId, tripRow.Field<int>(TripsDao.ColumnTripId));
             newRow.SetField(EcologDao.ColumnDriverId, tripRow.Field<int>(TripsDao.ColumnDriverId));
             newRow.SetField(EcologDao.ColumnCarId, tripRow.Field<int>(TripsDao.ColumnCarId));
@@ -364,6 +365,7 @@ namespace SensorLogInserterRe.Inserters.Components
 
         private static DataRow GenerateEcologDopplerRow(DataRow newRow, DataRow beforeRow, DataRow tripRow, DataRow correctedGpsRow, InsertDatum datum)
         {
+
             newRow.SetField(EcologDao.ColumnTripId, tripRow.Field<int>(TripsDao.ColumnTripId));
             newRow.SetField(EcologDao.ColumnDriverId, tripRow.Field<int>(TripsDao.ColumnDriverId));
             newRow.SetField(EcologDao.ColumnCarId, tripRow.Field<int>(TripsDao.ColumnCarId));

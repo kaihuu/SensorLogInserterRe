@@ -23,6 +23,8 @@ namespace SensorLogInserterRe.Inserters
         private static readonly int CarIndex = 5;
         private static readonly int SensorIndex = 6;
 
+        
+
         public static void InsertGps(List<string> insertFileList, InsertConfig config, int correctionIndex, List<InsertDatum> insertDatumList)
         {
             foreach (var filePath in insertFileList)
@@ -57,7 +59,8 @@ namespace SensorLogInserterRe.Inserters
                 }
                 else if(config.Correction[correctionIndex] == InsertConfig.GpsCorrection.DopplerSpeed)
                 {
-                    gpsRawTable = MapMatching.getResultMapMatchingDoppler(gpsRawTable, datum);
+
+                        gpsRawTable = MapMatching.getResultMapMatchingDoppler(gpsRawTable, datum);
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
@@ -80,7 +83,7 @@ namespace SensorLogInserterRe.Inserters
 
         private static DataTable InsertGpsRaw(string filePath, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
-            var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum);
+            var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum, correction);
 
             if (gpsRawTable.Rows.Count != 0)
             {

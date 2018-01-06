@@ -20,8 +20,8 @@ namespace SensorLogInserterRe.Inserters
             DataRow row = tripsTable.NewRow();
             Console.WriteLine("GPSSpeed:");
              Console.WriteLine(gpsRawTable.Rows[0].Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed));
-            if (gpsRawTable.Rows[0].Field<double?>(AndroidGpsRawDopplerDao.ColumnSpeed) != null)
-            {
+            
+            
                 row.SetField(TripsRawDao.ColumnDriverId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnDriverId));
                 row.SetField(TripsRawDao.ColumnCarId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnCarId));
                 row.SetField(TripsRawDao.ColumnSensorId, gpsRawTable.Rows[0].Field<int>(AndroidGpsRawDao.ColumnSensorId));
@@ -37,7 +37,7 @@ namespace SensorLogInserterRe.Inserters
                 row.SetField(TripsRawDao.ColumnEndLongitude,
                     gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<double>(AndroidGpsRawDao.ColumnLongitude));
                 tripsTable.Rows.Add(row);
-            }
+            
             // GPSファイルごとの処理なので主キー違反があっても挿入されないだけ
             if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
@@ -80,9 +80,9 @@ namespace SensorLogInserterRe.Inserters
                 tripsRawTable = TripsRawDopplerDao.Get(datum);
                 TripsDopplerDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
             }
-               
 
-            LogWritter.WriteLog(LogWritter.LogMode.Trip, $"挿入対象のRAWデータ: {tripsRawTable.Rows.Count}");
+
+                LogWritter.WriteLog(LogWritter.LogMode.Trip, $"挿入対象のRAWデータ: {tripsRawTable.Rows.Count}");
 
             
             for (int i = 0; i < tripsRawTable.Rows.Count; i++)
@@ -118,7 +118,18 @@ namespace SensorLogInserterRe.Inserters
                 }
                 else if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
                 {
-                    TripsDopplerDao.Insert(tripsTable);
+                    if (tripsTable.Rows.Count != 0)
+                    {
+                        var gpsCorrectedTable = CorrectedGPSDopplerDao.GetNormalized(
+                            tripsTable.Rows[0].Field<DateTime>(TripsDopplerDao.ColumnStartTime),
+                            tripsTable.Rows[0].Field<DateTime>(TripsDopplerDao.ColumnEndTime),
+                            datum);
+                        if (gpsCorrectedTable.Rows.Count != 0)
+                        {
+                                TripsDopplerDao.Insert(tripsTable);
+                            
+                        }
+                    }
                 }
                 
             }

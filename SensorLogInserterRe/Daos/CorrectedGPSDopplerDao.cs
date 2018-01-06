@@ -55,32 +55,40 @@ namespace SensorLogInserterRe.Daos
 
         public static DataTable GetNormalized(DateTime startTime, DateTime endTime, InsertDatum datum)
         {
+            //GPRMC車速から参照するように改造済み
             var query = new StringBuilder();
             query.AppendLine($"WITH convert_gps");
             query.AppendLine($"AS (");
-            query.AppendLine($"	SELECT {ColumnDriverId}");
-            query.AppendLine($"		,{ColumnCarId}");
-            query.AppendLine($"		,{ColumnSensorId}");
+            query.AppendLine($"	SELECT GPS.{ColumnDriverId}");
+            query.AppendLine($"		,GPS.{ColumnCarId}");
+            query.AppendLine($"		,GPS.{ColumnSensorId}");
             query.AppendLine($"		,CONVERT(DATETIME, CONVERT(VARCHAR(30), CONVERT(DATETIME, (");
             query.AppendLine($"						CASE ");
-            query.AppendLine($"							WHEN DATEPART(Ms, {ColumnJst}) >= 500");
-            query.AppendLine($"								THEN DATEADD(SECOND, 1, {ColumnJst})");
-            query.AppendLine($"							ELSE {ColumnJst}");
+            query.AppendLine($"							WHEN DATEPART(Ms, GPS.{ColumnJst}) >= 500");
+            query.AppendLine($"								THEN DATEADD(SECOND, 1, GPS.{ColumnJst})");
+            query.AppendLine($"							ELSE GPS.{ColumnJst}");
             query.AppendLine($"							END");
             query.AppendLine($"						)), 20)) AS {ColumnJst}");
-            query.AppendLine($"		,{ColumnLatitude}");
-            query.AppendLine($"		,{ColumnLongitude}");
-            query.AppendLine($"		,{ColumnSpeed}");
+            query.AppendLine($"		,GPS.{ColumnLatitude}");
+            query.AppendLine($"		,GPS.{ColumnLongitude}");
+            query.AppendLine($"						,CASE ");
+            query.AppendLine($"							WHEN GPS.{ColumnBearing} IS NULL");
+            query.AppendLine($"								THEN RMC.MOVING_SPEED * 1.852");
+            query.AppendLine($"							ELSE GPS.{ColumnSpeed}");
+            query.AppendLine($"							END AS {ColumnSpeed}");
             query.AppendLine($"		,{ColumnHeading}");
             query.AppendLine($"		,{ColumnDistanceDifference}");
             query.AppendLine($"		,{ColumnLinkId}");
             query.AppendLine($"		,{ColumnRoadTheta}");
-            query.AppendLine($"	FROM {TableName}");
-            query.AppendLine($"	WHERE {ColumnDriverId} = {datum.DriverId}");
-            query.AppendLine($"		AND {ColumnCarId} = {datum.CarId}");
-            query.AppendLine($"		AND {ColumnSensorId} = {datum.SensorId}");
-            query.AppendLine($"     AND {ColumnJst} >= '{startTime}'");
-            query.AppendLine($"     AND {ColumnJst} <= '{endTime}'");
+            query.AppendLine($"	FROM {TableName} AS GPS");
+            query.AppendLine($"	LEFT JOIN GPRMC_RAW AS RMC");
+            query.AppendLine($"	ON GPS.{ColumnSensorId} = RMC.{ColumnSensorId}");
+            query.AppendLine($"	    AND GPS.{ColumnJst} = RMC.{ColumnJst}");
+            query.AppendLine($"	WHERE GPS.{ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"		AND GPS.{ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"		AND GPS.{ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"     AND GPS.{ColumnJst} >= '{startTime}'");
+            query.AppendLine($"     AND GPS.{ColumnJst} <= '{endTime}'");
             query.AppendLine($"	)");
             query.AppendLine($"SELECT {ColumnDriverId}");
             query.AppendLine($"	,{ColumnCarId}");
@@ -94,6 +102,7 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"	,MIN({ColumnLinkId}) AS {ColumnLinkId}");
             query.AppendLine($"	,CAST(AVG({ColumnRoadTheta}) AS real) AS {ColumnRoadTheta}");
             query.AppendLine($"FROM convert_gps");
+            query.AppendLine($"WHERE speed IS NOT NULL");
             query.AppendLine($"GROUP BY {ColumnDriverId}");
             query.AppendLine($"	,{ColumnCarId}");
             query.AppendLine($"	,{ColumnSensorId}");
