@@ -6,7 +6,7 @@ namespace SensorLogInserterRe.Daos
 {
     class EcologSimulationDao
     {
-        public static readonly string TableName = "[ecolog_simulation]";//シミュレーション用のテーブル　構造はECOLOGテーブルに倣う
+        public static readonly string TableName = "ecolog_simulation";//シミュレーション用のテーブル　構造はECOLOGテーブルに倣う
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
