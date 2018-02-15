@@ -13,6 +13,8 @@ namespace SensorLogInserterRe.Constant
         public const string Tamura = "tam";
         public const string Uemura = "uemura";
         public const string Isobe = "isobe";
+
+        public const string Simulation = "car_simulation";
         // TODO 研究室メンバーの追加
 
         public static int GetDriverId(string driverName)
@@ -29,6 +31,9 @@ namespace SensorLogInserterRe.Constant
                     return 17;
                 case DriverNames.Isobe:
                     return 26;
+
+                case DriverNames.Simulation:
+                    return 98;
                 // TODO 研究室メンバーを追加
                 default:
                     return -1;

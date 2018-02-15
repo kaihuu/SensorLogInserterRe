@@ -15,7 +15,17 @@ namespace SensorLogInserterRe.Constant
         public const string E350 = "E350";
         public const string Leaf000143 = "LEAF_000143";
         public const string YZFR15 = "YZF-R15";
-        public const string GrassTracker = "GrassTracker";
+
+        public const string LeafS01 = "LEAFS01";
+        public const string LeafS02 = "LEAFS02";
+        public const string LeafS03 = "LEAFS03";
+        public const string LeafS04 = "LEAFS04";
+        public const string LeafS05 = "LEAFS05";
+        public const string LeafS06 = "LEAFS06";
+        public const string LeafS07 = "LEAFS07";
+        public const string LeafS08 = "LEAFS08";
+        public const string LeafS09 = "LEAFS09";
+        public const string LeafS10 = "LEAFS10";
 
         public static int GetCarId(string carName)
         {
@@ -35,8 +45,28 @@ namespace SensorLogInserterRe.Constant
                     return 6;
                 case CarNames.YZFR15:
                     return 9;
-                case CarNames.GrassTracker:
-                    return 10;
+
+                case CarNames.LeafS01:
+                    return 901;
+                case CarNames.LeafS02:
+                    return 902;
+                case CarNames.LeafS03:
+                    return 903;
+                case CarNames.LeafS04:
+                    return 904;
+                case CarNames.LeafS05:
+                    return 905;
+                case CarNames.LeafS06:
+                    return 906;
+                case CarNames.LeafS07:
+                    return 907;
+                case CarNames.LeafS08:
+                    return 908;
+                case CarNames.LeafS09:
+                    return 909;
+                case CarNames.LeafS10:
+                    return 910;
+
                 default:
                     return -1;
             }
