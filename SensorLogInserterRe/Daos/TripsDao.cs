@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class TripsDao
     {
-        private static readonly string TableName = "trips_links_lookup2";
+        private static readonly string TableName = "[trips_simulation]";
       //  private static readonly string EcologTableName = "ecolog_links_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
@@ -46,8 +46,8 @@ namespace SensorLogInserterRe.Daos
             query.AppendLine($"FROM {TripsDao.TableName}");
             query.AppendLine("WHERE NOT EXISTS");
             query.AppendLine("(SELECT *");
-            query.AppendLine($"FROM {EcologDao.TableName}");
-            query.AppendLine($"WHERE {EcologDao.ColumnTripId} = {TripsDao.ColumnTripId}");
+            query.AppendLine($"FROM {EcologSimulationDao.TableName}");
+            query.AppendLine($"WHERE {EcologSimulationDao.ColumnTripId} = {TripsDao.ColumnTripId}");
 
             DatabaseAccesser.Delete(query.ToString());
         }
@@ -94,7 +94,7 @@ namespace SensorLogInserterRe.Daos
         {
             var selectQuery = new StringBuilder();
             selectQuery.AppendLine("SELECT trip.trip_id, SUM(consumed_electric_energy) AS consumed_energy");
-            selectQuery.AppendLine($"FROM {TripsDao.TableName} AS trip, {EcologDao.TableName} AS ecolog");
+            selectQuery.AppendLine($"FROM {TripsDao.TableName} AS trip, {EcologSimulationDao.TableName} AS ecolog");
             selectQuery.AppendLine("WHERE consumed_energy IS NULL");
             selectQuery.AppendLine("  AND trip.trip_id = ecolog.trip_id");
             selectQuery.AppendLine("GROUP BY trip.trip_id");

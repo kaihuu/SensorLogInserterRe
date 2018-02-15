@@ -14,7 +14,7 @@ namespace SensorLogInserterRe.Constant
         public const string Uemura = "uemura";
         public const string Isobe = "isobe";
 
-        public const string Simulation = "car_simulation";
+        public const string Simulation = "simu180215";
         // TODO 研究室メンバーの追加
 
         public static int GetDriverId(string driverName)

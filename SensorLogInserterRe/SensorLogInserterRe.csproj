@@ -142,6 +142,7 @@
     <Compile Include="Daos\CorrectedGPSMMDao.cs" />
     <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\EcologMMDao.cs" />
+    <Compile Include="Daos\EcologSimulationDao.cs" />
     <Compile Include="Daos\EcologSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
