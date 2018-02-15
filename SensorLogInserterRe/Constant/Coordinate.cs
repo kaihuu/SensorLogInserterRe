@@ -69,7 +69,9 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 139.685;
         }
 
-        public class OaraiTerminal
+        /***北海道走行実験インサート用***/
+
+        public class OaraiTerminal　//大洗フェリーターミナル
         {
             public static readonly double LatitudeStart = 36.309;
             public static readonly double LatitudeEnd = 36.319;
@@ -77,15 +79,15 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 140.585;
         }
 
-        public class TomakomaiTerminal
+        public class TomakomaiTerminal　//苫小牧フェリーターミナル
         {
-            public static readonly double LatitudeStart = 42.637;
-            public static readonly double LatitudeEnd = 42.647;
-            public static readonly double LongitudeStart = 141.633;
-            public static readonly double LongitudeEnd = 141.643;
+            public static readonly double LatitudeStart = 42.635;
+            public static readonly double LatitudeEnd = 42.645;
+            public static readonly double LongitudeStart = 141.63;
+            public static readonly double LongitudeEnd = 141.64;
         }
 
-        public class RoytonSapporo
+        public class RoytonSapporo　//ロイトン札幌ホテル
         {
             public static readonly double LatitudeStart = 43.06;
             public static readonly double LatitudeEnd = 43.07;
@@ -93,7 +95,7 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 141.349;
         }
 
-        public class HotelTaisetsu
+        public class HotelTaisetsu　//ホテル大雪
         {
             public static readonly double LatitudeStart = 43.715;
             public static readonly double LatitudeEnd = 43.725;
@@ -101,7 +103,7 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 142.955;
         }
 
-        public class Oehonke
+        public class Oehonke　//大江本家（ホテル）
         {
             public static readonly double LatitudeStart = 43.755;
             public static readonly double LatitudeEnd = 43.765;
@@ -109,7 +111,7 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 143.518;
         }
 
-        public class KKRKawayu
+        public class KKRKawayu　//KKRかわゆ（ホテル）
         {
             public static readonly double LatitudeStart = 43.635;
             public static readonly double LatitudeEnd = 43.645;
@@ -117,12 +119,33 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 144.445;
         }
 
-        public class MichinoEkiMashu
+        public class MichinoEkiMashu　//道の駅摩周温泉
         {
             public static readonly double LatitudeStart = 43.492;
             public static readonly double LatitudeEnd = 43.502;
             public static readonly double LongitudeStart = 144.445;
             public static readonly double LongitudeEnd = 144.455;
         }
+
+        /***箱根走行ログインサート用***/
+        public class ToujiIkkyu　//かよい湯治一休
+        {
+            public static readonly double LatitudeStart = 35.219;
+            public static readonly double LatitudeEnd = 35.229;
+            public static readonly double LongitudeStart = 139.084;
+            public static readonly double LongitudeEnd = 139.094;
+        }
+
+        /***銚子走行実験インサート用***/
+
+        public class Inubozaki　//犬吠埼灯台
+        {
+            public static readonly double LatitudeStart = 35.70;
+            public static readonly double LatitudeEnd = 35.71;
+            public static readonly double LongitudeStart = 140.865;
+            public static readonly double LongitudeEnd = 140.875;
+        }
+
+        //TODO: 三浦に行った時のデータ挿入、DBに目的地格納
     }
 }

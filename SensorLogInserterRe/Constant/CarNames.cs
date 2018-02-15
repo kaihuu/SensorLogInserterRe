@@ -35,6 +35,8 @@ namespace SensorLogInserterRe.Constant
                     return 6;
                 case CarNames.YZFR15:
                     return 9;
+                case CarNames.GrassTracker:
+                    return 10;
                 default:
                     return -1;
             }
