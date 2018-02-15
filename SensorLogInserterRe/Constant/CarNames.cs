@@ -15,6 +15,7 @@ namespace SensorLogInserterRe.Constant
         public const string E350 = "E350";
         public const string Leaf000143 = "LEAF_000143";
         public const string YZFR15 = "YZF-R15";
+        public const string GRASSTRACKER = "GrassTracker";
 
         public const string LeafS01 = "LEAFS01";
         public const string LeafS02 = "LEAFS02";
@@ -45,6 +46,8 @@ namespace SensorLogInserterRe.Constant
                     return 6;
                 case CarNames.YZFR15:
                     return 9;
+                case CarNames.GRASSTRACKER:
+                    return 10;
 
                 case CarNames.LeafS01:
                     return 901;
