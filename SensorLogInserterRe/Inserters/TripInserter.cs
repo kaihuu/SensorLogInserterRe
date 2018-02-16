@@ -222,6 +222,71 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.Inubozaki.LongitudeEnd)
                 return true;
 
+            /***シミュレーション用***/
+            if (latitude > Coordinate.S01S.LatitudeStart 
+                && latitude < Coordinate.S01S.LatitudeEnd
+                && longitude > Coordinate.S01S.LongitudeStart
+                && longitude < Coordinate.S01S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S02S.LatitudeStart
+                && latitude < Coordinate.S02S.LatitudeEnd
+                && longitude > Coordinate.S02S.LongitudeStart
+                && longitude < Coordinate.S02S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S03S.LatitudeStart
+               && latitude < Coordinate.S03S.LatitudeEnd
+               && longitude > Coordinate.S03S.LongitudeStart
+               && longitude < Coordinate.S03S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S04S.LatitudeStart
+                && latitude < Coordinate.S04S.LatitudeEnd
+                && longitude > Coordinate.S04S.LongitudeStart
+                && longitude < Coordinate.S04S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S05S.LatitudeStart
+               && latitude < Coordinate.S05S.LatitudeEnd
+               && longitude > Coordinate.S05S.LongitudeStart
+               && longitude < Coordinate.S05S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S06S.LatitudeStart
+                && latitude < Coordinate.S06S.LatitudeEnd
+                && longitude > Coordinate.S06S.LongitudeStart
+                && longitude < Coordinate.S06S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S07S.LatitudeStart
+               && latitude < Coordinate.S07S.LatitudeEnd
+               && longitude > Coordinate.S07S.LongitudeStart
+               && longitude < Coordinate.S07S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S08S.LatitudeStart
+                && latitude < Coordinate.S08S.LatitudeEnd
+                && longitude > Coordinate.S08S.LongitudeStart
+                && longitude < Coordinate.S08S.LongitudeEnd)
+                return true;
+            if (latitude > Coordinate.S09S.LatitudeStart
+                && latitude < Coordinate.S09S.LatitudeEnd
+                && longitude > Coordinate.S09S.LongitudeStart
+                && longitude < Coordinate.S09S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.S10S.LatitudeStart
+               && latitude < Coordinate.S10S.LatitudeEnd
+               && longitude > Coordinate.S10S.LongitudeStart
+               && longitude < Coordinate.S10S.LongitudeEnd)
+                return true;
+
+            if (latitude > Coordinate.ShimoSeyaNichome.LatitudeStart
+                && latitude < Coordinate.ShimoSeyaNichome.LatitudeEnd
+                && longitude > Coordinate.ShimoSeyaNichome.LongitudeStart
+                && longitude < Coordinate.ShimoSeyaNichome.LongitudeEnd)
+                return true;
 
             return false;
         }

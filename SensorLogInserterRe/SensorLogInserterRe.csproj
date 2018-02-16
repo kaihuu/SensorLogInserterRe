@@ -141,6 +141,7 @@
     <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
     <Compile Include="Daos\CorrectedGPSMMDao.cs" />
     <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
+    <Compile Include="Daos\EcologMMDao.cs" />
     <Compile Include="Daos\EcologSimulationDao.cs" />
     <Compile Include="Daos\EcologSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
@@ -198,7 +199,6 @@
     <Compile Include="Utils\JobScheduler.cs" />
     <Compile Include="Utils\LogWritter.cs" />
     <Compile Include="Utils\MathUtil.cs" />
-    <Compile Include="Utils\SlackUtil.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

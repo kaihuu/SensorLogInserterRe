@@ -585,13 +585,13 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
             });
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-            if (count > 0)
+            /*if (count > 0)
             {
                 SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
             }
             else {
                 SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-            }
+            }*/
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
         }
@@ -610,6 +610,9 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             if (this.IsCheckedLabMember)
                 insertConfig.CheckeDrivers.Add(DriverNames.Simulation);
+
+            //if (this.IsCheckedLabMember)
+            insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
             // TODO 研究室メンバー
 
             #endregion
