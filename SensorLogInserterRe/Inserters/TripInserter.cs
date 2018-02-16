@@ -229,7 +229,7 @@ namespace SensorLogInserterRe.Inserters
                 && longitude < Coordinate.S01S.LongitudeEnd)
                 return true;
 
-            if (latitude > Coordinate.S02S.LatitudeStart
+            /*if (latitude > Coordinate.S02S.LatitudeStart
                 && latitude < Coordinate.S02S.LatitudeEnd
                 && longitude > Coordinate.S02S.LongitudeStart
                 && longitude < Coordinate.S02S.LongitudeEnd)
@@ -280,7 +280,7 @@ namespace SensorLogInserterRe.Inserters
                && latitude < Coordinate.S10S.LatitudeEnd
                && longitude > Coordinate.S10S.LongitudeStart
                && longitude < Coordinate.S10S.LongitudeEnd)
-                return true;
+                return true;*/
 
             if (latitude > Coordinate.ShimoSeyaNichome.LatitudeStart
                 && latitude < Coordinate.ShimoSeyaNichome.LatitudeEnd

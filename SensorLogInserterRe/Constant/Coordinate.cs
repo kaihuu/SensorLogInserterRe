@@ -150,13 +150,13 @@ namespace SensorLogInserterRe.Constant
 
         public class S01S
         {
-            public static readonly double LatitudeStart = 35.70;
-            public static readonly double LatitudeEnd = 35.71;
-            public static readonly double LongitudeStart = 140.865;
-            public static readonly double LongitudeEnd = 140.875;
+            public static readonly double LatitudeStart = 35.463;
+            public static readonly double LatitudeEnd = 35.464;
+            public static readonly double LongitudeStart = 139.487;
+            public static readonly double LongitudeEnd = 139.488;
         }
 
-        public class S02S
+        /*public class S02S
         {
             public static readonly double LatitudeStart = 35.70;
             public static readonly double LatitudeEnd = 35.71;
@@ -227,14 +227,14 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LatitudeEnd = 35.71;
             public static readonly double LongitudeStart = 140.865;
             public static readonly double LongitudeEnd = 140.875;
-        }
+        }*/
 
         public class ShimoSeyaNichome
         {
-            public static readonly double LatitudeStart = 35.457;
-            public static readonly double LatitudeEnd = 35.459;
-            public static readonly double LongitudeStart = 139.479;
-            public static readonly double LongitudeEnd = 139.481;
+            public static readonly double LatitudeStart = 35.452;
+            public static readonly double LatitudeEnd = 35.462;
+            public static readonly double LongitudeStart = 139.475;
+            public static readonly double LongitudeEnd = 139.485;
         }
         //TODO: 三浦に行った時のデータ挿入、DBに目的地格納
     }
