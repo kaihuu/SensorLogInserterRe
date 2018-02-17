@@ -28,9 +28,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                     DataRow row = gpsRawTable.NewRow();
 
-                    row.SetField(SimulationGpsRawDao.ColumnDriverId, datum.DriverId);
-                    row.SetField(SimulationGpsRawDao.ColumnCarId, datum.CarId);
-                    row.SetField(SimulationGpsRawDao.ColumnSensorId, datum.SensorId);
+                    row.SetField(AndroidGpsRawDao.ColumnDriverId, datum.DriverId);
+                    row.SetField(AndroidGpsRawDao.ColumnCarId, datum.CarId);
+                    row.SetField(AndroidGpsRawDao.ColumnSensorId, datum.SensorId);
 
                     DateTime jst = DateTime.Parse(fields[0].ToString());
                     DateTime androidTime = DateTime.Parse(fields[1].ToString());
@@ -41,7 +41,7 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     if (span.TotalHours > 23 && span.TotalHours < 25)
                         jst = jst.AddDays(-1);
 
-                    row.SetField<DateTime>(SimulationGpsRawDao.ColumnJst, jst);
+                    row.SetField<DateTime>(AndroidGpsRawDao.ColumnJst, jst);
                     #endregion
 
                     #region AndroidTimeの設定
@@ -51,23 +51,23 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                         androidTime = androidTime.AddYears(42);
                         androidTime = androidTime.AddMonths(6);
                     }
-                    row.SetField(SimulationGpsRawDao.ColumnAndroidTime, androidTime);
+                    row.SetField(AndroidGpsRawDao.ColumnAndroidTime, androidTime);
                     // TODO string から DateTimeに変えて影響がないか 
-                    // row[SimulationGpsRawDao.ColumnAndroidTime] = androidTime.ToString(StringUtil.JstFormat);
+                    // row[AndroidGpsRawDao.ColumnAndroidTime] = androidTime.ToString(StringUtil.JstFormat);
 
                     #endregion
 
-                    row.SetField(SimulationGpsRawDao.ColumnLatitude, fields[2]); //　LATITUDE
-                    row.SetField(SimulationGpsRawDao.ColumnLongitude, fields[3]); //　LONGITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　LATITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LONGITUDE
 
                     if(fields.Length > 4)//5列目（ALTITUDE)のカラムが存在する場合、その値を入力
                     { 
-                        row.SetField(SimulationGpsRawDao.ColumnAltitude, fields[4]); //　ALTITUDE
+                        row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　ALTITUDE
                     }
-                    else row.SetField(SimulationGpsRawDao.ColumnAltitude, -100000);//5列目（ALTITUDE)のカラムが存在しない場合、-100000を返す
+                    else row.SetField(AndroidGpsRawDao.ColumnAltitude, -100000);//5列目（ALTITUDE)のカラムが存在しない場合、-100000を返す
                                                                                 
-                    //row.SetField(SimulationGpsRawDao.ColumnSpeed, fields[6]);
-                    //row.SetField(SimulationGpsRawDao.ColumnBearing, fields[7]);
+                    //row.SetField(AndroidGpsRawDao.ColumnSpeed, fields[6]);
+                    //row.SetField(AndroidGpsRawDao.ColumnBearing, fields[7]);
 
                     if (beforeJst != jst.ToString(StringUtil.JstFormat))
                     {
