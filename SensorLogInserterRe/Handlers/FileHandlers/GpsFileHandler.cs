@@ -57,12 +57,18 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 
                     #endregion
 
-                    row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　VALID
-                    row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LATITUDE
-                    row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　LONGITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　LATITUDE
+                    row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LONGITUDE
+
+                    if(fields.Length > 4)
+                    { 
+                        row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　ALTITUDE
+                    }
+                    else row.SetField(AndroidGpsRawDao.ColumnAltitude, -100000);//4列目（ALTITUDE)のカラムが存在しない場合、-100000を返す
+                                                                                
                     //row.SetField(AndroidGpsRawDao.ColumnSpeed, fields[6]);
-                    //row.SetField(AndroidGpsRawDao.ColumnBearing, fields[7]);
-                     
+                     //row.SetField(AndroidGpsRawDao.ColumnBearing, fields[7]);
+
                     if (beforeJst != jst.ToString(StringUtil.JstFormat))
                     {
                         gpsRawTable.Rows.Add(row);
