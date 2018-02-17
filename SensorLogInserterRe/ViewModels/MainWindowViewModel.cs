@@ -612,7 +612,7 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.CheckeDrivers.Add(DriverNames.Simulation);
 
             //if (this.IsCheckedLabMember)
-            insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
+            //insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
             // TODO 研究室メンバー
 
             #endregion
