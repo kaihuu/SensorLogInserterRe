@@ -14,6 +14,11 @@ namespace SensorLogInserterRe.Utils
             return degree * Math.PI / 180;
         }
 
+        public static double ConvertRadianToDegree(double radian)
+        {
+            return radian * 180 / Math.PI;
+        }
+
         public static double ConvertSpeedToRev(Car car, double speed)
         {
             return speed * 60 / (car.TireRadius * 2 * Math.PI) * car.ReductionRatio;
