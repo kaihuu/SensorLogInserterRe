@@ -50,7 +50,7 @@ namespace SensorLogInserterRe.Utils
             return tripsTable;
         }
 
-        public static DataTable GetAndroidGpsRawTable()
+        public static DataTable GetAndroidGpsRawDopplerTable()
         {
             // TODO 並び順をデータベース通りに
             // TODO string 直書きでなく、Daoのstaticフィールドを参照に
@@ -66,6 +66,24 @@ namespace SensorLogInserterRe.Utils
             gpsRawTable.Columns.Add(new DataColumn("ACCURACY", typeof(int)));
             gpsRawTable.Columns.Add(new DataColumn("SPEED", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("BEARING", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));
+
+            return gpsRawTable;
+        }
+
+        public static DataTable GetAndroidGpsRawTable()
+        {
+            // TODO 並び順をデータベース通りに
+            // TODO string 直書きでなく、Daoのstaticフィールドを参照に
+            DataTable gpsRawTable = new DataTable();
+
+            gpsRawTable.Columns.Add(new DataColumn("DRIVER_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("CAR_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("SENSOR_ID", typeof(int)));
+            gpsRawTable.Columns.Add(new DataColumn("JST", typeof(DateTime)));
+            gpsRawTable.Columns.Add(new DataColumn("LATITUDE", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("LONGITUDE", typeof(double)));
+            gpsRawTable.Columns.Add(new DataColumn("ALTITUDE", typeof(double)));
             gpsRawTable.Columns.Add(new DataColumn("ANDROID_TIME", typeof(DateTime)));
 
             return gpsRawTable;
