@@ -45,6 +45,38 @@ namespace SensorLogInserterRe.Inserters
             count = t;
             TripsDao.UpdateConsumedEnergy();
         }
+
+        public static void InsertEcologDoppler(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction, out int count)
+        {
+            count = 0;
+            var tripsTable = TripsDopplerDao.Get(datum);
+            //int i = 1;
+
+            //foreach (DataRow row in tripsTable.Rows)
+            //{
+            //    updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+            //    LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+            //    var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, correction);
+            //    EcologDao.Insert(ecologTable);
+
+            //    i++;
+            //}
+            int t = 0;
+            Parallel.For(0, tripsTable.Rows.Count, i =>
+            {
+                if (tripsTable.Rows[i][(TripsDopplerDao.ColumnConsumedEnergy)] == DBNull.Value)
+                {
+                    updateTextDelegate($"Insetring ECOLOGDoppler ... , {i + 1} / {tripsTable.Rows.Count}");
+                    LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+                    var ecologTable = HagimotoEcologCalculator.CalcEcologDoppler(tripsTable.Rows[i], datum, correction);
+                    EcologDopplerDao.Insert(ecologTable);
+                    t++;
+                }
+
+            });
+            count = t;
+            TripsDopplerDao.UpdateConsumedEnergy();
+        }
         public static void InsertEcologSpeedLPF005MM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig.GpsCorrection correction)
         {
             var tripsTable = TripsSpeedLPF005MMDao.Get(datum);

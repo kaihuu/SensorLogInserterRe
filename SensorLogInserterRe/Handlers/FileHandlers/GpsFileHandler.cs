@@ -13,11 +13,20 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
 {
     class GpsFileHandler
     {
-        public static DataTable ConvertCsvToDataTable(string filePath, InsertDatum datum)
+        private static readonly DateTime NmeaStartDate = DateTime.Parse("2016-05-13 23:58:43.000");
+        public static DataTable ConvertCsvToDataTable(string filePath, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
             var parser = GetParser(filePath);
 
-            var gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
+            var gpsRawTable = new DataTable();
+            if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
+            {
+                gpsRawTable = DataTableUtil.GetAndroidGpsRawDopplerTable();
+            }
+            else
+            {
+                gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
+            }
             string beforeJst = null;
 
             while (!parser.EndOfData)
@@ -60,13 +69,28 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     row.SetField(AndroidGpsRawDao.ColumnLatitude, fields[2]); //　VALID
                     row.SetField(AndroidGpsRawDao.ColumnLongitude, fields[3]); //　LATITUDE
                     row.SetField(AndroidGpsRawDao.ColumnAltitude, fields[4]); //　LONGITUDE
-                    //row.SetField(AndroidGpsRawDao.ColumnSpeed, fields[6]);
-                    //row.SetField(AndroidGpsRawDao.ColumnBearing, fields[7]);
-                     
-                    if (beforeJst != jst.ToString(StringUtil.JstFormat))
+                    row.SetField(AndroidGpsRawDopplerDao.ColumnAccuracy, (int)float.Parse(fields[5]));// ACCURACY
+                    if (fields.Length > 6)
                     {
-                        gpsRawTable.Rows.Add(row);
+                        double speed = Convert.ToDouble(fields[6]);
+                        speed = speed * 3.6;
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, speed); //SPEED
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, fields[7]); //BEARING
                     }
+                    else
+                    {
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnSpeed, DBNull.Value);
+                        row.SetField(AndroidGpsRawDopplerDao.ColumnBearing, DBNull.Value);
+                    }
+                    if (correction == InsertConfig.GpsCorrection.DopplerSpeed && jst < NmeaStartDate)
+                    {
+
+                    }
+                    else if (beforeJst != jst.ToString(StringUtil.JstFormat))
+                    {
+                            gpsRawTable.Rows.Add(row);
+                     }
+                    
 
                     beforeJst = jst.ToString(StringUtil.JstFormat);
                 }
@@ -80,9 +104,14 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
                     // TODO エラー処理
                     continue;
                 }
-                catch (FormatException)
+                catch (FormatException fe)
                 {
+                    Console.WriteLine(fe.Message);
                     // TODO エラー処理
+                }
+                catch (ArgumentException ae)
+                {
+                    Console.WriteLine(ae.Message);
                 }
             }
 
