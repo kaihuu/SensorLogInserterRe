@@ -22,7 +22,7 @@ namespace SensorLogInserterRe.Cleansers.Components
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLatitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLatitude));
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnLongitude, rawRow.Field<double>(CorrectedGpsDao.ColumnLongitude));
             correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnDistanceDifference, rawRow.Field<float>(CorrectedGpsDao.ColumnDistanceDifference));
-            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnHeading, rawRow.Field<float>(CorrectedGpsDao.ColumnHeading));
+            correctedRow.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnHeading, rawRow.Field<double>(CorrectedGpsDao.ColumnHeading));
         }
         public static DataTable speedLowPassFilter(DataTable correctedGpsTable, double cutOffFrequency)
         {

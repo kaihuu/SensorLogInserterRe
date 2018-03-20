@@ -84,6 +84,16 @@ namespace SensorLogInserterRe.Inserters
         private static DataTable InsertGpsRaw(string filePath, InsertDatum datum, InsertConfig.GpsCorrection correction)
         {
             var gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum, correction);
+            if (correction == InsertConfig.GpsCorrection.Normal ||
+                correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching ||
+                correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                gpsRawTable = GpsFileHandler.ConvertCsvToDataTable(filePath, datum, correction);
+            }
+            else if (correction == InsertConfig.GpsCorrection.DopplerSpeed)
+            {
+                gpsRawTable = GpsFileHandler.ConvertCsvToDataTableDoppler(filePath, datum, correction);
+            }
 
             if (gpsRawTable.Rows.Count != 0)
             {
