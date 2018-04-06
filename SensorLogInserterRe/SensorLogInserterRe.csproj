@@ -131,6 +131,7 @@
     <Compile Include="Calculators\HeadingCalculator.cs" />
     <Compile Include="Calculators\LinkMatcher.cs" />
     <Compile Include="Calculators\LostEnergyCalculator.cs" />
+    <Compile Include="Calculators\PlaceGetter.cs" />
     <Compile Include="Calculators\RegeneEnergyCalculator.cs" />
     <Compile Include="Calculators\RegeneLossCalculator.cs" />
     <Compile Include="Calculators\RollingResistanceCalculator.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Daos\EcologSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
+    <Compile Include="Daos\PlaceDao.cs" />
     <Compile Include="Daos\TripsDopplerDao.cs" />
     <Compile Include="Daos\TripsMMDao.cs" />
     <Compile Include="Daos\TripsRawDopplerDao.cs" />
