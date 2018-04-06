@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Calculators;
 using SensorLogInserterRe.Constant;
 using SensorLogInserterRe.Daos;
 using SensorLogInserterRe.Models;
@@ -137,50 +139,58 @@ namespace SensorLogInserterRe.Inserters
 
         private static bool IsHome(double latitude, double longitude, DateTime date, InsertDatum datum)
         {
-            if (latitude > Coordinate.TommyHome.LatitudeStart
-                && latitude < Coordinate.TommyHome.LatitudeEnd
-                && longitude > Coordinate.TommyHome.LongitudeStart
-                && longitude < Coordinate.TommyHome.LongitudeEnd)
-                return true;
+            DataTable dataTable = PlaceGetter.GetInstance().getDataTable();
+            DataRow[] dataRows = dataTable.Select("property = 'home'");
 
-            if (latitude > Coordinate.MoriHome.LatitudeStart
-                && latitude < Coordinate.MoriHome.LatitudeEnd
-                && longitude > Coordinate.MoriHome.LongitudeStart
-                && longitude < Coordinate.MoriHome.LongitudeEnd)
-                return true;
+            for(int i = 0; i < dataRows.Length; i++)
+            {
+                if(dataRows[i][PlaceDao.ColumnStartDate] == null && dataRows[i][PlaceDao.ColumnEndDate] == null)
+                {
+                    if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
+                        && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
+                        && longitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLongitude)
+                        && longitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLongitude))
+                        return true;
+                }
+                else if (dataRows[i][PlaceDao.ColumnStartDate] != null && dataRows[i][PlaceDao.ColumnEndDate] == null)
+                {
+                    if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
+                        && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
+                        && longitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLongitude)
+                        && longitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLongitude)
+                        && date > dataRows[i].Field<DateTime>(PlaceDao.ColumnStartDate))
+                        return true;
+                }
+                else if (dataRows[i][PlaceDao.ColumnStartDate] == null && dataRows[i][PlaceDao.ColumnEndDate] != null)
+                {
+                    if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
+                        && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
+                        && longitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLongitude)
+                        && longitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLongitude)
+                        && date < dataRows[i].Field<DateTime>(PlaceDao.ColumnEndDate))
+                        return true;
+                }
+                else
+                {
+                    if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
+                        && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
+                        && longitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLongitude)
+                        && longitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLongitude)
+                        && date > dataRows[i].Field<DateTime>(PlaceDao.ColumnStartDate)
+                        && date < dataRows[i].Field<DateTime>(PlaceDao.ColumnEndDate))
+                        return true;
+                }
 
-            if (latitude > Coordinate.TamuraHomeBefore.LatitudeStart
-                && latitude < Coordinate.TamuraHomeBefore.LatitudeEnd
-                && longitude > Coordinate.TamuraHomeBefore.LongitudeStart
-                && longitude < Coordinate.TamuraHomeBefore.LongitudeEnd
-                && date < Coordinate.TamuraHomeBefore.EndDate)
-                return true;
-
-            if (latitude > Coordinate.TamuraHomeAfter.LatitudeStart
-                && latitude < Coordinate.TamuraHomeAfter.LatitudeEnd
-                && longitude > Coordinate.TamuraHomeAfter.LongitudeStart
-                && longitude < Coordinate.TamuraHomeAfter.LongitudeEnd
-                && date > Coordinate.TamuraHomeAfter.StartDate)
-                return true;
-
-            if (latitude > Coordinate.AyaseCityHall.LatitudeStart
-                && latitude < Coordinate.AyaseCityHall.LatitudeEnd
-                && longitude > Coordinate.AyaseCityHall.LongitudeStart
-                && longitude < Coordinate.AyaseCityHall.LongitudeEnd)
-                return true;
-
-            if (latitude > Coordinate.UemuraHome.LatitudeStart
-                && latitude < Coordinate.UemuraHome.LatitudeEnd
-                && longitude > Coordinate.UemuraHome.LongitudeStart
-                && longitude < Coordinate.UemuraHome.LongitudeEnd)
-                return true;
+            }
 
             return false;
         }
 
         private static bool IsYnu(double latitude, double longitude)
         {
-            return latitude > Coordinate.Ynu.LatitudeStart && latitude < Coordinate.Ynu.LatitudeEnd && longitude > Coordinate.Ynu.LongitudeStart && longitude < Coordinate.Ynu.LongitudeEnd;
+            GeoCoordinate startCoordinate = PlaceGetter.GetInstance().Get("YNU").Item1;
+            GeoCoordinate endCoordinate = PlaceGetter.GetInstance().Get("YNU").Item2;
+            return latitude > startCoordinate.Latitude && latitude < endCoordinate.Latitude && longitude > startCoordinate.Longitude && longitude < endCoordinate.Longitude;
         }
 
         private static int GetMaxTripId(InsertConfig.GpsCorrection correction)

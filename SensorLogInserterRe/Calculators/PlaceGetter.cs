@@ -39,6 +39,11 @@ namespace SensorLogInserterRe.Calculators
 
         }
 
+        public DataTable getDataTable()
+        {
+            return _placeTable;
+        }
+
         public Tuple<GeoCoordinate, GeoCoordinate> Get(String placeName)
         {
             GeoCoordinate startCoordinate = new GeoCoordinate();

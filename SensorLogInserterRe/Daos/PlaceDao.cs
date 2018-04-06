@@ -17,6 +17,7 @@ namespace SensorLogInserterRe.Daos
         public static readonly string ColumnEndLongitude = "end_longitude";
         public static readonly string ColumnStartDate = "start_date";
         public static readonly string ColumnEndDate = "end_date";
+        public static readonly string ColumnProperty = "property";
 
 
         private static readonly string TableName = "place";
