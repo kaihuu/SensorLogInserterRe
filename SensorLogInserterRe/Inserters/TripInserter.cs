@@ -144,7 +144,7 @@ namespace SensorLogInserterRe.Inserters
 
             for(int i = 0; i < dataRows.Length; i++)
             {
-                if(dataRows[i][PlaceDao.ColumnStartDate] == null && dataRows[i][PlaceDao.ColumnEndDate] == null)
+                if(dataRows[i][PlaceDao.ColumnStartDate] == DBNull.Value && dataRows[i][PlaceDao.ColumnEndDate] == DBNull.Value)
                 {
                     if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
                         && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
@@ -152,7 +152,7 @@ namespace SensorLogInserterRe.Inserters
                         && longitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLongitude))
                         return true;
                 }
-                else if (dataRows[i][PlaceDao.ColumnStartDate] != null && dataRows[i][PlaceDao.ColumnEndDate] == null)
+                else if (dataRows[i][PlaceDao.ColumnStartDate] != DBNull.Value && dataRows[i][PlaceDao.ColumnEndDate] == DBNull.Value)
                 {
                     if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
                         && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)
@@ -161,7 +161,7 @@ namespace SensorLogInserterRe.Inserters
                         && date > dataRows[i].Field<DateTime>(PlaceDao.ColumnStartDate))
                         return true;
                 }
-                else if (dataRows[i][PlaceDao.ColumnStartDate] == null && dataRows[i][PlaceDao.ColumnEndDate] != null)
+                else if (dataRows[i][PlaceDao.ColumnStartDate] == DBNull.Value && dataRows[i][PlaceDao.ColumnEndDate] != DBNull.Value)
                 {
                     if (latitude > dataRows[i].Field<double>(PlaceDao.ColumnStartLatitude)
                         && latitude < dataRows[i].Field<double>(PlaceDao.ColumnEndLatitude)

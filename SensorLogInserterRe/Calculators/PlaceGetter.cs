@@ -48,7 +48,7 @@ namespace SensorLogInserterRe.Calculators
         {
             GeoCoordinate startCoordinate = new GeoCoordinate();
             GeoCoordinate endCoordinate = new GeoCoordinate();
-            DataRow dataRow = _placeTable.Select("place_name = "+ placeName)[0];
+            DataRow dataRow = _placeTable.Select("place_name = '"+ placeName + "'")[0];
 
             startCoordinate.Latitude = dataRow.Field<double>(PlaceDao.ColumnStartLatitude);
             startCoordinate.Longitude = dataRow.Field<double>(PlaceDao.ColumnStartLongitude);
