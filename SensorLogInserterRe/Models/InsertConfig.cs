@@ -40,6 +40,8 @@ namespace SensorLogInserterRe.Models
 
         public EstimatedCarModel CarModel { get; set; }
 
+        public bool IsCheckedSightseeingInsert { get; set; }
+
         private InsertConfig()
         {
             this.CheckeDrivers = new List<string>();
@@ -67,5 +69,7 @@ namespace SensorLogInserterRe.Models
             ret.Append("CarModel: " + this.CarModel);
             return ret.ToString();
         }
+
+ 
     }
 }

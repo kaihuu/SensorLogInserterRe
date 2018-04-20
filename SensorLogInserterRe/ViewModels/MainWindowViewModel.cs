@@ -497,6 +497,7 @@ namespace SensorLogInserterRe.ViewModels
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             
             this.InsertConfig = this.GenerateInsertConfig();
+
             #region ファイル検索
 
             this.LogText += LogTexts.DuringCheckOfTheUpdateFile + "\n";
@@ -607,16 +608,19 @@ namespace SensorLogInserterRe.ViewModels
                        sw.Stop();
                       LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
                 #endregion
-               });
+            });
 
-                    this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-                if (count > 0)
-                {
+            this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
+
+            if (count > 0)
+            {
                 SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-                }
-                else {
+            }
+            else
+            {
                 SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-                }
+            }
+
             IsEnabledInsertButton = true;
             IsEnabledStartUpLoopButton = true;
         }
