@@ -12,7 +12,20 @@ namespace SensorLogInserterRe.Constant
         public const string Mori = "mori";
         public const string Tamura = "tam";
         public const string Uemura = "uemura";
+        public const string Ibaraki = "ibaraki";
+        public const string Hamazaki = "hamazaki";
+        public const string Koike = "koike";
+        public const string Isobe = "isobe";
+        public const string Arinaga = "arinaga";
+        public const string Kichise = "kichise";
+        public const string Itani = "itani";
+        public const string Katsumura = "katsumura";
+        public const string Watanabe = "watanabe";
+        public const string Ishida = "ishida";
+        public const string Fukano = "fukano";
         // TODO 研究室メンバーの追加
+
+        // TODO ECOLOGDB2016.DRIVERSと内容が重複するので一本化する
 
         public static int GetDriverId(string driverName)
         {
@@ -26,7 +39,31 @@ namespace SensorLogInserterRe.Constant
                     return 9;
                 case DriverNames.Uemura:
                     return 17;
+
                 // TODO 研究室メンバーを追加
+
+                case DriverNames.Ibaraki:
+                    return 20;
+                case DriverNames.Hamazaki:
+                    return 21;
+                case DriverNames.Koike:
+                    return 24;
+                case DriverNames.Isobe:
+                    return 26;
+                case DriverNames.Arinaga:
+                    return 27;
+                case DriverNames.Kichise:
+                    return 28;
+                case DriverNames.Itani:
+                    return 29;
+                case DriverNames.Katsumura:
+                    return 30;
+                case DriverNames.Watanabe:
+                    return 31;
+                case DriverNames.Ishida:
+                    return 32;
+                case DriverNames.Fukano:
+                    return 33;
                 default:
                     return -1;
             }
