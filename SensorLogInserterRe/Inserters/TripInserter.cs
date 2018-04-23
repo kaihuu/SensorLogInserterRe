@@ -193,6 +193,39 @@ namespace SensorLogInserterRe.Inserters
             return latitude > startCoordinate.Latitude && latitude < endCoordinate.Latitude && longitude > startCoordinate.Longitude && longitude < endCoordinate.Longitude;
         }
 
+
+        /*  
+         *  IsSightseeing()
+         *  2018leaf実験用に追加した観光オプション判定用のメソッド
+         *  引数で与えられた座標がPLACE.PROPERTY==sightseeingとなるようなレコード群に含まれるかを判定する。
+         */
+        private static bool IsSightseeing(double latitude, double longitude)
+        {
+            GeoCoordinate startCoordinate;
+            GeoCoordinate endCoordinate;
+
+            // property値がsightseeingである範囲群を取得
+            List<Tuple<GeoCoordinate, GeoCoordinate>> sightseeingPlaces = PlaceGetter.GetInstance().GetRowsByProperty("sightseeing");
+
+            // 引数で与えられた座標が範囲群の中の1つの範囲内に存在する場合はTrue
+            foreach(Tuple<GeoCoordinate, GeoCoordinate> sightseeingPlace in sightseeingPlaces)
+            {
+                startCoordinate = sightseeingPlace.Item1;
+                endCoordinate = sightseeingPlace.Item2;
+
+                if (latitude > startCoordinate.Latitude
+                    && latitude < endCoordinate.Latitude
+                    && longitude > startCoordinate.Longitude
+                    && longitude < endCoordinate.Longitude)
+                {
+                    return true;
+                }
+            }
+
+            // ここに到達した場合には、引数で与えられた座標はsightseeingプロパティを持つ場所群に含まれない
+            return false;
+        }
+
         private static int GetMaxTripId(InsertConfig.GpsCorrection correction)
         {
             int tripid = -1;
@@ -403,6 +436,17 @@ namespace SensorLogInserterRe.Inserters
             }
         }
 
+        /*  
+         *  InsertSightSeeingTrip()
+         *  観光用トリップを挿入するためのメソッド
+         *  
+         */
+        private static void InsertSightSeeingTrip()
+        {
+
+        }
+
+
         private static string ConvertRowToString(DataRow firstRow, DataRow lastRow)
         {
             return $"DRIVER_ID: {firstRow.Field<int>(TripsDao.ColumnDriverId)}, " +
@@ -411,7 +455,6 @@ namespace SensorLogInserterRe.Inserters
                    $"START_TIME:{firstRow.Field<DateTime>(TripsDao.ColumnStartTime)}, " +
                    $"END_TIME: {lastRow.Field<DateTime>(TripsDao.ColumnEndTime)}";
         }
-
 
     }
 }
