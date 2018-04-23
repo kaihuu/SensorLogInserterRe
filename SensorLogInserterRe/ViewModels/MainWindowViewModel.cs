@@ -578,7 +578,7 @@ namespace SensorLogInserterRe.ViewModels
                 //{
                 for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
                 {
-                    TripInserter.InsertTrip(datum, InsertConfig.Correction[i]);
+                    TripInserter.InsertTrip(datum, InsertConfig.Correction[i], InsertConfig.IsCheckedSightseeingInsert);
                 }
                 //});
 
