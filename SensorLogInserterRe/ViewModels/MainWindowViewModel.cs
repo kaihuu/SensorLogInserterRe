@@ -400,18 +400,18 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
-        #region IsSightseeing変更通知プロパティ
-        private bool _IsSightseeing;
+        #region IsCheckedSightseeing変更通知プロパティ
+        private bool _IsCheckedSightseeing;
         
-        public bool IsSightseeing
+        public bool IsCheckedSightseeing
         {
             get
-            { return _IsSightseeing; }
+            { return _IsCheckedSightseeing; }
             set
             {
-                if (_IsSightseeing == value)
+                if (_IsCheckedSightseeing == value)
                     return;
-                _IsSightseeing = value;
+                _IsCheckedSightseeing = value;
                 RaisePropertyChanged("IsSightseeing");
             }
         }

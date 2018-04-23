@@ -170,7 +170,7 @@
 
             <StackPanel Margin="10, 0, 0, 0"
                         Orientation="Horizontal">
-                <CheckBox Content="観光オプション" IsChecked="{Binding IsSightseeing}" />
+                <CheckBox Content="観光オプション" IsChecked="{Binding IsCheckedSightseeing}" />
 
             </StackPanel>
         </GroupBox>
