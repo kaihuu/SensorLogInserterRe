@@ -44,6 +44,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -161,7 +162,20 @@
 
         </GroupBox>
 
-        <Grid Grid.Row="6" Height="50">
+        <GroupBox Grid.Row="6">
+
+            <GroupBox.Header>
+                <Label Content="その他オプション" />
+            </GroupBox.Header>
+
+            <StackPanel Margin="10, 0, 0, 0"
+                        Orientation="Horizontal">
+                <CheckBox Content="観光オプション" IsChecked="{Binding IsSightseeing}" />
+
+            </StackPanel>
+        </GroupBox>
+
+        <Grid Grid.Row="7" Height="50">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -196,7 +210,7 @@
 
         </Grid>
 
-        <ScrollViewer Grid.Row="7" Margin="5,0">
+        <ScrollViewer Grid.Row="8" Margin="5,0">
 
             <TextBox Text="{Binding LogText}"
                      TextWrapping="Wrap"
