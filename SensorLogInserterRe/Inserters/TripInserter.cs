@@ -91,8 +91,15 @@ namespace SensorLogInserterRe.Inserters
             {
                 DataTable tripsTable = DataTableUtil.GetTripsTable();
 
+
+                // 観光オプションによるインサート処理はあらかじめ切り分ける。
+                if (isCheckedSightseeingInsert)
+                {
+                    InsertSightSeeingTrip(tripsRawTable, tripsTable, datum, i, correction);
+                }
+
                 // 自宅出発
-                if (IsHome(tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude),
+                else if (IsHome(tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLatitude),
                     tripsRawTable.Rows[i].Field<double>(TripsRawDao.ColumnStartLongitude),
                     tripsRawTable.Rows[i].Field<DateTime>(TripsRawDao.ColumnStartTime),
                     datum))
@@ -439,11 +446,114 @@ namespace SensorLogInserterRe.Inserters
         /*  
          *  InsertSightSeeingTrip()
          *  観光用トリップを挿入するためのメソッド
-         *  
+         *  YNU出発と観光地出発の2種類があることに注意が必要になる。
          */
-        private static void InsertSightSeeingTrip()
+        private static void InsertSightSeeingTrip(DataTable tripsRawTable, DataTable tripsTable, InsertDatum datum, int startIndex, InsertConfig.GpsCorrection correction)
         {
+            // InsertHomewardTripと同じような処理を記述
+            // tripのスタートのtripsRawのインデックスをstartIndex
+            // 現在注目しているtripsRawのインデックスをcurrentIndex
+            int currentIndex = startIndex;
 
+            // tripChangeFlagはループを抜けるためのフラグ
+            // このフラグが立つと、異なるトリップに到達したことを示す
+            bool tripChangeFlag = false;
+
+            // TripsRawを結合してTripsを生成する。
+            while (currentIndex < tripsRawTable.Rows.Count && tripChangeFlag == false)
+            {
+                // スタートがynuか観光地 かつ ゴールがynuか観光地
+                // でもynuからynuのトリップは考えない
+
+                // スタート,ゴールがynuであるか
+                bool isStartYnu = IsYnu(tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
+                                        tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
+                bool isEndYnu = IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
+                                      tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
+                // スタートゴールが観光地であるか
+                bool isStartSightseeingSpot = IsSightseeing(tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
+                                                            tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
+                bool isEndSightseeingSpot = IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
+                                                          tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
+                
+                if (isStartYnu && isEndYnu)
+                {
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません。"
+                                                                 + ConvertRowToString(tripsRawTable.Rows[startIndex], 
+                                                                                      tripsRawTable.Rows[currentIndex]));
+                    tripChangeFlag = true;
+                }
+                else if ( (isStartYnu || isStartSightseeingSpot)
+                       && (isEndYnu || isEndSightseeingSpot) )
+                {
+                    var row = tripsTable.NewRow();
+                    row.SetField(TripsDao.ColumnTripId, GetMaxTripId(correction));
+                    row.SetField(TripsDao.ColumnDriverId, tripsRawTable.Rows[startIndex].Field<int>(TripsRawDao.ColumnDriverId));
+                    row.SetField(TripsDao.ColumnCarId, tripsRawTable.Rows[startIndex].Field<int>(TripsRawDao.ColumnCarId));
+                    row.SetField(TripsDao.ColumnSensorId, tripsRawTable.Rows[startIndex].Field<int>(TripsRawDao.ColumnSensorId));
+                    row.SetField(TripsDao.ColumnStartTime, tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime));
+                    row.SetField(TripsDao.ColumnEndTime, tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime));
+                    row.SetField(TripsDao.ColumnStartLatitude, tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLatitude));
+                    row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
+                    row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude));
+                    row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
+                    row.SetField(TripsDao.ColumnTripDirection, "sightseeing");
+
+                    TimeSpan span = tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime)
+                                    - tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime);
+
+                    if (span.TotalHours > 12)
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "別々のトリップを結合する可能性があるので挿入しません "
+                                                                     + ConvertRowToString(tripsRawTable.Rows[startIndex],
+                                                                                          tripsRawTable.Rows[currentIndex]));
+                        break;
+                    }
+
+                    if (correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching
+                        && !TripsSpeedLPF005MMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.MapMatching
+                             && !TripsMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.Normal
+                             && !TripsDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    } 
+                    else if (correction == InsertConfig.GpsCorrection.DopplerSpeed
+                             && !TripsDopplerDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else
+                    {
+                        LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
+                                                                     + ConvertRowToString(tripsRawTable.Rows[startIndex],
+                                                                                          tripsRawTable.Rows[currentIndex]));
+                    }
+
+                    tripChangeFlag = true;
+                }
+
+                currentIndex++;
+
+                // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
+                if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
+                          tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude))
+                    || IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude),
+                                     tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude))
+                   )
+                {
+                    tripChangeFlag = true;
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒？トリップなので挿入しません "
+                              + ConvertRowToString(tripsRawTable.Rows[startIndex], tripsRawTable.Rows[currentIndex]));
+                }
+            }
         }
 
 
