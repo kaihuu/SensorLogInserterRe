@@ -700,6 +700,11 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.Correction.Add(InsertConfig.GpsCorrection.DopplerSpeed);
             #endregion
 
+            #region 観光オプションの設定
+            if (this.IsCheckedSightseeing)
+                insertConfig.IsCheckedSightseeingInsert = this.IsCheckedSightseeing;
+            #endregion
+
             LogWritter.WriteLog(LogWritter.LogMode.Search, insertConfig.ToString());
 
             return insertConfig;
