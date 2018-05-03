@@ -10,7 +10,8 @@ namespace SensorLogInserterRe.Models
     {
         public enum EstimatedCarModel
         {
-            LeafEarlyModel
+            LeafEarlyModel,
+            LeafZE1Model
         }
 
         public enum EstimationModel

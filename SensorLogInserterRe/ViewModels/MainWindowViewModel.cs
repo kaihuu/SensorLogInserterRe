@@ -157,6 +157,27 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsCheckedLeafZE1Model変更プロパティ
+        private bool _IsCheckedLeafZE1Model;
+
+        public bool IsCheckedLeafZE1Model
+        {
+            get
+            {
+                return _IsCheckedLeafZE1Model;
+            }
+            set
+            {
+                if (_IsCheckedLeafZE1Model == value)
+                {
+                    return;
+                }
+                _IsCheckedLeafZE1Model = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         #region IsCheckedEvModel変更通知プロパティ
         private bool _IsCheckedEvModel;
 
@@ -464,6 +485,7 @@ namespace SensorLogInserterRe.ViewModels
         private void InitEvEstimationModel()
         {
             this.IsCheckedLeafEarlyModel = true;
+            this.IsCheckedLeafZE1Model = false;
         }
 
         private void InitModelChecked()
@@ -679,7 +701,8 @@ namespace SensorLogInserterRe.ViewModels
             #region 推定対象車両の設定
             if (this.IsCheckedLeafEarlyModel)
                 insertConfig.CarModel = InsertConfig.EstimatedCarModel.LeafEarlyModel;
-
+            if (this.IsCheckedLeafZE1Model)
+                insertConfig.CarModel = InsertConfig.EstimatedCarModel.LeafZE1Model;
             #endregion
 
             #region 推定モデルの設定
