@@ -504,6 +504,7 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
                     row.SetField(TripsDao.ColumnTripDirection, "sightseeing");
+                    row.SetField(TripsDao.ColumnValidation, DBNull.Value);
 
                     TimeSpan span = tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime)
                                     - tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime);
@@ -548,7 +549,7 @@ namespace SensorLogInserterRe.Inserters
 
                 currentIndex++;
                 // IndexOutOfBoundsを防止
-                if(!(currentIndex > tripsRawTable.Rows.Count))
+                if(currentIndex >= tripsRawTable.Rows.Count)
                 {
                     return;
                 }
