@@ -98,7 +98,7 @@
                         Orientation="Horizontal">
 
                 <CheckBox Content="LEAF 前期型" IsChecked="{Binding  IsCheckedLeafEarlyModel }" />
-                <CheckBox Content="LEAF-ZE1" IsChecked="{Binding IsCheckedLeafZE1Model}" />
+                <!--<CheckBox Content="LEAF-ZE1" IsChecked="{Binding IsCheckedLeafZE1Model}" />-->
             </StackPanel>
 
         </GroupBox>
