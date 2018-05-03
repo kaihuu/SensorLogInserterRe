@@ -547,6 +547,11 @@ namespace SensorLogInserterRe.Inserters
                 }
 
                 currentIndex++;
+                // IndexOutOfBoundsを防止
+                if(!(currentIndex > tripsRawTable.Rows.Count))
+                {
+                    return;
+                }
 
                 // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
                 if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
