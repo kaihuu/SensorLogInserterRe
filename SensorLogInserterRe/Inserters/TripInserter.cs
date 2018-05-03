@@ -476,13 +476,19 @@ namespace SensorLogInserterRe.Inserters
                 bool isEndSightseeingSpot = IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
                                                           tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
                 
-                if (isStartYnu && isEndYnu)
+                // そもそもスタートがynuでも観光地でもない場合
+                if (!(isStartSightseeingSpot || isStartYnu)) {
+                    tripChangeFlag = true;
+                }
+                // YNU発YNU着はない
+                else if (isStartYnu && isEndYnu)
                 {
                     LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません。"
                                                                  + ConvertRowToString(tripsRawTable.Rows[startIndex], 
                                                                                       tripsRawTable.Rows[currentIndex]));
                     tripChangeFlag = true;
                 }
+                // YNUまたは観光地が出発地AND到着地
                 else if ( (isStartYnu || isStartSightseeingSpot)
                        && (isEndYnu || isEndSightseeingSpot) )
                 {
