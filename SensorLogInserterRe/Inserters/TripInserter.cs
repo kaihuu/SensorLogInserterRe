@@ -503,7 +503,8 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
-                    row.SetField(TripsDao.ColumnTripDirection, "sightseeing");
+                    row.SetField(TripsDao.ColumnConsumedEnergy, DBNull.Value);
+                    row.SetField(TripsDao.ColumnTripDirection, "tourism");
                     row.SetField(TripsDao.ColumnValidation, DBNull.Value);
 
                     TimeSpan span = tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime)
