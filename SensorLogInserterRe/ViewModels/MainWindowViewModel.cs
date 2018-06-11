@@ -417,6 +417,25 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+        #region IsCheckedDopplerNotMM変更通知プロパティ
+        private bool _IsCheckedDopplerNotMM;
+
+        public bool IsCheckedDopplerNotMM
+        {
+            get
+            { return _IsCheckedDopplerNotMM; }
+            set
+            {
+                if (_IsCheckedDopplerNotMM == value)
+                    return;
+                _IsCheckedDopplerNotMM = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+
+
 
         private InsertConfig InsertConfig { get; set; }
 
@@ -479,6 +498,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedSpeedLPFMapMatching = true;
             this.IsCheckedNormal = true;
             this.IsCheckedDopplerSpeed = true;
+            this.IsCheckedDopplerNotMM = true;
         }
 
         private void InitInsertionTarget()
@@ -534,18 +554,15 @@ namespace SensorLogInserterRe.ViewModels
             this.LogText += LogTexts.TheSrartOfTheInsertingGps + "\n";
             LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheSrartOfTheInsertingGps + "\n");
 
-            //await Task.Run(() =>
-            //{
-            //    for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
-            //    {
-            //        GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
-            //    }
-            //});
+                for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
+                {
+                 await GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
+                }
 
-            Parallel.For(0, this.InsertConfig.Correction.Count, i =>
-           {
-               GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
-           });
+            // Parallel.For(0, this.InsertConfig.Correction.Count, i =>
+            //{
+            //    GpsInserter.InsertGps(this.InsertFileList, this.InsertConfig, i, this.InsertDatumList);
+            //});
 
             this.LogText += LogTexts.TheEndOfTheInsertingGps + "\n";
             LogWritter.WriteLog(LogWritter.LogMode.Gps, LogTexts.TheEndOfTheInsertingGps + "\n");
@@ -570,17 +587,18 @@ namespace SensorLogInserterRe.ViewModels
 
             #endregion
 
-            foreach (var datum in InsertDatumList)
+            await Task.Run(() =>
             {
+                foreach (var datum in InsertDatumList)
+                {
                 #region トリップ挿入
 
-                //await Task.Run(() =>
-                //{
+
                 for (int i = 0; i < this.InsertConfig.Correction.Count; i++)
                 {
                     TripInserter.InsertTrip(datum, InsertConfig.Correction[i], InsertConfig.IsCheckedSightseeingInsert);
                 }
-                //});
+
 
                 #endregion
 
@@ -595,50 +613,63 @@ namespace SensorLogInserterRe.ViewModels
                 //}
 
                 #endregion
-            }
+                }
+                });
+
             int count = 0;
-            Parallel.For(0, InsertDatumList.Count, i =>
+
+            await Task.Run(() =>
             {
-                #region ECOLOG挿入
-                        sw.Start();
+                Parallel.For(0, InsertDatumList.Count, i =>
+                {
+                    #region ECOLOG挿入
+                    sw.Start();
 
-                         if (IsCheckedSpeedLPFMapMatching)
-                        {
-                            EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
-                        }
-                        if (IsCheckedMapMatching)
-                       {
-                            EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
-                        }
+                    if (IsCheckedSpeedLPFMapMatching)
+                    {
+                        EcologInserter.InsertEcologSpeedLPF005MM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.SpeedLPFMapMatching);
+                    }
+                    if (IsCheckedMapMatching)
+                    {
+                        EcologInserter.InsertEcologMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.MapMatching);
+                    }
 
-                        if (IsCheckedNormal)
-                        {
-                            EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal,out count);
-                        }
-                        if (IsCheckedDopplerSpeed)
-                        {
-                            EcologInserter.InsertEcologDoppler(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.DopplerSpeed, out count);
-                        }
+                    if (IsCheckedNormal)
+                    {
+                        EcologInserter.InsertEcolog(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.Normal, out count);
+                    }
+                    if (IsCheckedDopplerSpeed)
+                    {
+                        EcologInserter.InsertEcologDoppler(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.DopplerSpeed, out count);
+                    }
+                    if (IsCheckedDopplerNotMM)
+                    {
+                        EcologInserter.InsertEcologDopplerNotMM(InsertDatumList[i], this.UpdateText, InsertConfig.GpsCorrection.DopplerNotMM);
+                    }
 
 
-                       sw.Stop();
-                      LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
-                #endregion
+                    sw.Stop();
+                    LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);
+                    #endregion
+                });
             });
 
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
-
-            if (count > 0)
+            await Task.Run(() =>
             {
-                SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-            }
-            else
-            {
-                SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-            }
+                if (count > 0)
+                {
+                    SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                }
+                else
+                {
+                    SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                }
+                IsEnabledInsertButton = true;
+                IsEnabledStartUpLoopButton = true;
+            });
 
-            IsEnabledInsertButton = true;
-            IsEnabledStartUpLoopButton = true;
+
         }
 
         private InsertConfig GenerateInsertConfig()
@@ -698,6 +729,8 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.Correction.Add(InsertConfig.GpsCorrection.SpeedLPFMapMatching);
             if (this.IsCheckedDopplerSpeed)
                 insertConfig.Correction.Add(InsertConfig.GpsCorrection.DopplerSpeed);
+            if (this.IsCheckedDopplerNotMM)
+                insertConfig.Correction.Add(InsertConfig.GpsCorrection.DopplerNotMM);
             #endregion
 
             #region 観光オプションの設定

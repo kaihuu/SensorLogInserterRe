@@ -19,14 +19,9 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
             var parser = GetParser(filePath);
 
             var gpsRawTable = new DataTable();
-            if (correction == InsertConfig.GpsCorrection.DopplerSpeed)
-            {
-                gpsRawTable = DataTableUtil.GetAndroidGpsRawDopplerTable();
-            }
-            else
-            {
-                gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
-            }
+
+            gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
+
             string beforeJst = null;
 
             while (!parser.EndOfData)
@@ -110,14 +105,10 @@ namespace SensorLogInserterRe.Handlers.FileHandlers
             var parser = GetParser(filePath);
 
             var gpsRawTable = new DataTable();
-            if(correction == InsertConfig.GpsCorrection.DopplerSpeed)
-            {
-                gpsRawTable = DataTableUtil.GetAndroidGpsRawDopplerTable();
-            }
-            else
-            {
-                gpsRawTable = DataTableUtil.GetAndroidGpsRawTable();
-            }
+
+            gpsRawTable = DataTableUtil.GetAndroidGpsRawDopplerTable();
+
+
             string beforeJst = null;
 
             while (!parser.EndOfData)

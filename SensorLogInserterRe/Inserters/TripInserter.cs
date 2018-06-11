@@ -53,6 +53,10 @@ namespace SensorLogInserterRe.Inserters
             {
                 TripsRawDopplerDao.Insert(tripsTable);
             }
+            else if(correction == InsertConfig.GpsCorrection.DopplerNotMM)
+            {
+                TripsRawDopplerNotMMDao.Insert(tripsTable);
+            }
             else {
                 TripsRawDao.Insert(tripsTable);
             }
@@ -81,6 +85,11 @@ namespace SensorLogInserterRe.Inserters
             {
                 tripsRawTable = TripsRawDopplerDao.Get(datum);
                 TripsDopplerDao.DeleteTrips(); //途中中断された際に作成したトリップを削除
+            }
+            else if (correction == InsertConfig.GpsCorrection.DopplerNotMM)
+            {
+                tripsRawTable = TripsRawDopplerNotMMDao.Get(datum);
+                TripsDopplerNotMMDao.DeleteTrips();
             }
 
 
@@ -137,6 +146,21 @@ namespace SensorLogInserterRe.Inserters
                         {
                                 TripsDopplerDao.Insert(tripsTable);
                             
+                        }
+                    }
+                }
+                else if(correction == InsertConfig.GpsCorrection.DopplerNotMM)
+                {
+                    if (tripsTable.Rows.Count != 0)
+                    {
+                        var gpsCorrectedTable = CorrectedGpsDopplerNotMMDao.GetNormalized(
+                            tripsTable.Rows[0].Field<DateTime>(TripsDopplerDao.ColumnStartTime),
+                            tripsTable.Rows[0].Field<DateTime>(TripsDopplerDao.ColumnEndTime),
+                            datum);
+                        if (gpsCorrectedTable.Rows.Count != 0)
+                        {
+                            TripsDopplerNotMMDao.Insert(tripsTable);
+
                         }
                     }
                 }
@@ -252,6 +276,10 @@ namespace SensorLogInserterRe.Inserters
             {
                 tripid = TripsDopplerDao.GetMaxTripId() + 1;
             }
+            else if(correction == InsertConfig.GpsCorrection.DopplerNotMM)
+            {
+                tripid = TripsDopplerNotMMDao.GetMaxTripId() + 1;
+            }
             return tripid;
         }
 
@@ -306,6 +334,10 @@ namespace SensorLogInserterRe.Inserters
                         tripsTable.Rows.Add(row);
                     }
                     else if (correction == InsertConfig.GpsCorrection.DopplerSpeed && !TripsDopplerDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
+                    else if (correction == InsertConfig.GpsCorrection.DopplerNotMM && !TripsDopplerNotMMDao.IsExsistsTrip(row))
                     {
                         tripsTable.Rows.Add(row);
                     }

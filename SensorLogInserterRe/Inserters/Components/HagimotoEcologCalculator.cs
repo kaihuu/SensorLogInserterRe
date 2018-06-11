@@ -71,6 +71,11 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsTable = CorrectedGPSDopplerDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                 tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
             }
+            else if(correction == InsertConfig.GpsCorrection.DopplerNotMM)
+            {
+                correctedGpsTable = CorrectedGpsDopplerNotMMDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
+                    tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
+            }
 
 
             var ecologTable = DataTableUtil.GetEcologTable();
