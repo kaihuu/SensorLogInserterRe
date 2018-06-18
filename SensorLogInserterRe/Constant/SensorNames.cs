@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SensorLogInserterRe.Daos;
 
 namespace SensorLogInserterRe.Constant
 {
@@ -34,57 +36,64 @@ namespace SensorLogInserterRe.Constant
 
         public static int GetSensorId(string sensorName)
         {
-            switch (sensorName)
-            {
-                case N06C:
-                    return 3;
-                case At3S0_1:
-                    return 6;
-                case At3S0_1_40:
-                    return 6;
-                case Sc01C:
-                    return 7;
-                case At570_2:
-                    return 8;
-                case Mz604_1_32:
-                    return 9;
-                case Mz604_1_40:
-                    return 9;
-                case Mz604_2_40:
-                    return 10;
-                case A1_07:
-                    return 11;
-                case At570_3:
-                    return 12;
-                case At570_4:
-                    return 13;
-                case SO_04D:
-                    return 15;
-                case At570_5:
-                    return 16;
-                case Nexus7_2013_3:
-                    return 17;
-                case Nexus7_2013_4:
-                    return 18;
-                case Nexus7_2013_4_Small:
-                    return 18;
-                case Nexus7_2013_5:
-                    return 20;
-                case XperiaGX_SO_04D:
-                    return 21;
-                case SO_02_F:
-                    return 22;
-                case Nexus6:
-                    return 23;
-                case Nexus7_2012_1:
-                    return 24;
-                case Nexus7_2013_2:
-                    return 25;
-                case Zenfone2_1:
-                    return 26;
-                default: 
-                    return -1;
-            }
+
+            //switch (sensorName)
+            //{
+            //    case N06C:
+            //        return 3;
+            //    case At3S0_1:
+            //        return 6;
+            //    case At3S0_1_40:
+            //        return 6;
+            //    case Sc01C:
+            //        return 7;
+            //    case At570_2:
+            //        return 8;
+            //    case Mz604_1_32:
+            //        return 9;
+            //    case Mz604_1_40:
+            //        return 9;
+            //    case Mz604_2_40:
+            //        return 10;
+            //    case A1_07:
+            //        return 11;
+            //    case At570_3:
+            //        return 12;
+            //    case At570_4:
+            //        return 13;
+            //    case SO_04D:
+            //        return 15;
+            //    case At570_5:
+            //        return 16;
+            //    case Nexus7_2013_3:
+            //        return 17;
+            //    case Nexus7_2013_4:
+            //        return 18;
+            //    case Nexus7_2013_4_Small:
+            //        return 18;
+            //    case Nexus7_2013_5:
+            //        return 20;
+            //    case XperiaGX_SO_04D:
+            //        return 21;
+            //    case SO_02_F:
+            //        return 22;
+            //    case Nexus6:
+            //        return 23;
+            //    case Nexus7_2012_1:
+            //        return 24;
+            //    case Nexus7_2013_2:
+            //        return 25;
+            //    case Zenfone2_1:
+            //        return 26;
+            //    default: 
+            //        return -1;
+            //}
+
+            DataTable _sensorNameTable = SensorNameDao.Get(sensorName);
+            DataRow dataRow = _sensorNameTable.Select()[0];
+            Console.WriteLine(dataRow.Field<int>(SensorNameDao.ColumnSensorId));
+
+            return dataRow.Field<int>(SensorNameDao.ColumnSensorId);
         }
     }
 }

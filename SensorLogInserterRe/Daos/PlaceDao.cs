@@ -33,17 +33,6 @@ namespace SensorLogInserterRe.Daos
 
             return DatabaseAccesser.GetResult(query);
         }
-        public static int GetPlace(string placeName)
-        {
-            var query = new StringBuilder();
-            query.AppendLine("SELECT * ");
-            query.AppendLine($"FROM {TableName}");
-            query.AppendLine($"WHERE place_name = '{placeName}'");
-
-            return DatabaseAccesser.GetResult(query.ToString())
-                .AsEnumerable()
-                .Select(v => v.Field<int?>(EfficiencyDao.ColumnEfficiency)).FirstOrDefault() ?? -1;
-        }
 
     }
 }

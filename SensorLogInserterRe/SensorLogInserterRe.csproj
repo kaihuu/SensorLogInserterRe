@@ -180,6 +180,7 @@
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
     <Compile Include="Daos\PlaceDao.cs" />
+    <Compile Include="Daos\SensorNameDao.cs" />
     <Compile Include="Daos\TripsDopplerDao.cs" />
     <Compile Include="Daos\TripsDopplerNotMMDao.cs" />
     <Compile Include="Daos\TripsMMDao.cs" />
