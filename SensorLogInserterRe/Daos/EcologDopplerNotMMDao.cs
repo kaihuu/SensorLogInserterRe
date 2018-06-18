@@ -48,7 +48,7 @@ namespace SensorLogInserterRe.Daos
 
         public static void Insert(DataTable dataTable)
         {
-            DatabaseAccesser.Insert(EcologDopplerDao.TableName, dataTable);
+            DatabaseAccesser.Insert(TableName, dataTable);
         }
 
         public static DataTable Get()
