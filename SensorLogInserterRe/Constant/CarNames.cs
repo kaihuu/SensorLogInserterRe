@@ -27,6 +27,7 @@ namespace SensorLogInserterRe.Constant
         public const string LeafS08 = "LEAFS08";
         public const string LeafS09 = "LEAFS09";
         public const string LeafS10 = "LEAFS10";
+		public const string leafsimu = "LEAFSIMU";
 
         public static int GetCarId(string carName)
         {
@@ -69,6 +70,8 @@ namespace SensorLogInserterRe.Constant
                     return 909;
                 case CarNames.LeafS10:
                     return 910;
+				case CarNames.leafsimu:
+					return 911;
 
                 default:
                     return -1;

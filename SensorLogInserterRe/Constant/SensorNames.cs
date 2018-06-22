@@ -34,6 +34,7 @@ namespace SensorLogInserterRe.Constant
         public const string SKT01 = "SKT-01";
 
         public const string Simulation = "Simulation";
+		public const string arisimu = "arisimu";
 
         public static int GetSensorId(string sensorName)
         {
@@ -90,6 +91,8 @@ namespace SensorLogInserterRe.Constant
 
                 case Simulation:
                     return 98;
+				case arisimu:
+					return 101;
                 default: 
                     return -1;
             }
