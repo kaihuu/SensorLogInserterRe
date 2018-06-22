@@ -609,7 +609,7 @@ namespace SensorLogInserterRe.ViewModels
             if (this.IsCheckedTamura)
                 insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             if (this.IsCheckedLabMember)
-                insertConfig.CheckeDrivers.Add(DriverNames.Simulation);
+                insertConfig.CheckeDrivers.Add(DriverNames.Arisimu);
 
             //if (this.IsCheckedLabMember)
             //insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
