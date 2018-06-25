@@ -17,31 +17,43 @@ namespace SensorLogInserterRe.Utils
         public static void insertIsFinished(DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
         {
             string text = "Insert is finished:";
-            commentToSlack(text, startTime, endTime, correction);
+
+            joinFinishMessage(text, startTime, endTime, correction);
+
+            commentToSlack(text);
         }
         public static void noInsertFile(DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
         {
             string text = "No Insert File:";
-            commentToSlack(text, startTime, endTime, correction);
+
+            joinFinishMessage(text, startTime, endTime, correction);
+
+            commentToSlack(text);
+        }
+
+        public static string joinFinishMessage(string text, DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
+        {
+            string correctionMethod = getCorrectionMethod(correction);
+            text = text + startTime.ToShortDateString() + " ～ " + endTime.ToShortDateString() + " 補正方法： "
+                    + correctionMethod;
+
+            return text;
         }
 
 
-        public static void commentToSlack(string text, DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
+        public static void commentToSlack(string text)
         {
-            string correctionMethod = getCorrectionMethod(correction);
-
-            var data = generateJson(text, startTime, endTime, correctionMethod);
+            var data = generateJson(text);
 
             uploadToSlack(data);
         }
 
 
-        private static string generateJson(string text, DateTime startTime, DateTime endTime, string correctionMethod)
+        private static string generateJson(string text)
         {
             string data = DynamicJson.Serialize(new
             {
-                text = text + startTime.ToShortDateString() + " ～ " + endTime.ToShortDateString() + " 補正方法： "
-                + correctionMethod,
+                text = text,
                 icon_emoji = ":finish:", //アイコンを動的に変更する
                 username = "SensorLogInserter"  //名前を動的に変更する
             });
