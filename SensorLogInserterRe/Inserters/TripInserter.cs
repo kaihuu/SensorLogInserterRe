@@ -435,6 +435,10 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
+                    else if (correction == InsertConfig.GpsCorrection.DopplerNotMM && !TripsDopplerNotMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
                     else
                     {
                         LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
