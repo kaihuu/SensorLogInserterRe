@@ -27,10 +27,13 @@ namespace SensorLogInserterRe.Handlers
                     CheckFiles(DirectoryNames.DirectoryUemura, config.StartDate, config.EndDate, insertFileList);
                 if(driver.Equals(DriverNames.Simulation))
                     CheckFiles(DirectoryNames.DirectorySimulation, config.StartDate, config.EndDate, insertFileList);
-                // TODO 研究室メンバー
-            }
+				if (driver.Equals(DriverNames.Arisimu))
+					CheckFiles(DirectoryNames.DirectoryArisimu, config.StartDate, config.EndDate, insertFileList);
 
-            return insertFileList;
+				// TODO 研究室メンバー
+			}
+
+			return insertFileList;
         }
 
         private static void CheckFiles(string folderPass, DateTime startDate, DateTime endDate, List<string> insertFileList)

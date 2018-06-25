@@ -417,6 +417,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedMori = true;
             this.IsCheckedTamura = true;
             this.IsCheckedLabMember = true;
+
         }
 
         private void InitPeriod()
@@ -610,6 +611,7 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.CheckeDrivers.Add(DriverNames.Tamura);
             if (this.IsCheckedLabMember)
                 insertConfig.CheckeDrivers.Add(DriverNames.Arisimu);
+			
 
             //if (this.IsCheckedLabMember)
             //insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
