@@ -29,12 +29,19 @@ namespace SensorLogInserterRe.Inserters
                 // ACCファイルでない場合はcontinue
                 if (System.Text.RegularExpressions.Regex.IsMatch(word[word.Length - 1], @"\d{14}Unsent16HzAccel.csv"))
                 {
+                    int sensorId = SensorNames.GetSensorId(word[SensorIndex]);
+
+                    if (sensorId == -1)
+                    {
+                        SlackUtil.noSensorData(filePath);
+                        return;
+                    }
 
                     var datum = new InsertDatum()
                     {
                         DriverId = DriverNames.GetDriverId(word[DriverIndex]),
                         CarId = CarNames.GetCarId(word[CarIndex]),
-                        SensorId = SensorNames.GetSensorId(word[SensorIndex]),
+                        SensorId = sensorId,
                         StartTime = config.StartDate,
                         EndTime = config.EndDate,
                         EstimatedCarModel = EstimatedCarModel.GetModel(config.CarModel)

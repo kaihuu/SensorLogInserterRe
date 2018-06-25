@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Utils
 {
     static class SlackUtil
     {
-        //static string WEBHOOK_URL = "https://hooks.slack.com/services/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";//uemura
+        static string WEBHOOK_URL_uemura = "https://hooks.slack.com/services/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";//uemura
         static string WEBHOOK_URL = "https://hooks.slack.com/services/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";//ecolog
 
         public static void insertIsFinished(DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
@@ -30,6 +30,12 @@ namespace SensorLogInserterRe.Utils
 
             commentToSlack(text);
         }
+        public static void noSensorData(string filePath)
+        {
+            string text = "No Sensor Data: You must add or change SENSOR_NAME table";
+
+            commentToSlackUemura(text);
+        }
 
         public static string joinFinishMessage(string text, DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
         {
@@ -46,6 +52,13 @@ namespace SensorLogInserterRe.Utils
             var data = generateJson(text);
 
             uploadToSlack(data);
+        }
+
+        public static void commentToSlackUemura(string text)
+        {
+            var data = generateJson(text);
+
+            uploadToSlackUemura(data);
         }
 
 
@@ -69,6 +82,17 @@ namespace SensorLogInserterRe.Utils
 
 
             wc.UploadString(WEBHOOK_URL, data);
+        }
+
+        private static void uploadToSlackUemura(string data)
+        {
+            var wc = new WebClient();
+
+            wc.Headers.Add(HttpRequestHeader.ContentType, "application/json;charset=UTF-8");
+            wc.Encoding = Encoding.UTF8;
+
+
+            wc.UploadString(WEBHOOK_URL_uemura, data);
         }
 
         private static string getCorrectionMethod(List<InsertConfig.GpsCorrection> correction)

@@ -89,11 +89,14 @@ namespace SensorLogInserterRe.Constant
             //        return -1;
             //}
 
+            int sensorId = -1;
+
             DataTable _sensorNameTable = SensorNameDao.Get(sensorName);
             DataRow dataRow = _sensorNameTable.Select()[0];
             Console.WriteLine(dataRow.Field<int>(SensorNameDao.ColumnSensorId));
+            sensorId = dataRow.Field<int>(SensorNameDao.ColumnSensorId);
 
-            return dataRow.Field<int>(SensorNameDao.ColumnSensorId);
+            return sensorId;
         }
     }
 }
