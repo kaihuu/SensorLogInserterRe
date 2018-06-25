@@ -659,11 +659,11 @@ namespace SensorLogInserterRe.ViewModels
             {
                 if (count > 0)
                 {
-                    SlackUtil.commentToSlack(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                    SlackUtil.insertIsFinished(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
                 }
                 else
                 {
-                    SlackUtil.commentToSlackNotInsert(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
+                    SlackUtil.noInsertFile(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
                 }
                 IsEnabledInsertButton = true;
                 IsEnabledStartUpLoopButton = true;
