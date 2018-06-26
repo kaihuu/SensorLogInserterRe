@@ -18,7 +18,7 @@ namespace SensorLogInserterRe.Utils
         {
             string text = "Insert is finished:";
 
-            joinFinishMessage(text, startTime, endTime, correction);
+            text = joinFinishMessage(text, startTime, endTime, correction);
 
             commentToSlack(text);
         }
@@ -26,13 +26,13 @@ namespace SensorLogInserterRe.Utils
         {
             string text = "No Insert File:";
 
-            joinFinishMessage(text, startTime, endTime, correction);
+            text = joinFinishMessage(text, startTime, endTime, correction);
 
             commentToSlack(text);
         }
         public static void noSensorData(string filePath)
         {
-            string text = "No Sensor Data: You must add or change SENSOR_NAME table";
+            string text = "No Sensor Data: You must add or change SENSOR_NAME table, File Path is " + filePath;
 
             commentToSlackUemura(text);
         }
