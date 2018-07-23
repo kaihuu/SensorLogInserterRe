@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class TripsRawDao
     {
-        private static readonly string TableName = "trips_RAW_LINKS_LOOKUP2";
+        private static readonly string TableName = "trips_RAW_LINKS_GSI20";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";

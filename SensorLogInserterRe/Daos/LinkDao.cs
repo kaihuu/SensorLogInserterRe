@@ -9,7 +9,7 @@ namespace SensorLogInserterRe.Daos
 {
     class LinkDao
     {
-        private static readonly string TableName = "links";
+        private static readonly string TableName = "links_gsi20";
 
         public static void Insert(DataTable dataTable)
         {
@@ -24,14 +24,15 @@ namespace SensorLogInserterRe.Daos
         }
         public static DataTable GetLinkId(int Latitude, int Longitude)
         {
+            //TODO クエリをLINKS_GSI20を参照するように変更
             double maxLatitude = System.Convert.ToDouble(Latitude + 20) / 10000.0;
             double minLatitude = System.Convert.ToDouble(Latitude - 20) / 10000.0;
             double maxLongitude = System.Convert.ToDouble(Longitude + 20) / 10000.0;
             double minLongitude = System.Convert.ToDouble(Longitude - 20) / 10000.0;
-            string query = "with LINKS_TABLE as (SELECT LINKS.* ";
-            query += $"FROM LINKS ";
+            string query = "with LINKS_TABLE as (SELECT LINKS_GSI20.* ";
+            query += $"FROM LINKS_GSI20 ";
             query += $"WHERE latitude >= {minLatitude} AND longitude >= {minLongitude} AND latitude <= {maxLatitude} AND longitude <= {maxLongitude} AND ";
-            query += $"{TableName}.NUM = LINKS.NUM AND {TableName}.LINK_ID = LINKS.LINK_ID), ";
+            query += $"{TableName}.NUM = LINKS_GSI20.NUM AND {TableName}.LINK_ID = LINKS_GSI20.LINK_ID), ";
             query += " DIRECTION as ";
             query += "( ";
             query += "select LINK_ID, LAT1,LON1,LAt2,LON2, ";
