@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class AndroidAccRawDao
     {
-        private static readonly string TableName = "android_acc_raw";
+        private static readonly string TableName = "android_acc_raw_gsi20";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";
