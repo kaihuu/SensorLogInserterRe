@@ -512,13 +512,19 @@ namespace SensorLogInserterRe.Inserters
                 bool isEndSightseeingSpot = IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
                                                           tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
                 
-                if (isStartYnu && isEndYnu)
+                // そもそもスタートがynuでも観光地でもない場合
+                if (!(isStartSightseeingSpot || isStartYnu)) {
+                    tripChangeFlag = true;
+                }
+                // YNU発YNU着はない
+                else if (isStartYnu && isEndYnu)
                 {
                     LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません。"
                                                                  + ConvertRowToString(tripsRawTable.Rows[startIndex], 
                                                                                       tripsRawTable.Rows[currentIndex]));
                     tripChangeFlag = true;
                 }
+                // YNUまたは観光地が出発地AND到着地
                 else if ( (isStartYnu || isStartSightseeingSpot)
                        && (isEndYnu || isEndSightseeingSpot) )
                 {
@@ -533,7 +539,9 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
-                    row.SetField(TripsDao.ColumnTripDirection, "sightseeing");
+                    row.SetField(TripsDao.ColumnConsumedEnergy, DBNull.Value);
+                    row.SetField(TripsDao.ColumnTripDirection, "tourism");
+                    row.SetField(TripsDao.ColumnValidation, DBNull.Value);
 
                     TimeSpan span = tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime)
                                     - tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime);
@@ -577,6 +585,11 @@ namespace SensorLogInserterRe.Inserters
                 }
 
                 currentIndex++;
+                // IndexOutOfBoundsを防止
+                if(currentIndex >= tripsRawTable.Rows.Count)
+                {
+                    return;
+                }
 
                 // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
                 if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
