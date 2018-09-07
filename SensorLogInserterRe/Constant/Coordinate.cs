@@ -146,18 +146,40 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 140.875;
         }
 
-        /***シミュレーションデータインサート用***/
+		/***シミュレーションデータインサート用***/
 
-        public class ShimoSeyaNichome
+
+
+
+		//		public class ShimoSeyaNichome//outward用出発地点
+		//		{
+		//            public static readonly double LatitudeEnd = 35.43454338;
+		//			public static readonly double LatitudeStart = 35.43254338;
+		//			public static readonly double LongitudeEnd = 139.5547467;
+		//			public static readonly double LongitudeStart = 139.5527467;
+		//		}
+
+
+		public class ShimoSeyaNichome//homeward用全部＆横浜新道のみ出発地点
 		{
-            public static readonly double LatitudeEnd = 35.43454338;
-			public static readonly double LatitudeStart = 35.43254338;
-			public static readonly double LongitudeEnd = 139.5547467;
-			public static readonly double LongitudeStart = 139.5527467
-;
+			public static readonly double LatitudeEnd = 35.46589053;
+			public static readonly double LatitudeStart = 35.46389053;
+			public static readonly double LongitudeEnd = 139.5918231;
+			public static readonly double LongitudeStart = 139.5898231;
 		}
 
-        /*public class S02S
+		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
+		//		{
+		//			public static readonly double LatitudeEnd = 35.43454338;
+		//			public static readonly double LatitudeStart = 35.43254338;
+		//			public static readonly double LongitudeEnd = 139.5547467;
+		//			public static readonly double LongitudeStart = 139.5527467
+		//;
+		//		}
+
+
+
+		/*public class S02S
         {
             public static readonly double LatitudeStart = 35.70;
             public static readonly double LatitudeEnd = 35.71;
@@ -230,13 +252,26 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeEnd = 140.875;
         }*/
 
-        public class S01S
+		//public class S01S
+		//{
+		//          public static readonly double LatitudeEnd = 35.43736766;
+		//	public static readonly double LatitudeStart = 35.43536766;
+		//	public static readonly double LongitudeEnd = 139.5559428;
+		//	public static readonly double LongitudeStart = 139.5539428;
+		//}
+
+
+
+
+
+
+		public class S01S//homeward用全部＆横浜新道のみ到着地点
 		{
-            public static readonly double LatitudeEnd = 35.43736766;
-			public static readonly double LatitudeStart = 35.43536766;
-			public static readonly double LongitudeEnd = 139.5559428;
-			public static readonly double LongitudeStart = 139.5539428;
+			public static readonly double LatitudeEnd = 35.46746805;
+			public static readonly double LatitudeStart = 35.46546805;
+			public static readonly double LongitudeEnd = 139.5370681;
+			public static readonly double LongitudeStart = 139.5350681;
 		}
-        //TODO: 三浦に行った時のデータ挿入、DBに目的地格納
-    }
+		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
+	}
 }
