@@ -160,22 +160,21 @@ namespace SensorLogInserterRe.Constant
 		//		}
 
 
-		public class ShimoSeyaNichome//homeward用全部＆横浜新道のみ出発地点
-		{
-			public static readonly double LatitudeEnd = 35.46589053;
-			public static readonly double LatitudeStart = 35.46389053;
-			public static readonly double LongitudeEnd = 139.5918231;
-			public static readonly double LongitudeStart = 139.5898231;
-		}
+		//public class ShimoSeyaNichome//homeward用全部＆横浜新道のみ出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.46589053;
+		//	public static readonly double LatitudeStart = 35.46389053;
+		//	public static readonly double LongitudeEnd = 139.5918231;
+		//	public static readonly double LongitudeStart = 139.5898231;
+		//}
 
-		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
-		//		{
-		//			public static readonly double LatitudeEnd = 35.43454338;
-		//			public static readonly double LatitudeStart = 35.43254338;
-		//			public static readonly double LongitudeEnd = 139.5547467;
-		//			public static readonly double LongitudeStart = 139.5527467
-		//;
-		//		}
+		public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
+		{
+			public static readonly double LatitudeEnd = 35.45232953;
+			public static readonly double LatitudeStart = 35.45032953;
+			public static readonly double LongitudeEnd = 139.5681481;
+			public static readonly double LongitudeStart = 139.5661481;
+		}
 
 
 
@@ -265,12 +264,12 @@ namespace SensorLogInserterRe.Constant
 
 
 
-		public class S01S//homeward用全部＆横浜新道のみ到着地点
+		public class S01S//homeward用全部＆保土ヶ谷バイパスのみ到着地点
 		{
-			public static readonly double LatitudeEnd = 35.46746805;
-			public static readonly double LatitudeStart = 35.46546805;
-			public static readonly double LongitudeEnd = 139.5370681;
-			public static readonly double LongitudeStart = 139.5350681;
+			public static readonly double LatitudeEnd = 35.48175021;
+			public static readonly double LatitudeStart = 35.47975021;
+			public static readonly double LongitudeEnd = 139.5174919;
+			public static readonly double LongitudeStart = 139.5154919;
 		}
 		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
 	}
