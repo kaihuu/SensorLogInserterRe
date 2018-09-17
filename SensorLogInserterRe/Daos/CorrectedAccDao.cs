@@ -93,11 +93,11 @@ namespace SensorLogInserterRe.Daos
             query += ") ";
 
             query += "select AVG(ACC_X) as ACC_X,AVG(ACC_Y) as ACC_Y,AVG(ACC_Z) as ACC_Z ";
-            query += "from ANDROID_ACC_RAW,LOW_SPEED_SPAN ";
-            query += "where ANDROID_ACC_RAW.DRIVER_ID = LOW_SPEED_SPAN.DRIVER_ID ";
-            query += "and ANDROID_ACC_RAW.SENSOR_ID = LOW_SPEED_SPAN.SENSOR_ID ";
-            query += "and ANDROID_ACC_RAW.DATETIME <= DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.END_TIME) ";
-            query += "and ANDROID_ACC_RAW.DATETIME > DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.START_TIME) ";
+            query += "from ANDROID_ACC_RAW_GSI20, LOW_SPEED_SPAN ";
+            query += "where ANDROID_ACC_RAW_GSI20.DRIVER_ID = LOW_SPEED_SPAN.DRIVER_ID ";
+            query += "and ANDROID_ACC_RAW_GSI20.SENSOR_ID = LOW_SPEED_SPAN.SENSOR_ID ";
+            query += "and ANDROID_ACC_RAW_GSI20.DATETIME <= DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.END_TIME) ";
+            query += "and ANDROID_ACC_RAW_GSI20.DATETIME > DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.START_TIME) ";
 
             return DatabaseAccesser.GetResult(query);
         }
