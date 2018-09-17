@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class CorrectedAccDao
     {
-        private static readonly string TableName = "corrected_acc_gsi20";
+        private static readonly string TableName = "CORRECTED_ACC_GSI20";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";
@@ -54,7 +54,7 @@ namespace SensorLogInserterRe.Daos
             string query = "with LOW_SPEED as ";
             query += "( ";
             query += "	select DRIVER_ID,SENSOR_ID,DATEADD(second,-1,JST) as START_TIME, JST as END_TIME ";
-            query += "	from CORRECTED_GPS ";
+            query += "	from CORRECTED_GPS_GSI20 ";
             query += "	where DRIVER_ID = " + datum.DriverId + " ";
             query += "	and SENSOR_ID = " + datum.SensorId + " ";
             query += "	and SPEED < 1 ";
@@ -93,11 +93,11 @@ namespace SensorLogInserterRe.Daos
             query += ") ";
 
             query += "select AVG(ACC_X) as ACC_X,AVG(ACC_Y) as ACC_Y,AVG(ACC_Z) as ACC_Z ";
-            query += "from ANDROID_ACC_RAW,LOW_SPEED_SPAN ";
-            query += "where ANDROID_ACC_RAW.DRIVER_ID = LOW_SPEED_SPAN.DRIVER_ID ";
-            query += "and ANDROID_ACC_RAW.SENSOR_ID = LOW_SPEED_SPAN.SENSOR_ID ";
-            query += "and ANDROID_ACC_RAW.DATETIME <= DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.END_TIME) ";
-            query += "and ANDROID_ACC_RAW.DATETIME > DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.START_TIME) ";
+            query += "from ANDROID_ACC_RAW_GSI20,LOW_SPEED_SPAN ";
+            query += "where ANDROID_ACC_RAW_GSI20.DRIVER_ID = LOW_SPEED_SPAN.DRIVER_ID ";
+            query += "and ANDROID_ACC_RAW_GSI20.SENSOR_ID = LOW_SPEED_SPAN.SENSOR_ID ";
+            query += "and ANDROID_ACC_RAW_GSI20.DATETIME <= DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.END_TIME) ";
+            query += "and ANDROID_ACC_RAW_GSI20.DATETIME > DATEADD(MILLISECOND,-1*" + timeDiff + ",LOW_SPEED_SPAN.START_TIME) ";
 
             return  DatabaseAccesser.GetResult(query);
         }
@@ -107,7 +107,7 @@ namespace SensorLogInserterRe.Daos
             string query = "with LOW_SPEED as ";
             query += "( ";
             query += "	select g1.DRIVER_ID,g1.SENSOR_ID,g1.JST ";
-            query += "	from CORRECTED_GPS g1,CORRECTED_GPS g2 ";
+            query += "	from CORRECTED_GPS_GSI20 g1,CORRECTED_GPS_GSI20 g2 ";
             query += "	where g1.DRIVER_ID = " + datum.DriverId + " ";
             query += "	and g1.SENSOR_ID = " + datum.SensorId + " ";
             query += "	and g1.SPEED < 10 ";
@@ -122,11 +122,11 @@ namespace SensorLogInserterRe.Daos
             query += "from LOW_SPEED ";
             query += "except ";
             query += "select LOW_SPEED.DRIVER_ID,LOW_SPEED.SENSOR_ID,CONVERT(varchar,LOW_SPEED.JST,121) as JST ";
-            query += "from CORRECTED_GPS,LOW_SPEED ";
-            query += "where CORRECTED_GPS.DRIVER_ID = LOW_SPEED.DRIVER_ID ";
-            query += "and CORRECTED_GPS.SENSOR_ID = LOW_SPEED.SENSOR_ID ";
-            query += "and CORRECTED_GPS.JST < LOW_SPEED.JST ";
-            query += "and CORRECTED_GPS.JST >= DATEADD(second,-10,LOW_SPEED.JST) ";
+            query += "from CORRECTED_GPS_GSI20,LOW_SPEED ";
+            query += "where CORRECTED_GPS_GSI20.DRIVER_ID = LOW_SPEED.DRIVER_ID ";
+            query += "and CORRECTED_GPS_GSI20.SENSOR_ID = LOW_SPEED.SENSOR_ID ";
+            query += "and CORRECTED_GPS_GSI20.JST < LOW_SPEED.JST ";
+            query += "and CORRECTED_GPS_GSI20.JST >= DATEADD(second,-10,LOW_SPEED.JST) ";
             query += "and SPEED < 10 ";
             query += "group by LOW_SPEED.DRIVER_ID,LOW_SPEED.SENSOR_ID,LOW_SPEED.JST ";
 

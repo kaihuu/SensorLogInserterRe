@@ -657,14 +657,14 @@ namespace SensorLogInserterRe.ViewModels
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";
             await Task.Run(() =>
             {
-                if (count > 0)
+                /*if (count > 0)
                 {
                     SlackUtil.insertIsFinished(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
                 }
                 else
                 {
                     SlackUtil.noInsertFile(InsertConfig.StartDate, InsertConfig.EndDate, InsertConfig.Correction);
-                }
+                }*/
                 IsEnabledInsertButton = true;
                 IsEnabledStartUpLoopButton = true;
             });
