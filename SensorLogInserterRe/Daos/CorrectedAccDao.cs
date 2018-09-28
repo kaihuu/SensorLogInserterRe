@@ -10,7 +10,7 @@ namespace SensorLogInserterRe.Daos
 {
     class CorrectedAccDao
     {
-        private static readonly string TableName = "corrected_acc_gsi20";
+        private static readonly string TableName = "corrected_acc";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";

@@ -33,7 +33,7 @@ namespace SensorLogInserterRe.Inserters
 
                     if (sensorId == -1)
                     {
-                        SlackUtil.noSensorData(filePath);
+                        //SlackUtil.noSensorData(filePath);
                         return;
                     }
 
