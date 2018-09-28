@@ -578,15 +578,6 @@ namespace SensorLogInserterRe.Inserters
 
                 currentIndex++;
 
-                //指定日時のあるSENSOR_IDの最後のTRIPS_RAWカラムを参照した場合
-                if (currentIndex == tripsRawTable.Rows.Count)
-                {
-                    tripChangeFlag = true;
-                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "指定日時のあるSENSOR_IDの最後のTRIPS_RAWカラムを参照した ");
-                    continue;
-                }
-
-
                 // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
                 if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
                           tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude))
