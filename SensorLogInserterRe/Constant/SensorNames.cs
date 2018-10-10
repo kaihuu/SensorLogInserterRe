@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SensorLogInserterRe.Daos;
+using SensorLogInserterRe.Utils;
 
 namespace SensorLogInserterRe.Constant
 {
@@ -92,9 +93,17 @@ namespace SensorLogInserterRe.Constant
             int sensorId = -1;
 
             DataTable _sensorNameTable = SensorNameDao.Get(sensorName);
-            DataRow dataRow = _sensorNameTable.Select()[0];
-            Console.WriteLine(dataRow.Field<int>(SensorNameDao.ColumnSensorId));
-            sensorId = dataRow.Field<int>(SensorNameDao.ColumnSensorId);
+            try
+            {
+                DataRow dataRow = _sensorNameTable.Select()[0];
+                Console.WriteLine(dataRow.Field<int>(SensorNameDao.ColumnSensorId));
+                sensorId = dataRow.Field<int>(SensorNameDao.ColumnSensorId);
+            }
+            catch(IndexOutOfRangeException ex)
+            {
+                System.Console.WriteLine(ex.Message);
+            }
+
 
             return sensorId;
         }
