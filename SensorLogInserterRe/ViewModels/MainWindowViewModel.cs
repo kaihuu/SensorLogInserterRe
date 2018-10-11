@@ -614,7 +614,7 @@ namespace SensorLogInserterRe.ViewModels
 
                 #endregion
                 }
-                });
+            });
 
             int count = 0;
 
