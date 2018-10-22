@@ -533,7 +533,7 @@ namespace SensorLogInserterRe.Inserters
                     row.SetField(TripsDao.ColumnStartLongitude, tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
                     row.SetField(TripsDao.ColumnEndLatitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude));
                     row.SetField(TripsDao.ColumnEndLongitude, tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
-                    row.SetField(TripsDao.ColumnTripDirection, "sightseeing");
+                    row.SetField(TripsDao.ColumnTripDirection, "tourism");
 
                     TimeSpan span = tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime)
                                     - tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime);
@@ -566,6 +566,10 @@ namespace SensorLogInserterRe.Inserters
                     {
                         tripsTable.Rows.Add(row);
                     }
+                    else if (correction == InsertConfig.GpsCorrection.DopplerNotMM && !TripsDopplerNotMMDao.IsExsistsTrip(row))
+                    {
+                        tripsTable.Rows.Add(row);
+                    }
                     else
                     {
                         LogWritter.WriteLog(LogWritter.LogMode.Trip, "既にこのトリップは挿入されているので挿入しません "
@@ -577,6 +581,10 @@ namespace SensorLogInserterRe.Inserters
                 }
 
                 currentIndex++;
+                if (currentIndex == tripsRawTable.Rows.Count || tripChangeFlag)
+                {
+                    break;
+                }
 
                 // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
                 if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),

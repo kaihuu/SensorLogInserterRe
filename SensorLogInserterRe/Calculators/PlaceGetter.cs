@@ -67,9 +67,6 @@ namespace SensorLogInserterRe.Calculators
          */
         public List<Tuple<GeoCoordinate, GeoCoordinate>> GetRowsByProperty(string property)
         {
-            GeoCoordinate startCoodinate = new GeoCoordinate();
-            GeoCoordinate endCoordinate = new GeoCoordinate();
-
             // 引数で指定したproperty値を持つレコード群を取得
             DataRow[] dataRows = _placeTable.Select("property = '" + property + "'");
 
@@ -78,9 +75,12 @@ namespace SensorLogInserterRe.Calculators
             // 全てのレコードに対して上記のGet()の戻り値と同じ形式のTupleを作成して、リストに追加
             foreach(DataRow dataRow in dataRows)
             {
+                GeoCoordinate startCoodinate = new GeoCoordinate();
+                GeoCoordinate endCoordinate = new GeoCoordinate();
+
                 startCoodinate.Latitude = dataRow.Field<double>(PlaceDao.ColumnStartLatitude);
                 startCoodinate.Longitude = dataRow.Field<double>(PlaceDao.ColumnStartLongitude);
-                endCoordinate.Latitude = dataRow.Field<double>(PlaceDao.ColumnStartLatitude);
+                endCoordinate.Latitude = dataRow.Field<double>(PlaceDao.ColumnEndLatitude);
                 endCoordinate.Longitude = dataRow.Field<double>(PlaceDao.ColumnEndLongitude);
 
                 Tuple<GeoCoordinate, GeoCoordinate> tuple = Tuple.Create(startCoodinate, endCoordinate);
