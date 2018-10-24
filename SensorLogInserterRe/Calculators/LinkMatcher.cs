@@ -259,6 +259,7 @@ namespace SensorLogInserterRe.Calculators
 
             //自動車の向きとリンクの向きのなす角
             double minAngle = double.PositiveInfinity;
+            Boolean flag = true;
 
             foreach (DataRow row in selectedRows)
             {
@@ -267,7 +268,7 @@ namespace SensorLogInserterRe.Calculators
 
                 //リンクとGPS上の点との距離とリンク上の最近点を計算
                 CalculateMinimumDistancePointOfLink(latitude, longitude, row, out pointY, out pointX);
-
+                
                 //リンクとの最短距離
                 double distance = DistanceCalculator.CalcDistance(latitude, longitude, pointY, pointX);
 
@@ -289,11 +290,12 @@ namespace SensorLogInserterRe.Calculators
                         minDistance = distance;
                         minAngle = angle;
                         matchedLink = row.Field<string>("link_id").Trim();
+                        flag = false;
                     }
                     else
                     {
                         //10m以内のリンクがないときは距離が短いものをマッチング
-                        if (minDistance >= distance)
+                        if (minDistance >= distance && flag)
                         {
                             minDistance = distance;
                             matchedLink = row.Field<string>("link_id").Trim();
@@ -303,7 +305,7 @@ namespace SensorLogInserterRe.Calculators
                 else
                 {
                     //Headingが計算できないときは距離が短いものをマッチング
-                    if (minDistance >= distance)
+                    if (minDistance >= distance && flag)
                     {
                         minDistance = distance;
 
