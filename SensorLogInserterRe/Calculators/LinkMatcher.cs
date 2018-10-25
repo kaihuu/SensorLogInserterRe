@@ -287,7 +287,7 @@ namespace SensorLogInserterRe.Calculators
                     if (linkDistance >= distance)
                     {
                         //リンクとの距離が10m以内でかつなす角が小さいものをマッチング
-                        if (distance < 10 && (Math.Abs(minAngle - angle) > 5 || 
+                        if (distance < 10 && (minAngle - angle > 5 || 
                             (Math.Abs(minAngle - angle) <= 5 && linkDistance > distance)))
                         {
                             linkDistance = distance;
