@@ -511,7 +511,17 @@ namespace SensorLogInserterRe.Inserters
                                                             tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude));
                 bool isEndSightseeingSpot = IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
                                                           tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude));
-                
+                // スタートゴールが自宅であるか
+                bool isStartHome = IsHome(tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
+                                                        tripsRawTable.Rows[startIndex].Field<double>(TripsRawDao.ColumnStartLongitude),
+                                                        tripsRawTable.Rows[startIndex].Field<DateTime>(TripsRawDao.ColumnStartTime),
+                                                        datum);
+                bool isEndHome = IsHome(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLatitude),
+                                                        tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnEndLongitude),
+                                                        tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnEndTime),
+                                                        datum);
+
+                // YNU  to YNUは排除
                 if (isStartYnu && isEndYnu)
                 {
                     LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒YNUトリップなので挿入しません。"
@@ -519,8 +529,17 @@ namespace SensorLogInserterRe.Inserters
                                                                                       tripsRawTable.Rows[currentIndex]));
                     tripChangeFlag = true;
                 }
-                else if ( (isStartYnu || isStartSightseeingSpot)
-                       && (isEndYnu || isEndSightseeingSpot) )
+                // 自宅 to 自宅 も排除
+                else if (isStartHome && isEndHome)
+                {
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "Home⇒Homeトリップなので挿入しません。"
+                                                                + ConvertRowToString(tripsRawTable.Rows[startIndex],
+                                                                                                    tripsRawTable.Rows[currentIndex]));
+                    tripChangeFlag = true;
+                }
+                // 候補地 to 候補地のトリップを挿入
+                else if ( (isStartYnu || isStartSightseeingSpot || isStartHome)
+                       && (isEndYnu || isEndSightseeingSpot || isEndHome) )
                 {
                     var row = tripsTable.NewRow();
                     row.SetField(TripsDao.ColumnTripId, GetMaxTripId(correction));
@@ -586,15 +605,19 @@ namespace SensorLogInserterRe.Inserters
                     break;
                 }
 
-                // YNUにも観光地にも到着しないまま、開始地点がYNUか観光地になった場合
+                // YNUにも観光地にも自宅にも到着しないまま、開始地点がYNUか観光地か自宅になった場合
                 if (IsYnu(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
                           tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude))
                     || IsSightseeing(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude),
                                      tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude))
+                    || IsHome(tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLatitude),
+                                    tripsRawTable.Rows[currentIndex].Field<double>(TripsRawDao.ColumnStartLongitude),
+                                    tripsRawTable.Rows[currentIndex].Field<DateTime>(TripsRawDao.ColumnStartTime),
+                                    datum)
                    )
                 {
                     tripChangeFlag = true;
-                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNU⇒？トリップなので挿入しません "
+                    LogWritter.WriteLog(LogWritter.LogMode.Trip, "YNUor自宅or観光地⇒？トリップなので挿入しません "
                               + ConvertRowToString(tripsRawTable.Rows[startIndex], tripsRawTable.Rows[currentIndex]));
                 }
             }
