@@ -249,6 +249,7 @@ namespace SensorLogInserterRe.Calculators
         {
             string matchedLink = "";
             double minDistance = double.PositiveInfinity;
+            double linkDistance = double.PositiveInfinity;
 
             //車のHEADINGを計算
             double carHeading;
@@ -283,22 +284,25 @@ namespace SensorLogInserterRe.Calculators
                     {
                         angle = 180 - angle;
                     }
-
-                    //リンクとの距離が10m以内でかつなす角が小さいものをマッチング
-                    if (distance < 10 && angle < minAngle)
+                    if (linkDistance >= distance)
                     {
-                        minDistance = distance;
-                        minAngle = angle;
-                        matchedLink = row.Field<string>("link_id").Trim();
-                        flag = false;
-                    }
-                    else
-                    {
-                        //10m以内のリンクがないときは距離が短いものをマッチング
-                        if (minDistance >= distance && flag)
+                        //リンクとの距離が10m以内でかつなす角が小さいものをマッチング
+                        if (distance < 10 && (Math.Abs(minAngle - angle) > 5 || 
+                            (Math.Abs(minAngle - angle) <= 5 && linkDistance > distance)))
                         {
-                            minDistance = distance;
+                            linkDistance = distance;
+                            minAngle = angle;
                             matchedLink = row.Field<string>("link_id").Trim();
+                            flag = false;
+                        }
+                        else
+                        {
+                            //10m以内のリンクがないときは距離が短いものをマッチング
+                            if (minDistance >= distance && flag)
+                            {
+                                minDistance = distance;
+                                matchedLink = row.Field<string>("link_id").Trim();
+                            }
                         }
                     }
                 }
