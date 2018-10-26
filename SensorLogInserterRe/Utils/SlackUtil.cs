@@ -36,6 +36,13 @@ namespace SensorLogInserterRe.Utils
 
             commentToSlackUemura(text);
         }
+        public static void noMapMatching(InsertDatum insertDatum)
+        {
+            string text = "There is a out of registered links   DriverID: " + insertDatum.DriverId
+                + "StartTime: " + insertDatum.StartTime + "EndTime: " + insertDatum.EndTime;
+
+            commentToSlackUemura(text);
+        }
 
         public static string joinFinishMessage(string text, DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
         {

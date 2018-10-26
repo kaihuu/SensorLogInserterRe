@@ -216,10 +216,12 @@ namespace SensorLogInserterRe.Cleansers.Components
             int element = getMinElement(sumDist);
             if (sumDist.Length == 0)
             {
+                SlackUtil.noMapMatching(datum);
                 return new DataTable();
             }
             if (sumDist[element] > 0.5 || maxDist[element] > 0.003)
             {
+                SlackUtil.noMapMatching(datum);
                 return new DataTable();
             }
 
