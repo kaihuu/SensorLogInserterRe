@@ -295,14 +295,13 @@ namespace SensorLogInserterRe.Calculators
                             matchedLink = row.Field<string>("link_id").Trim();
                             flag = false;
                         }
-                        else
+                        //10m以内のリンクがないときは距離が短いものをマッチング
+                        else if (minDistance >= distance && flag)
                         {
-                            //10m以内のリンクがないときは距離が短いものをマッチング
-                            if (minDistance >= distance && flag)
-                            {
+                            
                                 minDistance = distance;
                                 matchedLink = row.Field<string>("link_id").Trim();
-                            }
+
                         }
                     }
                 }
