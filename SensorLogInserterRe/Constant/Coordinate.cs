@@ -160,13 +160,13 @@ namespace SensorLogInserterRe.Constant
 		//		}
 
 
-		//public class ShimoSeyaNichome//homeward用全部＆横浜新道のみ出発地点
-		//{
-		//	public static readonly double LatitudeEnd = 35.46589053;
-		//	public static readonly double LatitudeStart = 35.46389053;
-		//	public static readonly double LongitudeEnd = 139.5918231;
-		//	public static readonly double LongitudeStart = 139.5898231;
-		//}
+		public class ShimoSeyaNichome//homeward用全部＆横浜新道のみ出発地点
+		{
+			public static readonly double LatitudeEnd = 35.46589053;
+			public static readonly double LatitudeStart = 35.46389053;
+			public static readonly double LongitudeEnd = 139.5918231;
+			public static readonly double LongitudeStart = 139.5898231;
+		}
 
 		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
 		//{
@@ -176,13 +176,23 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.5661481;
 		//}
 
-		public class ShimoSeyaNichome//オロロンライン
-		{
-			public static readonly double LatitudeEnd = 45.326535;
-			public static readonly double LatitudeStart = 45.306535;
-			public static readonly double LongitudeEnd = 141.644306;
-			public static readonly double LongitudeStart = 141.624306;
-		}
+		//public class ShimoSeyaNichome//オロロンライン
+		//{
+		//	public static readonly double LatitudeEnd = 45.326535;
+		//	public static readonly double LatitudeStart = 45.306535;
+		//	public static readonly double LongitudeEnd = 141.644306;
+		//	public static readonly double LongitudeStart = 141.624306;
+		//}
+
+		//public class ShimoSeyaNichome//小田厚木出発地
+		//{
+		//	public static readonly double LatitudeEnd = 35.43327353;
+		//	public static readonly double LatitudeStart = 35.41327353;
+		//	public static readonly double LongitudeEnd = 139.3764588;
+		//	public static readonly double LongitudeStart = 139.3564588;
+		//}
+
+
 
 
 		/*public class S02S
@@ -279,12 +289,31 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.5154919;
 		//}
 
-		public class S01S//オロロンライン
+		//public class S01S//オロロンライン
+		//{
+		//	public static readonly double LatitudeEnd = 44.98637063;
+		//	public static readonly double LatitudeStart = 44.96637063;
+		//	public static readonly double LongitudeEnd = 141.7060291;
+		//	public static readonly double LongitudeStart = 141.6860291;
+		//}
+
+
+		//public class S01S//小田厚木到達地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.25591438;
+		//	public static readonly double LatitudeStart = 35.23591438;
+		//	public static readonly double LongitudeEnd = 139.1430423;
+		//	public static readonly double LongitudeStart = 139.1230423;
+		//}
+
+
+
+		public class S01S//町田IC
 		{
-			public static readonly double LatitudeEnd = 44.98637063;
-			public static readonly double LatitudeStart = 44.96637063;
-			public static readonly double LongitudeEnd = 141.7060291;
-			public static readonly double LongitudeStart = 141.6860291;
+			public static readonly double LatitudeEnd = 35.51548491;
+			public static readonly double LatitudeStart = 35.49548491;
+			public static readonly double LongitudeEnd = 139.492609;
+			public static readonly double LongitudeStart = 139.472609;
 		}
 		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
 	}
