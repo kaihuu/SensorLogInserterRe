@@ -185,18 +185,21 @@ namespace SensorLogInserterRe.Cleansers.Components
 
                 id = new int[] { 331 };
                 tempTable = LinkDao.GetLinkTableforMM(id);
-                tempTable.TableName = "被験者17復路ルート2";
+                tempTable.TableName = "被験者17往路ルート2";
                 dt.Add(tempTable);
-                dt[3].DefaultView.Sort = "START_LAT, " +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "START_LONG";
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 340 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート3";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 341 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート3";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
@@ -216,12 +219,12 @@ namespace SensorLogInserterRe.Cleansers.Components
             int element = getMinElement(sumDist);
             if (sumDist.Length == 0)
             {
-                SlackUtil.noMapMatching(datum);
+                SlackUtil.noMapMatching(datum, gpsRawTable.Rows[0]);
                 return new DataTable();
             }
             if (sumDist[element] > 0.5 || maxDist[element] > 0.003)
             {
-                SlackUtil.noMapMatching(datum);
+                SlackUtil.noMapMatching(datum, gpsRawTable.Rows[0]);
                 return new DataTable();
             }
 

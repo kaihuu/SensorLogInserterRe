@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using SensorLogInserterRe.Models;
+using System.Data;
+using SensorLogInserterRe.Daos;
 
 namespace SensorLogInserterRe.Utils
 {
@@ -36,10 +38,10 @@ namespace SensorLogInserterRe.Utils
 
             commentToSlackUemura(text);
         }
-        public static void noMapMatching(InsertDatum insertDatum)
+        public static void noMapMatching(InsertDatum insertDatum, DataRow dataRow)
         {
             string text = "There is a out of registered links   DriverID: " + insertDatum.DriverId
-                + "StartTime: " + insertDatum.StartTime + "EndTime: " + insertDatum.EndTime;
+                + "StartTime: " + dataRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst);
 
             commentToSlackUemura(text);
         }
