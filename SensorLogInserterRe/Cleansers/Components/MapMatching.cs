@@ -20,29 +20,64 @@ namespace SensorLogInserterRe.Cleansers.Components
             }
 
             List<DataTable> dt = new List<DataTable>();
-            if(datum.DriverId == 1)//富井先生用のマップマッチング道路リンクを取得
+            if(datum.DriverId == 1)
             {
                 int[] id = new int[] { 220 };
-                DataTable tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(富井先生：代官山下ルート)
-                tempTable.TableName = "富井先生,復路,代官山下ルート";
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(代官山下ルート)
+                tempTable.TableName = "復路,代官山下ルート";
                 dt.Add(tempTable);
                 dt[0].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 224 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(富井先生：代官山上ルート)
-                tempTable.TableName = "富井先生,復路,代官山上ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(代官山上ルート)
+                tempTable.TableName = "復路,代官山上ルート";
                 dt.Add(tempTable);
                 dt[1].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 221 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(富井先生：小学校上ルート)
-                tempTable.TableName = "富井先生,往路,小学校上ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(小学校上ルート)
+                tempTable.TableName = "往路,小学校上ルート";
                 dt.Add(tempTable);
                 dt[2].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 225 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(富井先生：小学校下ルート)
-                tempTable.TableName = "富井先生,往路,小学校下ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(小学校下ルート)
+                tempTable.TableName = "往路,小学校下ルート";
+                dt.Add(tempTable);
+                dt[3].DefaultView.Sort = "START_LAT, " +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "" +
+                    "START_LONG";
+            }
+            else if (datum.DriverId == 17)//マップマッチング道路リンクを取得
+            {
+                int[] id = new int[] { 328 };
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート１";
+                dt.Add(tempTable);
+                dt[0].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 329 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート1";
+                dt.Add(tempTable);
+                dt[1].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 330 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート2";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 331 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート2";
                 dt.Add(tempTable);
                 dt[3].DefaultView.Sort = "START_LAT, " +
                     "" +
@@ -96,26 +131,26 @@ namespace SensorLogInserterRe.Cleansers.Components
             if (datum.DriverId == 1)//被験者１用のマップマッチング道路リンクを取得
             {
                 int[] id = new int[] { 220 };
-                DataTable tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(被験者１：代官山下ルート)
-                tempTable.TableName = "富井先生,復路,代官山下ルート";
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "復路,代官山下ルート";
                 dt.Add(tempTable);
                 dt[0].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 224 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//復路マップマッチング(被験者１：代官山上ルート)
-                tempTable.TableName = "富井先生,復路,代官山上ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "復路,代官山上ルート";
                 dt.Add(tempTable);
                 dt[1].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 221 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(被験者１：小学校上ルート)
-                tempTable.TableName = "富井先生,往路,小学校上ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "往路,小学校上ルート";
                 dt.Add(tempTable);
                 dt[2].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 225 };
-                tempTable = LinkDao.GetLinkTableforMM(id);//往路マップマッチング(被験者１：小学校下ルート)
-                tempTable.TableName = "富井先生,往路,小学校下ルート";
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "往路,小学校下ルート";
                 dt.Add(tempTable);
                 dt[3].DefaultView.Sort = "START_LAT, " +
                     "" +
@@ -127,6 +162,44 @@ namespace SensorLogInserterRe.Cleansers.Components
                     "" +
                     "" +
                     "START_LONG";
+            }
+            else if (datum.DriverId == 17)//マップマッチング道路リンクを取得
+            {
+                int[] id = new int[] { 328 };
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート１";
+                dt.Add(tempTable);
+                dt[0].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 329 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート1";
+                dt.Add(tempTable);
+                dt[1].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 330 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート2";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 331 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート2";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 340 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17往路ルート3";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 341 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート3";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
@@ -146,10 +219,12 @@ namespace SensorLogInserterRe.Cleansers.Components
             int element = getMinElement(sumDist);
             if (sumDist.Length == 0)
             {
+                SlackUtil.noMapMatching(datum, gpsRawTable.Rows[0]);
                 return new DataTable();
             }
             if (sumDist[element] > 0.5 || maxDist[element] > 0.003)
             {
+                SlackUtil.noMapMatching(datum, gpsRawTable.Rows[0]);
                 return new DataTable();
             }
 

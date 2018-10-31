@@ -11,6 +11,7 @@ namespace SensorLogInserterRe.Daos
     class TripsDopplerDao
     {
         private static readonly string TableName = "TRIPS_Doppler";
+        //private static readonly string TableName = "TRIPS_test";
         //  private static readonly string EcologTableName = "ecolog_links_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";

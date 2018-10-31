@@ -11,6 +11,7 @@ namespace SensorLogInserterRe.Daos
     class CorrectedGPSDopplerDao
     {
         private static readonly string TableName = "CORRECTED_GPS_Doppler";
+        //private static readonly string TableName = "CORRECTED_GPS_test";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
         public static readonly string ColumnSensorId = "sensor_id";
