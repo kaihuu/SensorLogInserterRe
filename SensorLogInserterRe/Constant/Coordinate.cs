@@ -177,13 +177,14 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.4682452;
 		//}
 
-		public class ShimoSeyaNichome//小田厚木出発地点
-		{
-			public static readonly double LatitudeEnd = 35.43327353;
-			public static readonly double LatitudeStart = 35.41327353;
-			public static readonly double LongitudeEnd = 139.3764588;
-			public static readonly double LongitudeStart = 139.3564588;
-		}
+		//public class ShimoSeyaNichome//小田厚木出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.43327353;
+		//	public static readonly double LatitudeStart = 35.41327353;
+		//	public static readonly double LongitudeEnd = 139.3764588;
+		//	public static readonly double LongitudeStart = 139.3564588;
+		//}
+
 
 
 		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
@@ -210,6 +211,14 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.3564588;
 		//}
 
+
+		public class ShimoSeyaNichome//273号線出発地
+		{
+			public static readonly double LatitudeEnd = 43.84986136;
+			public static readonly double LatitudeStart = 43.82986136;
+			public static readonly double LongitudeEnd = 142.7946763;
+			public static readonly double LongitudeStart = 142.7746763;
+		}
 
 
 
@@ -343,13 +352,31 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.3568755;
 		//}
 
-		public class S01S//小田原西
+		//public class S01S//小田原西
+		//{
+		//	public static readonly double LatitudeEnd = 35.25612339;
+		//	public static readonly double LatitudeStart = 35.23612339;
+		//	public static readonly double LongitudeEnd = 139.1429704;
+		//	public static readonly double LongitudeStart = 139.1229704;
+		//}
+
+
+		//public class S01S//273号線到着地
+		//{
+		//	public static readonly double LatitudeEnd = 43.90005692;
+		//	public static readonly double LatitudeStart = 43.88005692;
+		//	public static readonly double LongitudeEnd = 142.9790281;
+		//	public static readonly double LongitudeStart = 142.9590281;
+		//}
+
+		public class S01S//北海道到達
 		{
-			public static readonly double LatitudeEnd = 35.25612339;
-			public static readonly double LatitudeStart = 35.23612339;
-			public static readonly double LongitudeEnd = 139.1429704;
-			public static readonly double LongitudeStart = 139.1229704;
+			public static readonly double LatitudeEnd = 44.03468273;
+			public static readonly double LatitudeStart = 44.01468273;
+			public static readonly double LongitudeEnd = 143.5184957;
+			public static readonly double LongitudeStart = 143.4984957;
 		}
+
 
 		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
 	}
