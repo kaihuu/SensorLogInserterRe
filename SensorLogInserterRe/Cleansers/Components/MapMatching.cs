@@ -107,6 +107,12 @@ namespace SensorLogInserterRe.Cleansers.Components
                 tempTable.TableName = "被験者17往路ルート4";
                 dt.Add(tempTable);
                 dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 343 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者17復路ルート4";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
