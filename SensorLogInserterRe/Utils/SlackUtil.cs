@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using SensorLogInserterRe.Models;
+using System.Data;
+using SensorLogInserterRe.Daos;
 
 namespace SensorLogInserterRe.Utils
 {
@@ -33,6 +35,13 @@ namespace SensorLogInserterRe.Utils
         public static void noSensorData(string filePath)
         {
             string text = "No Sensor Data: You must add or change SENSOR_NAME table, File Path is " + filePath;
+
+            commentToSlackUemura(text);
+        }
+        public static void noMapMatching(InsertDatum insertDatum, DataRow dataRow)
+        {
+            string text = "There is a out of registered links   DriverID: " + insertDatum.DriverId
+                + "StartTime: " + dataRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst);
 
             commentToSlackUemura(text);
         }
