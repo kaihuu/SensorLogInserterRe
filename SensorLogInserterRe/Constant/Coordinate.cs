@@ -169,21 +169,21 @@ namespace SensorLogInserterRe.Constant
 		//}
 
 
-		public class ShimoSeyaNichome//東名出発地点
-		{
-			public static readonly double LatitudeEnd = 35.51194857;
-			public static readonly double LatitudeStart = 35.49194857;
-			public static readonly double LongitudeEnd = 139.4882452;
-			public static readonly double LongitudeStart = 139.4682452;
-		}
-
-		//public class ShimoSeyaNichome//小田厚木出発地点
+		//public class ShimoSeyaNichome//東名出発地点
 		//{
-		//	public static readonly double LatitudeEnd = 35.43327353;
-		//	public static readonly double LatitudeStart = 35.41327353;
-		//	public static readonly double LongitudeEnd = 139.3764588;
-		//	public static readonly double LongitudeStart = 139.3564588;
+		//	public static readonly double LatitudeEnd = 35.51194857;
+		//	public static readonly double LatitudeStart = 35.49194857;
+		//	public static readonly double LongitudeEnd = 139.4882452;
+		//	public static readonly double LongitudeStart = 139.4682452;
 		//}
+
+		public class ShimoSeyaNichome//小田厚木出発地点
+		{
+			public static readonly double LatitudeEnd = 35.43327353;
+			public static readonly double LatitudeStart = 35.41327353;
+			public static readonly double LongitudeEnd = 139.3764588;
+			public static readonly double LongitudeStart = 139.3564588;
+		}
 
 
 
@@ -344,38 +344,38 @@ namespace SensorLogInserterRe.Constant
 		//}
 
 
-		public class S01S//厚木IC
+		//	public class S01S//厚木IC
+		//	{
+		//		public static readonly double LatitudeEnd = 35.43321533;
+		//	public static readonly double LatitudeStart = 35.41321533;
+		//	public static readonly double LongitudeEnd = 139.3768755;
+		//	public static readonly double LongitudeStart = 139.3568755;
+		//}
+
+		public class S01S//小田原西
 		{
-			public static readonly double LatitudeEnd = 35.43321533;
-		public static readonly double LatitudeStart = 35.41321533;
-		public static readonly double LongitudeEnd = 139.3768755;
-		public static readonly double LongitudeStart = 139.3568755;
-	}
-
-	//public class S01S//小田原西
-	//{
-	//	public static readonly double LatitudeEnd = 35.25612339;
-	//	public static readonly double LatitudeStart = 35.23612339;
-	//	public static readonly double LongitudeEnd = 139.1429704;
-	//	public static readonly double LongitudeStart = 139.1229704;
-	//}
+			public static readonly double LatitudeEnd = 35.25612339;
+			public static readonly double LatitudeStart = 35.23612339;
+			public static readonly double LongitudeEnd = 139.1429704;
+			public static readonly double LongitudeStart = 139.1229704;
+		}
 
 
-	//public class S01S//273号線到着地
-	//{
-	//	public static readonly double LatitudeEnd = 43.90005692;
-	//	public static readonly double LatitudeStart = 43.88005692;
-	//	public static readonly double LongitudeEnd = 142.9790281;
-	//	public static readonly double LongitudeStart = 142.9590281;
-	//}
+		//public class S01S//273号線到着地
+		//{
+		//	public static readonly double LatitudeEnd = 43.90005692;
+		//	public static readonly double LatitudeStart = 43.88005692;
+		//	public static readonly double LongitudeEnd = 142.9790281;
+		//	public static readonly double LongitudeStart = 142.9590281;
+		//}
 
-	//public class S01S//北海道到達
-	//	{
-	//		public static readonly double LatitudeEnd = 44.03468273;
-	//		public static readonly double LatitudeStart = 44.01468273;
-	//		public static readonly double LongitudeEnd = 143.5184957;
-	//		public static readonly double LongitudeStart = 143.4984957;
-	//	}
+		//public class S01S//北海道到達
+		//	{
+		//		public static readonly double LatitudeEnd = 44.03468273;
+		//		public static readonly double LatitudeStart = 44.01468273;
+		//		public static readonly double LongitudeEnd = 143.5184957;
+		//		public static readonly double LongitudeStart = 143.4984957;
+		//	}
 
 
 		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
