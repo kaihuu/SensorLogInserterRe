@@ -13,6 +13,7 @@ namespace SensorLogInserterRe.Constant
         public static readonly string DirectoryTamura = @"\\itsserver\ECOLOG_LogData_itsserver\tam";
         public static readonly string DirectoryKitajima = @"\\itsserver\ECOLOG_LogData_itsserver\kitajima";
         public static readonly string DirectoryUemura = @"\\itsserver\ECOLOG_LogData_itsserver\uemura";
+        public static readonly string DirectoryKisse = @"\\itsserver\ECOLOG_LogData_itsserver\kichise";
         // TODO 研究室メンバーを加える
     }
 }

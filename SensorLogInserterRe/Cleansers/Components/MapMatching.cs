@@ -114,6 +114,31 @@ namespace SensorLogInserterRe.Cleansers.Components
                 dt.Add(tempTable);
                 dt[2].DefaultView.Sort = "START_LAT, START_LONG";
             }
+            else if (datum.DriverId == 28)
+            {
+                int[] id = new int[] { 365 };
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 往路ルート1";
+                dt.Add(tempTable);
+                dt[0].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 366 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 復路ルート1";
+                dt.Add(tempTable);
+                dt[1].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 369 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "";
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 370 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "";
+                dt[3].DefaultView.Sort = "START_LAT, START_LONG";
+            }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
             double[] maxDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の最大値
@@ -224,6 +249,34 @@ namespace SensorLogInserterRe.Cleansers.Components
                 tempTable.TableName = "被験者17復路ルート3";
                 dt.Add(tempTable);
                 dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+            }
+            else if (datum.DriverId == 28)
+            {
+                int[] id = new int[] { 365 };
+                DataTable tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 往路ルート1";
+                dt.Add(tempTable);
+                dt[0].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 366 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 復路ルート1";
+                dt.Add(tempTable);
+                dt[1].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 369 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 往路ルート2";
+                dt.Add(tempTable);
+                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+
+                id = new int[] { 370 };
+                tempTable = LinkDao.GetLinkTableforMM(id);
+                tempTable.TableName = "被験者28 復路ルート2";
+                dt.Add(tempTable);
+                dt[3].DefaultView.Sort = "START_LAT, START_LONG";
+
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
