@@ -220,12 +220,12 @@ namespace SensorLogInserterRe.Constant
             public static readonly double LongitudeStart = 142.7746763;
         }*/
 
-        public class ShimoSeyaNichome//39号線出発地
-        {
-            public static readonly double LatitudeEnd = 43.79050569;
-            public static readonly double LatitudeStart = 43.77050569;
-            public static readonly double LongitudeEnd = 143.603703;
-            public static readonly double LongitudeStart = 143.583703;
+        //public class ShimoSeyaNichome//39号線出発地
+        //{
+        //    public static readonly double LatitudeEnd = 43.79050569;
+        //    public static readonly double LatitudeStart = 43.77050569;
+        //    public static readonly double LongitudeEnd = 143.603703;
+        //    public static readonly double LongitudeStart = 143.583703;
         }
 
         /*public class S02S
