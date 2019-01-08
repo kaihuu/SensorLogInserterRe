@@ -177,14 +177,22 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.4682452;
 		//}
 
-		public class ShimoSeyaNichome//小田厚木出発地点
-		{
-			public static readonly double LatitudeEnd = 35.43327353;
-			public static readonly double LatitudeStart = 35.41327353;
-			public static readonly double LongitudeEnd = 139.3764588;
-			public static readonly double LongitudeStart = 139.3564588;
-		}
+		//public class ShimoSeyaNichome//小田厚木出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.43327353;
+		//	public static readonly double LatitudeStart = 35.41327353;
+		//	public static readonly double LongitudeEnd = 139.3764588;
+		//	public static readonly double LongitudeStart = 139.3564588;
+		//}
 
+
+		public class ShimoSeyaNichome//東海道国道30号線出発
+		{
+			public static readonly double LatitudeEnd = 35.42235987;
+			public static readonly double LatitudeStart = 35.40235987;
+			public static readonly double LongitudeEnd = 139.5425512;
+			public static readonly double LongitudeStart = 139.5225512;
+		}
 
 
 		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
@@ -359,12 +367,20 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.3568755;
 		//}
 
+		//public class S01S//小田原西
+		//{
+		//	public static readonly double LatitudeEnd = 35.25612339;
+		//	public static readonly double LatitudeStart = 35.23612339;
+		//	public static readonly double LongitudeEnd = 139.1429704;
+		//	public static readonly double LongitudeStart = 139.1229704;
+		//}
+
 		public class S01S//小田原西
 		{
-			public static readonly double LatitudeEnd = 35.25612339;
-			public static readonly double LatitudeStart = 35.23612339;
-			public static readonly double LongitudeEnd = 139.1429704;
-			public static readonly double LongitudeStart = 139.1229704;
+			public static readonly double LatitudeEnd = 35.32995424;
+			public static readonly double LatitudeStart = 35.30995424;
+			public static readonly double LongitudeEnd = 139.3849821;
+			public static readonly double LongitudeStart = 139.3649821;
 		}
 
 
