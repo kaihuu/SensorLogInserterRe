@@ -186,13 +186,13 @@ namespace SensorLogInserterRe.Constant
 		//}
 
 
-		//public class ShimoSeyaNichome//東海道国道30号線出発
-		//{
-		//	public static readonly double LatitudeEnd = 35.42235987;
-		//	public static readonly double LatitudeStart = 35.40235987;
-		//	public static readonly double LongitudeEnd = 139.5425512;
-		//	public static readonly double LongitudeStart = 139.5225512;
-		//}
+		public class ShimoSeyaNichome//東海道国道30号線出発
+		{
+			public static readonly double LatitudeEnd = 35.42235987;
+			public static readonly double LatitudeStart = 35.40235987;
+			public static readonly double LongitudeEnd = 139.5425512;
+			public static readonly double LongitudeStart = 139.5225512;
+		}
 
 
 		//public class ShimoSeyaNichome//homeward用保土ヶ谷BPのみ
@@ -243,13 +243,48 @@ namespace SensorLogInserterRe.Constant
 		//	public static readonly double LongitudeStart = 139.5808231;
 		//}
 
-		public class ShimoSeyaNichome//横浜新道出発地点(戸塚)
-		{
-			public static readonly double LatitudeEnd = 35.46277291;
-			public static readonly double LatitudeStart = 35.44277291;
-			public static readonly double LongitudeEnd = 139.5872564;
-			public static readonly double LongitudeStart = 139.5672564;
-		}
+		//public class ShimoSeyaNichome//横浜新道出発地点(戸塚)
+		//{
+		//	public static readonly double LatitudeEnd = 35.46277291;
+		//	public static readonly double LatitudeStart = 35.44277291;
+		//	public static readonly double LongitudeEnd = 139.5872564;
+		//	public static readonly double LongitudeStart = 139.5672564;
+		//}
+
+		//public class ShimoSeyaNichome//東海道出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.42235987;
+		//	public static readonly double LatitudeStart = 35.40235987;
+		//	public static readonly double LongitudeEnd = 139.5425512;
+		//	public static readonly double LongitudeStart = 139.5225512;
+		//}
+
+		//public class ShimoSeyaNichome//新湘南バイパス出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.35812688;
+		//	public static readonly double LatitudeStart = 35.33812688;
+		//	public static readonly double LongitudeEnd = 139.4617146;
+		//	public static readonly double LongitudeStart = 139.4417146;
+		//}
+
+		//public class ShimoSeyaNichome//国道134号線出発地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.33002731;
+		//	public static readonly double LatitudeStart = 35.31002731;
+		//	public static readonly double LongitudeEnd = 139.3852237;
+		//	public static readonly double LongitudeStart = 139.3652237;
+		//}
+
+		//public class ShimoSeyaNichome//西湘バイパス出発地点
+		//{
+		//	public static readonly double LatitudeEnd    = 35.32268608;
+		//	public static readonly double LatitudeStart  = 35.30268608;
+		//	public static readonly double LongitudeEnd   = 139.3366197;
+		//	public static readonly double LongitudeStart = 139.3166197;
+		//}
+
+
+
 
 
 		/*public class S02S
@@ -416,13 +451,54 @@ namespace SensorLogInserterRe.Constant
 		//		public static readonly double LongitudeStart = 143.4984957;
 		//	}
 
-		public class S01S//戸塚
+		//public class S01S//戸塚
+		//{
+		//	public static readonly double LatitudeEnd = 35.42241955;
+		//	public static readonly double LatitudeStart = 35.40241955;
+		//	public static readonly double LongitudeEnd = 139.5427005;
+		//	public static readonly double LongitudeStart = 139.5227005;
+		//}
+
+		//public class S01S//東海道到達地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.35827491;
+		//	public static readonly double LatitudeStart = 35.33827491;
+		//	public static readonly double LongitudeEnd = 139.4632238;
+		//	public static readonly double LongitudeStart = 139.4432238;
+		//}
+
+		//public class S01S//新湘南バイパス到達地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.34335417;
+		//	public static readonly double LatitudeStart = 35.32335417;
+		//	public static readonly double LongitudeEnd = 139.3941454;
+		//	public static readonly double LongitudeStart = 139.3741454;
+		//}
+
+		//public class S01S//国道134号線到達地点
+		//{
+		//	public static readonly double LatitudeEnd = 35.32283345;
+		//	public static readonly double LatitudeStart = 35.30283345;
+		//	public static readonly double LongitudeEnd = 139.3371098;
+		//	public static readonly double LongitudeStart = 139.3171098;
+		//}
+
+		//public class S01S//西湘バイパス到達地点
+		//{
+		//	public static readonly double LatitudeEnd    = 35.25550068;
+		//	public static readonly double LatitudeStart  = 35.23550068;
+		//	public static readonly double LongitudeEnd   = 139.1438304;
+		//	public static readonly double LongitudeStart = 139.1238304;
+		//}
+
+		public class S01S//東海道国道30号線到達地点
 		{
-			public static readonly double LatitudeEnd = 35.42241955;
-			public static readonly double LatitudeStart = 35.40241955;
-			public static readonly double LongitudeEnd = 139.5427005;
-			public static readonly double LongitudeStart = 139.5227005;
+			public static readonly double LatitudeEnd = 35.32996271;
+			public static readonly double LatitudeStart = 35.30996271;
+			public static readonly double LongitudeEnd = 139.3850102;
+			public static readonly double LongitudeStart = 139.3650102;
 		}
+
 
 		//TODO: 三浦に行った時のデータ挿入、DBに目的地格納
 	}
