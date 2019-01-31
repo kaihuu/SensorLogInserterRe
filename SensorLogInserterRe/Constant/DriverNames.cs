@@ -19,7 +19,7 @@ namespace SensorLogInserterRe.Constant
         public const string Arinaga = "arinaga";
         public const string Kichise = "kichise";
         public const string Itani = "itani";
-        public const string Katsumura = "katsumura";
+        public const string Katsumura = "katumura";
         public const string Watanabe = "watanabe";
         public const string Ishida = "ishida";
         public const string Fukano = "fukano";

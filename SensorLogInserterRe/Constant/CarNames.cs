@@ -18,6 +18,9 @@ namespace SensorLogInserterRe.Constant
         public const string Leaf_ZE1_20181005 = "LEAF_ZE1_20181005";
         public const string Leafnew = "LEAFnew";
         public const string CB400SF = "CB400SF";
+        public const string AudiQ3 = "Audi Q3";
+        public const string Leaf_ZE1_20190129 = "LEAF_ZE1_20190129";
+        public const string N_ONE = "N-ONE";
 
         public static int GetCarId(string carName)
         {
@@ -43,6 +46,12 @@ namespace SensorLogInserterRe.Constant
                     return 14;
                 case CarNames.CB400SF:
                     return 15;
+                case CarNames.AudiQ3:
+                    return 16;
+                case CarNames.Leaf_ZE1_20190129:
+                    return 17;
+                case CarNames.N_ONE:
+                    return 18;
                 default:
                     return -1;
             }

@@ -687,7 +687,9 @@ namespace SensorLogInserterRe.ViewModels
             if (this.IsCheckedLabMember)
             {
                 insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
-                insertConfig.CheckeDrivers.Add(DriverNames.Kichise);
+                //insertConfig.CheckeDrivers.Add(DriverNames.Kichise);
+                //insertConfig.CheckeDrivers.Add(DriverNames.Katsumura);
+                //insertConfig.CheckeDrivers.Add(DriverNames.Arinaga);
             }
             // TODO 研究室メンバー
 
