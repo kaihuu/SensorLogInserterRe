@@ -26,7 +26,7 @@ namespace SensorLogInserterRe.Daos
                 {
                     sqlConnection.Open();
                     SqlCommand command = new SqlCommand(query, sqlConnection);
-                    command.CommandTimeout = 600;
+                    command.CommandTimeout = 6000;
                     sqlDataAdapter.SelectCommand = command;
                     sqlDataAdapter.Fill(dataTable);
                 }

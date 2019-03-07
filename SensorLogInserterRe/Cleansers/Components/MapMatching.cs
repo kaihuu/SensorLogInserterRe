@@ -132,12 +132,12 @@ namespace SensorLogInserterRe.Cleansers.Components
                 id = new int[] { 369 };
                 tempTable = LinkDao.GetLinkTableforMM(id);
                 tempTable.TableName = "";
-                dt[2].DefaultView.Sort = "START_LAT, START_LONG";
+                //dt[2].DefaultView.Sort = "START_LAT, START_LONG";
 
                 id = new int[] { 370 };
                 tempTable = LinkDao.GetLinkTableforMM(id);
                 tempTable.TableName = "";
-                dt[3].DefaultView.Sort = "START_LAT, START_LONG";
+                //dt[3].DefaultView.Sort = "START_LAT, START_LONG";
             }
             //TODO マップマッチング処理
             double[] sumDist = new double[dt.Count];//GPS点をマッチングさせるのに移動させた距離の総和
