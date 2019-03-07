@@ -15,6 +15,7 @@ namespace SensorLogInserterRe.Utils
     {
         static string WEBHOOK_URL_uemura = "https://hooks.slack.com/services/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";//uemura
         static string WEBHOOK_URL = "https://hooks.slack.com/services/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";//ecolog
+        static string WEBHOOK_URL_notice_ecologinserter = "https://hooks.slack.com/services/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";//notice
 
         public static void insertIsFinished(DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
         {
@@ -36,14 +37,14 @@ namespace SensorLogInserterRe.Utils
         {
             string text = "No Sensor Data: You must add or change SENSOR_NAME table, File Path is " + filePath;
 
-            commentToSlackUemura(text);
+            commentToSlack(text);
         }
         public static void noMapMatching(InsertDatum insertDatum, DataRow dataRow)
         {
             string text = "There is a out of registered links   DriverID: " + insertDatum.DriverId
                 + "StartTime: " + dataRow.Field<DateTime>(AndroidGpsRawDao.ColumnJst);
 
-            commentToSlackUemura(text);
+            commentToSlack(text);
         }
 
         public static string joinFinishMessage(string text, DateTime startTime, DateTime endTime, List<InsertConfig.GpsCorrection> correction)
@@ -63,12 +64,12 @@ namespace SensorLogInserterRe.Utils
             uploadToSlack(data);
         }
 
-        public static void commentToSlackUemura(string text)
-        {
-            var data = generateJson(text);
+        //public static void commentToSlackUemura(string text)
+        //{
+        //    var data = generateJson(text);
 
-            uploadToSlackUemura(data);
-        }
+        //    uploadToSlackUemura(data);
+        //}
 
 
         private static string generateJson(string text)
@@ -90,19 +91,19 @@ namespace SensorLogInserterRe.Utils
             wc.Encoding = Encoding.UTF8;
 
 
-            wc.UploadString(WEBHOOK_URL, data);
+            wc.UploadString(WEBHOOK_URL_notice_ecologinserter, data);
         }
 
-        private static void uploadToSlackUemura(string data)
-        {
-            var wc = new WebClient();
+        //private static void uploadToSlackUemura(string data)
+        //{
+        //    var wc = new WebClient();
 
-            wc.Headers.Add(HttpRequestHeader.ContentType, "application/json;charset=UTF-8");
-            wc.Encoding = Encoding.UTF8;
+        //    wc.Headers.Add(HttpRequestHeader.ContentType, "application/json;charset=UTF-8");
+        //    wc.Encoding = Encoding.UTF8;
 
 
-            wc.UploadString(WEBHOOK_URL_uemura, data);
-        }
+        //    wc.UploadString(WEBHOOK_URL_notice_ecologinserter, data);
+        //}
 
         private static string getCorrectionMethod(List<InsertConfig.GpsCorrection> correction)
         {
