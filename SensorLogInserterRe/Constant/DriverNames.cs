@@ -23,6 +23,10 @@ namespace SensorLogInserterRe.Constant
         public const string Watanabe = "watanabe";
         public const string Ishida = "ishida";
         public const string Fukano = "fukano";
+        public const string Iida = "iida";
+        public const string Ohashi = "ohashi";
+        public const string Murakami = "murakami";
+        public const string Yoshida = "yoshida";
         // TODO 研究室メンバーの追加
 
         // TODO ECOLOGDB2016.DRIVERSと内容が重複するので一本化する
@@ -64,6 +68,14 @@ namespace SensorLogInserterRe.Constant
                     return 32;
                 case DriverNames.Fukano:
                     return 33;
+                case DriverNames.Iida:
+                    return 34;
+                case DriverNames.Ohashi:
+                    return 35;
+                case DriverNames.Murakami:
+                    return 36;
+                case DriverNames.Yoshida:
+                    return 37;
                 default:
                     return -1;
             }
