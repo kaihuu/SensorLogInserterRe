@@ -688,9 +688,11 @@ namespace SensorLogInserterRe.ViewModels
             {
                 insertConfig.CheckeDrivers.Add(DriverNames.Uemura);
                 insertConfig.CheckeDrivers.Add(DriverNames.Kichise);
+                insertConfig.CheckeDrivers.Add(DriverNames.Koike);
+                insertConfig.CheckeDrivers.Add(DriverNames.Watanabe);
                 insertConfig.CheckeDrivers.Add(DriverNames.Iida);
-                insertConfig.CheckeDrivers.Add(DriverNames.Ohashi);
                 insertConfig.CheckeDrivers.Add(DriverNames.Murakami);
+                insertConfig.CheckeDrivers.Add(DriverNames.Ohashi);
                 insertConfig.CheckeDrivers.Add(DriverNames.Yoshida);
             }
             // TODO 研究室メンバー

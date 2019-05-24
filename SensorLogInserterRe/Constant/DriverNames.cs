@@ -24,8 +24,8 @@ namespace SensorLogInserterRe.Constant
         public const string Ishida = "ishida";
         public const string Fukano = "fukano";
         public const string Iida = "iida";
-        public const string Ohashi = "ohashi";
         public const string Murakami = "murakami";
+        public const string Ohashi = "ohashi";
         public const string Yoshida = "yoshida";
         // TODO 研究室メンバーの追加
 
@@ -70,9 +70,9 @@ namespace SensorLogInserterRe.Constant
                     return 33;
                 case DriverNames.Iida:
                     return 34;
-                case DriverNames.Ohashi:
-                    return 35;
                 case DriverNames.Murakami:
+                    return 35;
+                case DriverNames.Ohashi:
                     return 36;
                 case DriverNames.Yoshida:
                     return 37;
