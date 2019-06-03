@@ -212,7 +212,15 @@ namespace SensorLogInserterRe.Inserters.Components
 
 
             newRow.SetField(EcologDao.ColumnLinkId, correctedGpsRow.Field<string>(CorrectedGPSDopplerDao.ColumnLinkId));
-            newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<Single>(CorrectedGPSDopplerDao.ColumnRoadTheta));
+            try
+            {
+                newRow.SetField(EcologDao.ColumnRoadTheta, correctedGpsRow.Field<Single>(CorrectedGPSDopplerDao.ColumnRoadTheta));
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("ERROR");
+            }
+
 
             return newRow;
         }
