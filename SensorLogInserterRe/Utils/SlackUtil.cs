@@ -91,7 +91,7 @@ namespace SensorLogInserterRe.Utils
             wc.Encoding = Encoding.UTF8;
 
 
-            wc.UploadString(WEBHOOK_URL_notice_ecologinserter, data);
+            //wc.UploadString(WEBHOOK_URL_notice_ecologinserter, data);
         }
 
         //private static void uploadToSlackUemura(string data)

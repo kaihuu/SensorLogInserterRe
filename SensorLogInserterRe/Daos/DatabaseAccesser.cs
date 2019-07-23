@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Daos
 {
     public class DatabaseAccesser
     {
-        private static readonly string ConnectionString = "Data Source=" + "ECOLOGDB2016" + ";Initial Catalog=ECOLOGDBver3;Integrated Security=Yes;Connect Timeout=15;";
+        private static readonly string ConnectionString = "Data Source=" + "ECOLOGDB2016" + ";Initial Catalog=ECOLOGDBver3;Integrated Security=Yes;Connect Timeout=30;";
         private static readonly int NumberOfViolationOfPrimaryKey = 2627;
 
         public static DataTable GetResult(string query)
