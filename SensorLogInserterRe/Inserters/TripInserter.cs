@@ -168,6 +168,9 @@ namespace SensorLogInserterRe.Inserters
         private static bool IsOther(double latitude, double longitude)
         {
             //その他登録地点
+
+            return true;
+
             if (latitude > Coordinate.OaraiTerminal.LatitudeStart       //大洗フェリーターミナル
                 && latitude < Coordinate.OaraiTerminal.LatitudeEnd
                 && longitude > Coordinate.OaraiTerminal.LongitudeStart
